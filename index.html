@@ -468,7 +468,27 @@ input[type=color]{padding:2px;height:46px}
 .admtabs{display:flex;gap:8px;margin:0 0 18px;flex-wrap:wrap}.admtabs button{padding:10px 22px;background:var(--p1);border:0;color:var(--m);font:800 italic 20px 'Barlow Condensed',sans-serif;text-transform:uppercase;cursor:pointer}.admtabs button.on{background:var(--gold);color:#2b1d03}
 .evrow4{display:grid;gap:14px;grid-template-columns:repeat(4,1fr)}.evrow5{display:grid;gap:14px;grid-template-columns:repeat(5,1fr)}
 .redeem{display:flex;align-items:center;gap:12px;margin:0 0 26px;padding:12px 18px;background:var(--p1);box-shadow:inset 0 3px 0 var(--c)}.redeem b{font:800 italic 22px 'Barlow Condensed',sans-serif;text-transform:uppercase;color:var(--c);white-space:nowrap}.redeem input{flex:1;text-transform:uppercase}
+.player-tag{display:inline-flex;align-items:center;gap:6px;background:var(--c);color:#031018;padding:4px 10px;border-radius:4px;font-size:13px;font-weight:600;margin:4px 4px 4px 0}.player-tag button{background:none;border:0;color:#031018;font-size:16px;cursor:pointer;padding:0;line-height:1;width:18px;height:18px;display:flex;align-items:center;justify-content:center;border-radius:50%}.player-tag button:hover{background:rgba(0,0,0,.2)}
+.pfAdd{font-size:14px;padding:8px 16px}
 @media(max-width:700px){.evrow4,.evrow5{grid-template-columns:1fr 1fr}.redeem{flex-wrap:wrap}}
+
+/* Player Search Popup */
+.playerPopup{position:fixed;inset:0;z-index:100;background:rgba(3,6,13,.98);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.playerPopup .box{background:linear-gradient(160deg,#16254a,#0a1124);padding:30px;max-width:500px;width:100%;box-shadow:inset 0 3px 0 var(--g);clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,22px 100%,0 calc(100% - 22px))}
+.playerPopup h3{font:800 italic 30px 'Barlow Condensed';margin-bottom:20px}
+.playerPopup input{width:100%;margin-bottom:20px;font-size:16px}
+.playerPopup .results{display:grid;gap:10px;max-height:300px;overflow-y:auto}
+.playerPopup .result{padding:12px;background:var(--p1);display:flex;align-items:center;gap:10px;cursor:pointer;transition:filter .15s}.playerPopup .result:hover{filter:brightness(1.2)}
+.playerPopup .result .ovr{font:800 italic 24px 'Barlow Condensed';width:40px}
+.playerPopup .result .info{flex:1}.playerPopup .result .name{font-weight:600}.playerPopup .result .meta{font-size:12px;color:var(--m)}
+.playerPopup .btns{display:flex;gap:10px;margin-top:20px}
+
+/* Loading Screen */
+.loadingScreen{position:fixed;inset:0;z-index:200;background:radial-gradient(circle at 50% 45%,rgba(242,205,104,.3),transparent 55%),#03060d;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px}
+.loadingScreen .spinner{width:80px;height:80px;border:4px solid var(--gold);border-top-color:transparent;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loadingScreen h2{font:800 italic 40px 'Barball Condensed';color:var(--gold);text-align:center}
+.loadingScreen p{color:var(--m);text-align:center}
 
 /* Settings button + PWA */
 .right{position:relative}
@@ -834,6 +854,8 @@ window.UTA = (function () {
       <label>Title</label><input id="evT" maxlength="40" placeholder="Ballon d'Or">
       <label>Description</label><input id="evD" maxlength="120" placeholder="The best players of the year are back">
       <div class="evrow"><div><label>Icon</label><input id="evI" maxlength="4" value="🏆"></div><div><label>Colour</label><input id="evC" type="color" value="#f2cd68"></div></div>
+      <button class="cta alt" id="importBallonDor" style="margin:10px 0">Import Event</button>
+      <label style="margin-top:10px">Or paste event data (JSON)</label><textarea id="importData" rows="3" placeholder='{"title":"My Event","packs":[{"name":"Pack 1","price":1000,"featured":["Player1","Player2"]}]}'></textarea>
       <div class="evrow"><div><label>Starts (empty = now)</label><input id="evS" type="datetime-local"></div><div><label>Ends</label><input id="evE" type="datetime-local"></div></div>
       <label>Show it on</label><div class="evck"><label><input type="checkbox" id="evWs" checked> Store</label><label><input type="checkbox" id="evWm"> Match</label><label><input type="checkbox" id="evWk"> Market</label></div>
       <label><input type="checkbox" id="evTh" style="width:auto"> Change the app theme while this event is live</label><div class="evrow5" id="evThC"></div>
@@ -853,7 +875,7 @@ window.UTA = (function () {
       <div class="evrow"><div><label>Pack name</label><input id="cpN" maxlength="30" placeholder="TOTY Pack"></div><div><label>Look</label><select id="cpL"><option value="g">Gold</option><option value="b">Bronze</option><option value="s">Silver</option><option value="r">Rare</option><option value="e">Elite</option></select></div></div>
       <div class="evrow3"><div><label>Price</label><input id="cpP" type="number" min="0" value="1500"></div><div><label>Players</label><input id="cpC" type="number" min="1" max="11" value="3"></div><div><label>Luck</label><select id="cpK"><option value=".65">Tight (mostly low rated)</option><option value=".8" selected>Normal</option><option value=".9">Lucky</option><option value=".97">Very lucky</option></select></div></div>
       <div class="evrow"><div><label>Min rating</label><input id="cpMin" type="number" value="80"></div><div><label>Max rating</label><input id="cpMax" type="number" value="95"></div></div>
-      <label>Featured players (optional, only they drop)</label><input id="cpF" placeholder="Rodri, Vinícius Jr">
+      <label>Featured players (optional)</label><button class="cta sm alt" id="cpAddPlayer">Add Player</button><div id="cpFResult"></div>
       <label>Description (optional)</label><input id="cpD" maxlength="80">
       <label><input type="checkbox" id="cpS" checked style="width:auto"> Sell it in the Store</label>
       <button class="cta" id="cpCreate" style="margin-top:18px">Save pack</button></div>
@@ -888,6 +910,25 @@ window.UTA = (function () {
   <div class="qchat" id="qChat"></div>
 </div>
 <div id="mtEnd" class="hidden"><div class="mtendbox"><small>Full time</small><h3 id="mtRes"></h3><div class="fin" id="mtFin"></div><div id="mtStats"></div><div class="rew" id="mtRew"></div><button class="cta" id="mtAgain">Play again</button><button class="cta alt" id="mtBack">Back to menu</button></div></div></div>
+
+<!-- Player Search Popup -->
+<div id="playerPopup" class="playerPopup hidden">
+  <div class="box">
+    <h3>Add Player</h3>
+    <input type="text" id="playerSearchInput" placeholder="Type player name...">
+    <div class="results" id="playerSearchResults"></div>
+    <div class="btns">
+      <button class="cta alt" id="playerPopupCancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Screen -->
+<div id="loadingScreen" class="loadingScreen hidden">
+  <div class="spinner"></div>
+  <h2 id="loadingTitle">Loading...</h2>
+  <p id="loadingText">Please wait</p>
+</div>
 <div id="toast"></div>
 
 <script type="module">
@@ -2110,6 +2151,16 @@ async function openPack(pack, free){
   else state.coins -= pack.price;
   if (pack.once) state.starter = true;
   const cb = $("coinBox"); cb.classList.remove("flash"); void cb.offsetWidth; cb.classList.add("flash");
+  
+  // Show loading screen for Ballon d'Or packs
+  if (pack.name && pack.name.toLowerCase().includes("ballon")) {
+    $("loadingTitle").textContent = "Ballon d'Or";
+    $("loadingText").textContent = "The best players of the year are coming...";
+    $("loadingScreen").classList.remove("hidden");
+    await new Promise(r => setTimeout(r, 2000));
+    $("loadingScreen").classList.add("hidden");
+  }
+  
   const pulled = [];
   for (let i = 0; i < n; i++) pulled.push(draw(pack, pack.positions && pack.positions[i], pulled.map(p => p.id)));
   state.club.push(...pulled.map(p => p.id));
@@ -2392,25 +2443,140 @@ const EVPRE = { bronze: [45, 64, "b", 400], silver: [65, 74, "s", 700], gold: [7
 $("evPacks").innerHTML = [0, 1, 2].map(i => `<div class="evpk"><b>Pack ${i + 1} <small>(leave the name empty to skip)</small></b><input class="pn" maxlength="30" placeholder="Pack name, e.g. Ballon d'Or Pack">
   <div class="evrow3"><div><label>Look</label><select class="pp"><option value="g">Custom (gold look)</option>${Object.keys(EVPRE).map(k => `<option value="${k}">${k[0].toUpperCase() + k.slice(1)}</option>`).join("")}</select></div><div><label>Price</label><input class="pr" type="number" min="0" value="1000"></div><div><label>Players</label><input class="pc" type="number" min="1" max="11" value="3"></div></div>
   <div class="evrow3"><div><label>Min rating</label><input class="pmin" type="number" value="80"></div><div><label>Max rating</label><input class="pmax" type="number" value="95"></div><div><label>Limit per user (0 = none)</label><input class="pl" type="number" min="0" value="0"></div></div>
-  <label>Featured players (optional, names separated by commas, only these can drop)</label><input class="pf" placeholder="Rodri, Vinícius Jr"></div>`).join("");
+  <label>Featured players (optional)</label><button class="cta sm alt pfAdd">Add Player</button><div class="pfResult"></div></div>`).join("");
 $("evPacks").onchange = e => { if (!e.target.classList.contains("pp")) return; const b = e.target.closest(".evpk"), p = EVPRE[e.target.value]; if (!p) return; b.querySelector(".pmin").value = p[0]; b.querySelector(".pmax").value = p[1]; b.querySelector(".pr").value = p[3]; };
 (() => { const d = new Date(Date.now() + 7 * 864e5 - new Date().getTimezoneOffset() * 6e4); $("evE").value = d.toISOString().slice(0, 16); })();
 $("evCreate").onclick = async () => {
   if (!isAdmin()) return; const t = $("evT").value.trim(), end = new Date($("evE").value).getTime(), start = $("evS").value ? new Date($("evS").value).getTime() : Date.now();
   if (!t) return toast("Give the event a title."); if (!(end > Date.now()) || end <= start) return toast("Pick an end time in the future, after the start.");
-  const cl = (v, a, b) => Math.max(a, Math.min(b, Math.round(+v) || 0)), miss = [], packs = [];
-  document.querySelectorAll("#evPacks .evpk").forEach(b => {
+  const cl = (v, a, b) => Math.max(a, Math.min(b, Math.round(+v) || 0)), packs = [];
+  document.querySelectorAll("#evPacks .evpk").forEach((b, i) => {
     const name = b.querySelector(".pn").value.trim(); if (!name) return;
     const pre = EVPRE[b.querySelector(".pp").value], k = { name, price: cl(b.querySelector(".pr").value, 0, 1e6), count: cl(b.querySelector(".pc").value, 1, 11), min: cl(b.querySelector(".pmin").value, 1, 99), max: cl(b.querySelector(".pmax").value, 1, 99), limit: cl(b.querySelector(".pl").value, 0, 999), art: pre ? pre[2] : "g" };
     if (k.max < k.min) k.max = k.min;
-    const pool = []; b.querySelector(".pf").value.split(",").map(x => x.trim().toLowerCase()).filter(Boolean).forEach(nm => { const m = PLAYERS.find(p => p.name.toLowerCase() === nm) || PLAYERS.find(p => p.name.toLowerCase().includes(nm)); if (m) pool.push(m.id); else miss.push(nm); });
-    if (pool.length) k.pool = [...new Set(pool)]; packs.push(k);
+    // Read player IDs from result div
+    const resultDivs = document.querySelectorAll(".pfResult");
+    const resultDiv = resultDivs[i];
+    const pool = [];
+    if (resultDiv) {
+      resultDiv.querySelectorAll(".player-tag").forEach(tag => {
+        const id = +tag.dataset.id;
+        if (!isNaN(id)) pool.push(id);
+      });
+    }
+    if (pool.length) k.pool = [...new Set(pool)];
+    packs.push(k);
   });
   const gp = [$("evGp1").value, $("evGp2").value].filter(Boolean), gc = cl($("evGc").value, 0, 1e7), where = [["evWs", "store"], ["evWm", "match"], ["evWk", "market"]].filter(x => $(x[0]).checked).map(x => x[1]);
   const ev = { title: t, desc: $("evD").value.trim(), icon: $("evI").value.trim() || "🏆", color: $("evC").value, start, end, where, packs, by: user.key, ts: Date.now() };
   if (gc || gp.length) ev.gift = { coins: gc, packs: gp };
   if ($("evTh").checked) ev.theme = Object.fromEntries(THK.map(([k]) => [k, $("evT_" + k).value]));
-  try { const eid = Date.now().toString(36); await set(ref(rtdb, "events/" + eid), ev); const cd = cleanCode($("evCode").value); if (cd && ev.gift && !codes[cd]) await set(ref(rtdb, "codes/" + cd), { coins: gc, packs: gp, players: [], max: 0, per: 1, used: 0, ev: eid, by: user.key, ts: Date.now() }); toast("Event created" + (miss.length ? ". Couldn't find: " + miss.join(", ") : "")); $("evT").value = ""; document.querySelectorAll("#evPacks .pn").forEach(x => x.value = ""); } catch (x) { fail(x, "save"); }
+  try { const eid = Date.now().toString(36); await set(ref(rtdb, "events/" + eid), ev); const cd = cleanCode($("evCode").value); if (cd && ev.gift && !codes[cd]) await set(ref(rtdb, "codes/" + cd), { coins: gc, packs: gp, players: [], max: 0, per: 1, used: 0, ev: eid, by: user.key, ts: Date.now() }); toast("Event created"); $("evT").value = ""; document.querySelectorAll("#evPacks .pn").forEach(x => x.value = ""); document.querySelectorAll(".pfResult").forEach(d => d.innerHTML = ""); } catch (x) { fail(x, "save"); }
+};
+
+/* Import Event from JSON or Ballon d'Or */
+$("importBallonDor").onclick = () => {
+  if (!isAdmin()) return;
+  const jsonData = $("importData").value.trim();
+  
+  if (jsonData) {
+    // Import from JSON text
+    try {
+      const data = JSON.parse(jsonData);
+      if (data.title) $("evT").value = data.title;
+      if (data.desc) $("evD").value = data.desc;
+      if (data.icon) $("evI").value = data.icon;
+      if (data.color) $("evC").value = data.color;
+      if (data.end) $("evE").value = new Date(data.end).toISOString().slice(0, 16);
+      if (data.where) {
+        $("evWs").checked = data.where.includes("store");
+        $("evWm").checked = data.where.includes("match");
+        $("evWk").checked = data.where.includes("market");
+      }
+      
+      if (data.packs && data.packs.length > 0) {
+        const packEl = document.querySelector("#evPacks .evpk");
+        if (packEl) {
+          const pack = data.packs[0];
+          if (pack.name) packEl.querySelector(".pn").value = pack.name;
+          if (pack.price) packEl.querySelector(".pr").value = pack.price;
+          if (pack.count) packEl.querySelector(".pc").value = pack.count;
+          if (pack.min) packEl.querySelector(".pmin").value = pack.min;
+          if (pack.max) packEl.querySelector(".pmax").value = pack.max;
+          if (pack.limit) packEl.querySelector(".pl").value = pack.limit;
+          
+          // Add featured players
+          const resultDiv = document.querySelector(".pfResult");
+          if (resultDiv && pack.featured) {
+            resultDiv.innerHTML = "";
+            pack.featured.forEach(name => {
+              const player = PLAYERS.find(p => p.name === name);
+              if (player) {
+                const span = document.createElement("span");
+                span.className = "player-tag";
+                span.dataset.id = player.id;
+                span.innerHTML = `${escH(player.name)} <button data-remove="${player.id}">×</button>`;
+                resultDiv.appendChild(span);
+              }
+            });
+          }
+        }
+      }
+      
+      toast("Event data imported from JSON. Review and click Create event.");
+    } catch (e) {
+      toast("Invalid JSON format");
+    }
+  } else {
+    // Import Ballon d'Or
+    $("evT").value = "Ballon d'Or 2026";
+    $("evD").value = "The best players of the year are back. Vote for your favorite!";
+    $("evI").value = "🏆";
+    $("evC").value = "#f2cd68";
+    
+    // Set end time to Thursday 12 AM Riyadh time (UTC+3)
+    const now = new Date();
+    const thursday = new Date(now);
+    thursday.setDate(now.getDate() + (4 - now.getDay() + 7) % 7);
+    thursday.setHours(21, 0, 0, 0); // Thursday 12 AM Riyadh = Wednesday 9 PM UTC
+    $("evE").value = thursday.toISOString().slice(0, 16);
+    $("evS").value = "";
+    
+    $("evWs").checked = true;
+    $("evWm").checked = false;
+    $("evWk").checked = false;
+    
+    // Create pack with Ballon d'Or nominees
+    const packEl = document.querySelector("#evPacks .evpk");
+    if (packEl) {
+      packEl.querySelector(".pn").value = "Ballon d'Or Pack";
+      packEl.querySelector(".pp").value = "r";
+      packEl.querySelector(".pr").value = "5000";
+      packEl.querySelector(".pc").value = "2";
+      packEl.querySelector(".pmin").value = "88";
+      packEl.querySelector(".pmax").value = "93";
+      packEl.querySelector(".pl").value = "5";
+      
+      // Clear existing and add all nominees to the search UI
+      const resultDiv = document.querySelector(".pfResult");
+      if (resultDiv) {
+        resultDiv.innerHTML = "";
+        BALLON_DOR_2026.forEach(name => {
+          const player = PLAYERS.find(p => p.name === name);
+          if (player) {
+            const span = document.createElement("span");
+            span.className = "player-tag";
+            span.dataset.id = player.id;
+            span.innerHTML = `${escH(player.name)} <button data-remove="${player.id}">×</button>`;
+            resultDiv.appendChild(span);
+          }
+        });
+      }
+    }
+    
+    toast("Ballon d'Or 2026 event data loaded. Review and click Create event.");
+    $("importData").value = "";
+  }
 };
 $("evList").onclick = async e => {
   if (!isAdmin()) return; const en = e.target.closest("[data-end]"), dl = e.target.closest("[data-del]");
@@ -2459,7 +2625,83 @@ const packById = id => PACKS.find(k => k.id === id) || (String(id).startsWith("c
 function cpObj(id, c){ return { id: "cp_" + id, name: escH(c.name), short: escH(String(c.name).slice(0, 9)), art: c.art || "g", price: c.price, count: c.count, min: c.min, max: c.max, decay: c.decay || .8, pool: c.pool, desc: c.desc || (c.pool ? "Featured: " + c.pool.length + " special players." : c.count + " players rated " + c.min + "–" + c.max + ".") }; }
 const storePacks = () => PACKS.concat(Object.entries(cpacks).filter(([, c]) => c.store).map(([id, c]) => cpObj(id, c)));
 const cleanCode = t => String(t).trim().toUpperCase().replace(/[^A-Z0-9_-]/g, "").slice(0, 24);
-function findPl(str){ const ids = [], miss = []; str.split(",").map(x => x.trim().toLowerCase()).filter(Boolean).forEach(n => { const m = PLAYERS.find(p => p.name.toLowerCase() === n) || PLAYERS.find(p => p.name.toLowerCase().includes(n)); m ? ids.push(m.id) : miss.push(n); }); return { ids, miss }; }
+
+/* Ballon d'Or 2026 Nominees */
+const BALLON_DOR_2026 = [
+  "Rodri", "Vinícius Jr", "Jude Bellingham", "Erling Haaland", "Kevin De Bruyne",
+  "Kylian Mbappé", "Lamine Yamal", "Mohamed Salah", "Harry Kane", "Bukayo Saka",
+  "Lautaro Martínez", "Phil Foden", "Declan Rice", "William Saliba", "Virgil van Dijk",
+  "Jamal Musiala", "Florian Wirtz", "Martin Ødegaard", "Cole Palmer", "Luis Díaz",
+  "Antoine Griezmann", "Ruben Dias", "Dani Carvajal", "Rafael Leão", "Gavi"
+];
+
+/* Player search popup */
+let currentResultDiv = null;
+let maxPlayers = 10;
+
+function openPlayerPopup(resultDiv, max = 10) {
+  currentResultDiv = resultDiv;
+  maxPlayers = max;
+  $("playerPopup").classList.remove("hidden");
+  $("playerSearchInput").value = "";
+  $("playerSearchResults").innerHTML = "";
+  $("playerSearchInput").focus();
+}
+
+function closePlayerPopup() {
+  $("playerPopup").classList.add("hidden");
+  currentResultDiv = null;
+}
+
+function searchPlayers(query) {
+  const results = $("playerSearchResults");
+  results.innerHTML = "";
+  
+  if (!query || query.length < 1) return;
+  
+  const matches = PLAYERS.filter(p => 
+    p.name.toLowerCase().includes(query.toLowerCase())
+  ).slice(0, 5);
+  
+  matches.forEach(p => {
+    const div = document.createElement("div");
+    div.className = "result";
+    div.innerHTML = `
+      <div class="ovr">${p.ovr}</div>
+      <div class="info">
+        <div class="name">${escH(p.name)}</div>
+        <div class="meta">${p.pos} · ${p.club} · ${p.nation}</div>
+      </div>
+    `;
+    div.onclick = () => {
+      const currentCount = currentResultDiv.querySelectorAll(".player-tag").length;
+      if (currentCount >= maxPlayers) {
+        toast(`Maximum ${maxPlayers} players allowed`);
+        return;
+      }
+      const existing = currentResultDiv.querySelector(`[data-id="${p.id}"]`);
+      if (!existing) {
+        const span = document.createElement("span");
+        span.className = "player-tag";
+        span.dataset.id = p.id;
+        span.innerHTML = `${escH(p.name)} <button data-remove="${p.id}">×</button>`;
+        currentResultDiv.appendChild(span);
+      }
+      closePlayerPopup();
+    };
+    results.appendChild(div);
+  });
+  
+  if (matches.length === 0) {
+    results.innerHTML = '<div style="color:var(--m);padding:20px;text-align:center">No players found</div>';
+  }
+}
+
+$("playerSearchInput").addEventListener("input", e => {
+  searchPlayers(e.target.value);
+});
+
+$("playerPopupCancel").onclick = closePlayerPopup;
 function applyCfg(v){
   v = v || {}; CFG = Object.assign({}, CFG0, v); CFG.theme = v.theme || {};
   STARTER.price = CFG.starter; PACKS.forEach(k => k.price = CFG[k.id]);
@@ -2478,6 +2720,14 @@ $("cfgForm").innerHTML = '<div class="evrow3">' + CFGL.map(([k, l]) => `<div><la
   + `<b class="mkh" style="display:block;margin-top:20px">Default app theme</b><label><input type="checkbox" id="cfgTh" style="width:auto"> Use a custom theme</label><div class="evrow5">${thPick("cth_")}</div>
   <div class="evbt" style="margin-top:20px"><button class="cta" id="cfgSave">Save settings</button><button class="cta alt" id="cfgReset">Reset everything</button></div>`;
 fillPackSelects(); applyCfg(null);
+
+/* Initialize player search for custom packs after DOM is ready */
+setTimeout(() => {
+  $("cpAddPlayer").onclick = () => openPlayerPopup($("cpFResult"), 10);
+  document.querySelectorAll(".pfAdd").forEach((btn, i) => {
+    btn.onclick = () => openPlayerPopup(document.querySelectorAll(".pfResult")[i], 10);
+  });
+}, 100);
 function fillCfgForm(){
   document.querySelectorAll("#cfgForm .cf").forEach(i => i.value = CFG[i.dataset.k]);
   WK.forEach((l, i) => { const r = $("wl" + i); if (!r) return; r.querySelector(".a").value = l.pts; r.querySelector(".b").value = l.coins; r.querySelector(".p1").value = l.packs[0] || ""; r.querySelector(".p2").value = l.packs[1] || ""; });
@@ -2550,10 +2800,19 @@ $("cpList").onclick = e => {
 };
 $("cpCreate").onclick = async () => {
   if (!isAdmin()) return; const name = $("cpN").value.trim(); if (!name) return toast("Name the pack.");
-  const n = (id, a, b) => Math.max(a, Math.min(b, Math.round(+$(id).value) || 0)), pl = findPl($("cpF").value);
+  const n = (id, a, b) => Math.max(a, Math.min(b, Math.round(+$(id).value) || 0));
+  // Read player IDs from result div
+  const resultDiv = $("cpFResult");
+  const pool = [];
+  if (resultDiv) {
+    resultDiv.querySelectorAll(".player-tag").forEach(tag => {
+      const id = +tag.dataset.id;
+      if (!isNaN(id)) pool.push(id);
+    });
+  }
   const c = { name, art: $("cpL").value, price: n("cpP", 0, 1e6), count: n("cpC", 1, 11), min: n("cpMin", 1, 99), max: n("cpMax", 1, 99), decay: +$("cpK").value, desc: $("cpD").value.trim(), store: $("cpS").checked, ts: Date.now() };
-  if (c.max < c.min) c.max = c.min; if (pl.ids.length) c.pool = [...new Set(pl.ids)];
-  try { await set(ref(rtdb, "cpacks/" + Date.now().toString(36)), c); toast("Pack saved" + (pl.miss.length ? ". Couldn't find: " + pl.miss.join(", ") : "")); $("cpN").value = ""; } catch (x) { fail(x, "save"); }
+  if (c.max < c.min) c.max = c.min; if (pool.length) c.pool = [...new Set(pool)];
+  try { await set(ref(rtdb, "cpacks/" + Date.now().toString(36)), c); toast("Pack saved"); $("cpN").value = ""; $("cpFResult").innerHTML = ""; } catch (x) { fail(x, "save"); }
 };
 
 
