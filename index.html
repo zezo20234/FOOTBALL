@@ -500,6 +500,17 @@ input[type=color]{padding:2px;height:46px}
   .mtact button{flex:1;padding:0 8px;font-size:19px}
 }
 @media(max-height:520px) and (orientation:landscape){.mtact{padding:4px 8px}.mtact button{min-height:34px}.mtacthint{flex:1 1 0}}
+
+/* v5: formation view in lineups, club/country on squad cards */
+.sp{width:86px}
+.sp .fc{display:flex;gap:5px;justify-content:center;align-items:center;margin-top:2px;line-height:0}
+.sp .fc .fl.s{width:19px;height:12.7px;vertical-align:0}.sp .fc .cr.s{width:13px;height:15.4px;vertical-align:0}
+.row.cur{margin-bottom:10px;box-shadow:0 0 0 1px var(--g)}
+.lpitch{aspect-ratio:5/6;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));margin-top:2px}
+.lpl{position:absolute;transform:translate(-50%,-50%);line-height:1}
+.lpl .mc{width:38px;height:48px}.lpl .mc b{font-size:18px}.lpl .mc span{font-size:10px}
+@media(max-width:900px){.sp{width:68px}}
+@media(max-width:600px){.lpl .mc{width:28px;height:35px}.lpl .mc b{font-size:13px}.lpl .mc span{font-size:8px}.sp{width:60px}.sp .fc .fl.s{width:15px;height:10px}.sp .fc .cr.s{width:10px;height:12px}}
 </style>
 </head>
 <body>
@@ -2198,7 +2209,7 @@ function renderSquad(){
     const id = sq.slots[i], p = id ? P(id) : null;
     const w = p ? p.name.split(" ") : [], nm = p ? (w.length > 1 && w[w.length - 1].length > 2 ? w.slice(1).join(" ") : p.name) : "";
     const card = p
-      ? `<div class="mc ${tier(p)}"><b>${p.ovr}</b><span class="${p.pos !== pos ? "oop" : ""}">${p.pos}</span></div><div class="nm">${nm}</div><div class="pips">${[1,2,3].map(n => `<i class="${ch[i] >= n ? "on" : ""}"></i>`).join("")}</div>`
+      ? `<div class="mc ${tier(p)}"><b>${p.ovr}</b><span class="${p.pos !== pos ? "oop" : ""}">${p.pos}</span></div><div class="nm">${escH(nm)}</div><div class="fc" title="${escH(p.name + " · " + p.nation + " · " + p.club + " · " + p.ovr)}">${UTA.flag(p.nation, "s")}${UTA.crest(p.club, "s")}</div><div class="pips">${[1,2,3].map(n => `<i class="${ch[i] >= n ? "on" : ""}"></i>`).join("")}</div>`
       : `<div class="mc empty"><b>+</b><span>${pos}</span></div>`;
     return `<div class="sp ${selSlot === i ? "sel" : ""}" data-i="${i}" style="left:${x}%;top:${y}%">${card}</div>`;
   }).join("");
@@ -2212,7 +2223,8 @@ function renderPick(){
   if (selSlot < 0) { el.innerHTML = '<p class="hintp">Click a position on the pitch to choose a player, or use auto build.</p>'; return; }
   const pos = FORMS[sq.formation][selSlot][0], cur = sq.slots[selSlot];
   const list = avail(sq.slots, selSlot).map(P).filter(p => (p.pos === "GK") === (pos === "GK")).sort((a, b) => ((b.pos === pos) - (a.pos === pos)) || b.ovr - a.ovr);
-  el.innerHTML = `<div class="ph"><h3>Choose ${POSN[pos]}</h3>${cur ? '<button class="link" data-rm>Remove</button>' : ""}</div>
+  const cp = cur ? P(cur) : null;
+  el.innerHTML = (cp ? `<div class="row cur ${tier(cp)}"><div class="o">${cp.ovr}<small>${cp.pos}</small></div><div><div class="n">${escH(cp.name)}</div><div class="p">${rowMeta(cp)}</div></div></div>` : "") + `<div class="ph"><h3>Choose ${POSN[pos]}</h3>${cur ? '<button class="link" data-rm>Remove</button>' : ""}</div>
     <div class="plist">${list.length ? list.map(p => `<div class="row pk ${tier(p)}" data-id="${p.id}"><div class="o">${p.ovr}<small>${p.pos}</small></div><div><div class="n">${escH(p.name)}</div><div class="p">${rowMeta(p)}${p.pos === pos ? "" : " · out of position"}</div></div></div>`).join("") : '<div class="empty">No players for this position yet. Open packs to find some.</div>'}</div>`;
 }
 function showTab(t){
@@ -3034,12 +3046,15 @@ async function prepareMatch(v){
   showLineups(v);
 }
 function luCard(t){
-  const ln = mLines(t.form, t.players), rows = FORMS[t.form].map(([pos, x, y], i) => ({ pos, y, p: t.players[i] })).sort((a, b) => a.y - b.y);
-  const c = o => o >= 85 ? "var(--gold)" : o >= 75 ? "var(--g)" : "var(--t)";
+  const ln = mLines(t.form, t.players);
+  const dots = FORMS[t.form].map(([pos, x, y], i) => {
+    const p = t.players[i];
+    return `<div class="lpl" style="left:${x}%;top:${y}%" title="${mEsc(p.name)}"><div class="mc ${tier(p)}"><b>${p.ovr}</b><span class="${p.pos !== pos ? "oop" : ""}">${pos}</span></div></div>`;
+  }).join("");
   return `<div class="lh"><b>${mEsc(t.name)}</b><small>${t.form}</small></div>
     <div class="lr"><div><span>${t.rating ?? "--"}</span><small>Rating</small></div><div><span>${t.chem == null ? "--" : t.chem}</span><small>Chemistry</small></div></div>
     <div class="ll"><span>ATT <b>${ln.att}</b></span><span>MID <b>${ln.mid}</b></span><span>DEF <b>${ln.def}</b></span></div>
-    ${rows.map(r => `<div class="lp"><i>${r.pos}</i><span>${mEsc(r.p.name)}</span><b style="color:${c(r.p.ovr)}">${r.p.ovr}</b></div>`).join("")}`;
+    <div class="pitch lpitch"><div class="cc"></div><div class="box t"></div><div class="box b"></div>${dots}</div>`;
 }
 function showLineups(v){
   $("vs").classList.add("hidden");
