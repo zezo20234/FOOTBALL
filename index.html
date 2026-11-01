@@ -1175,7 +1175,7 @@ window.UTA = (function () {
       <li><span class="tag t">Through</span> Ball in behind to a forward. About 14% offside risk in the final third.</li>
       <li><span class="tag c">Chip</span> Chip shot over the keeper. Great close to goal, poor from distance.</li>
       <li><span class="tag d">Dribble</span> Beat the defender: your dribbling vs his defending. Fail and you lose the ball or give away a foul (maybe a card).</li>
-      <li><span class="tag d" style="background:#c4263c">Tackle</span> (left side, or Q) works while the <b>opponent</b> has the ball. Your nearest player goes in: his defending against the attacker dribbling and pace. A miss can give away a foul or a card, and there is a short wait before you can tackle again.</li>
+      <li><span class="tag d" style="background:#c4263c">Tackle</span> (left side, or Q) works while the <b>opponent</b> has the ball, also in online matches (there it must reach him before he plays his move, and you wait 4 seconds between tries). Your nearest player goes in: his defending against the attacker dribbling and pace. A miss can give away a foul or a card, and there is a short wait before you can tackle again.</li>
       <li><b>Power</b> (left, hold) makes Pass a driven pass and Shoot a power shot.</li>
       <li><b>Auto</b> (left) lets the AI play this move.</li>
       <li><small>A goalkeeper with the ball can only pass.</small></li></ul></div></details>
@@ -3594,6 +3594,7 @@ function userPassP(m, T, O, s, pt, r, style, pw) {
 }
 function userDo(m, T, O, s, pt, ua) {
   const xa = xaOf(T, pt.x), bo = m.boost; m.boost = 0; m.justUser = true;
+  if (ua.k === "tackle") return tackle(m, T, O, s, pt);
   if (ua.k === "pass" && (ua.style === "through" || ua.style === "thruf") && s.pos !== "GK") return through(m, T, O, s, pt, ua.to, ua.style === "thruf");
   if (ua.k === "cross" && s.pos !== "GK") return cross(m, T, O, s, pt);
   if (ua.k === "pass" && ua.to && !ua.to.off && ua.to !== s) { const res = pass(m, T, O, s, pt, false, { r: ua.to, p: userPassP(m, T, O, s, pt, ua.to, ua.style, ua.pw) }); if (ua.style === "onetwo" && m.car === ua.to && m.poss === T && xaOf(T, ua.to.x) > .6) m.boost = .5; return res; } // a good one-two leaves the receiver in on goal
@@ -3609,7 +3610,8 @@ function act(m) {
   if (m.net) { // human vs human: whoever has the ball decides, and the decision is shared so both phones play the same move
     let ua;
     if (T === m.mine) {
-      if (m.ctl) { ua = m.userAct; if (!ua) return WAIT; m.userAct = null; } else ua = { k: "auto" };
+      if (m.net.tk && m.net.tk[m.net.seq] && s.pos !== "GK") { ua = { k: "tackle" }; m.userAct = null; delete m.net.tk[m.net.seq]; }
+      else if (m.ctl) { ua = m.userAct; if (!ua) return WAIT; m.userAct = null; } else ua = { k: "auto" };
       m.hook.send && m.hook.send(m.net.seq, T, ua);
     } else {
       const r = m.net.buf[m.net.seq]; if (!r) return WAIT; delete m.net.buf[m.net.seq];
@@ -3770,7 +3772,7 @@ function startMatch(v){
     const seen = new Set(), t0 = Date.now() - 4000;
     try { M.chatOff = onValue(ref(rtdb, "chat/" + cid(v.matchId)), sn => { const o = sn.val() || {}; Object.keys(o).sort().forEach(k => { if (seen.has(k)) return; seen.add(k); const c = o[k]; if (!c || c.k === user.key || +k.split("_")[0] < t0 || !QCHAT[c.t]) return; chatLine(false, v.opp.name, QCHAT[c.t]); }); }, () => {}); } catch (e) {}
   }
-  if (M.net) try { M.ctlOff = onValue(ref(rtdb, "matchctl/" + M.net.id), sn => { const o = sn.val() || {}; Object.keys(o).forEach(k => { const r = o[k], q = +k.slice(1); if (M && M.net && r && r.t !== M.mine.idx && q >= M.net.seq && M.net.buf[q] === undefined) netGot(q, r); }); }, () => {}); } catch (e) {}
+  if (M.net) try { M.ctlOff = onValue(ref(rtdb, "matchctl/" + M.net.id), sn => { const o = sn.val() || {}; Object.keys(o).forEach(k => { const mt = /^t(\d+)x$/.exec(k); if (mt) { const q = +mt[1], r = o[k]; if (M && M.net && r && r.t !== M.mine.idx && q === M.net.seq && M.poss === M.mine && M.car && M.car.pos !== "GK") { (M.net.tk = M.net.tk || {})[q] = 1; if (M.ask) decide({ k: "tackle" }); else if (M.wait && !M.paused) { M.wait = false; loop(); } } return; } const r = o[k], q = +k.slice(1); if (M && M.net && r && r.t !== M.mine.idx && q >= M.net.seq && M.net.buf[q] === undefined) netGot(q, r); }); }, () => {}); } catch (e) {}
   $("mtN1").textContent = v.my.name; $("mtN2").textContent = v.op.name; $("mtPh").textContent = "1st half"; $("mtClk").textContent = "0'";
   updScore(); sizeCv(); updAct();
   const c = kickoff(M, M.A);
@@ -3781,6 +3783,7 @@ function startMatch(v){
 }
 function netGot(q, r){
   const n = M && M.net; if (!n) return; n.buf[q] = r;
+  if (n.tkSeq === q) { n.tkSeq = -1; if (r.k !== "tackle") toast("Too late, he already played it."); }
   if (M.wait && !M.paused && M.poss !== M.mine && q === n.seq) { M.wait = false; clearTimeout(n.to); loop(); }
 }
 function loop(){
@@ -3911,16 +3914,23 @@ Object.entries(ACT).forEach(([id, name]) => {
   pb.addEventListener("pointerdown", e => { e.preventDefault(); try { pb.setPointerCapture(e.pointerId); } catch (_) {} IN.pow = true; pb.classList.add("dn"); });
   pb.addEventListener("pointerup", off); pb.addEventListener("pointercancel", off); pb.addEventListener("contextmenu", e => e.preventDefault()); }
 $("mtAuto").addEventListener("click", () => { if (M && M.ask) decide({ k: "auto" }); });
+const canTackle = () => !!(M && !M.done && !M.ask && !M.paused && M.poss && M.poss !== M.mine && !(M.car && M.car.pos === "GK") && (M.net || !M.wait) && !(M.tkAt && performance.now() < M.tkAt));
 function doTackle(){
   if (!M || M.done) return;
-  if (M.net) return toast("Tackle only works in matches against the AI, not online matches.");
   if (M.ask || M.poss === M.mine) return toast("Tackle works when the opponent has the ball.");
-  if (M.wait || M.paused || !M.poss) return;
+  if (M.paused || !M.poss) return;
+  if (M.car && M.car.pos === "GK") return toast("You can't tackle a goalkeeper.");
   if (M.tkAt && performance.now() < M.tkAt) return toast("Wait a second before the next tackle.");
+  if (M.net) { // online: ask the other phone to play a tackle as his next move; both phones then resolve it the same way
+    const q = M.net.seq; M.tkAt = performance.now() + 4000; M.net.tkSeq = q;
+    set(ref(rtdb, "matchctl/" + M.net.id + "/t" + q + "x"), { t: M.mine.idx, k: "tk" }).catch(() => toast("Couldn't send the tackle. Check your database rules for matchctl."));
+    return toast("Tackle!");
+  }
+  if (M.wait) return;
   M.tkAt = performance.now() + 2500; M.tkReq = true; clearTimeout(M.tm); loop();
 }
 $("mtTack").addEventListener("pointerdown", e => { e.preventDefault(); doTackle(); });
-setInterval(() => { const b = $("mtTack"); if (b) b.classList.toggle("off", !(M && !M.done && !M.ask && !M.wait && !M.paused && !M.net && M.poss && M.poss !== M.mine && !(M.tkAt && performance.now() < M.tkAt))); }, 120);
+setInterval(() => { const b = $("mtTack"); if (b) b.classList.toggle("off", !canTackle()); }, 120);
 { const base = $("joy"), knob = $("joyK"); let pid = null;
   const move = e => { const rc = base.getBoundingClientRect(), R = rc.width / 2; let dx = (e.clientX - rc.left - R) / R, dy = (e.clientY - rc.top - R) / R; const m = Math.hypot(dx, dy); if (m > 1) { dx /= m; dy /= m; }
     IN.joy.x = dx; IN.joy.y = dy; IN.joy.on = Math.min(1, m) > .28; knob.style.transform = `translate(${dx * R * .55}px,${dy * R * .55}px)`; };
@@ -3953,7 +3963,7 @@ function drawAsk(ctx, X, Y, BR, t){
   { const st = stick(); // shot aim line: from your player to the corner of the goal you are aiming at
     if (car && !car.off && car.pos !== "GK" && xaOf(M.mine, M.pt.x) > .45) {
       const xa = xaOf(M.mine, M.pt.x), act = st.on || IN.down.shoot || IN.down.chip || IN.down.drib || IN.pow, ch = chg("shoot"), aim = shotAim();
-      const col = xa > .8 ? "#00f58a" : xa > .65 ? "#f2cd68" : "#ff4560", x0 = X(car.v.x), y0 = Y(car.v.y), gx = X(PW), gy = Y(34 + aim * 3.1), r = Math.max(5, BR * .5);
+      const col = xa > .8 ? "#00f58a" : xa > .65 ? "#f2cd68" : "#ff4560", x0 = X(car.v.x), y0 = Y(car.v.y), gx = X(M.mine.dir > 0 ? PW : 0), gy = Y(34 + aim * 3.1), r = Math.max(5, BR * .5);
       ctx.save(); ctx.globalAlpha = act ? 1 : .4; ctx.lineCap = "round";
       ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(gx, Y(GOALY[0])); ctx.lineTo(gx, Y(GOALY[1])); ctx.stroke(); // goal mouth
       ctx.shadowColor = col; ctx.shadowBlur = act ? 10 : 0; ctx.strokeStyle = col; ctx.lineWidth = (act ? 3.5 : 2.5) + ch * 4;
