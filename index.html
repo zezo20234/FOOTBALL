@@ -621,7 +621,7 @@ nav button+button::before{content:"";position:absolute;left:-3px;top:30%;bottom:
   .mtfeed{grid-column:1;grid-row:2/4;height:auto;min-height:0;border-left:0;border-top:3px solid var(--line)}
   .mtfeed .ln{font-size:12px;padding:5px 8px}.mtfeed .ln:first-child{font-size:13px}
   .qchat{grid-column:3;grid-row:3;padding:0 0 2px}.qchat button{padding:5px 10px;font-size:12px}
-  .mtact{grid-column:3;grid-row:2;border-top:3px solid var(--line);padding:6px;gap:6px;justify-content:center;min-height:0;overflow:hidden}
+  .mtact{position:fixed;z-index:70;right:max(8px,env(safe-area-inset-right));top:max(50px,calc(env(safe-area-inset-top) + 46px));bottom:max(8px,env(safe-area-inset-bottom));width:min(190px,30vw);border:0;border-top:3px solid var(--line);padding:6px;gap:6px;justify-content:center;min-height:0;overflow:hidden;background:rgba(10,17,36,.94)}
   .mtact .mtacthint{flex:0 0 auto;white-space:normal;font-size:12px;line-height:1.2}
   .mtact .mtbtns{flex-direction:column;flex-wrap:nowrap;flex:1 1 auto;min-height:0}
   #mtAct .gb{flex:1 1 0;min-height:48px;padding:4px 6px}
@@ -3086,7 +3086,7 @@ function startPresence(){
 function stopMatchStuff(){
   if (mm) { clearInterval(mm.iv); mm.unsub && mm.unsub(); remove(ref(rtdb, "queue/" + mm.mode + "/" + user.key)).catch(() => {}); mm = null; }
   if (inv) endInv("");
-  hideInvite(); vsTok++; if (vsCur && vsCur.iv) clearInterval(vsCur.iv); ["mm", "vs", "friends", "lu", "mt", "aiPick"].forEach(i => $(i).classList.add("hidden")); if (M) { clearTimeout(M.tm); cancelAnimationFrame(M.raf); M.chatOff && M.chatOff(); M = null; }
+  hideInvite(); vsTok++; if (vsCur && vsCur.iv) clearInterval(vsCur.iv); ["mm", "vs", "friends", "lu", "mt", "aiPick"].forEach(i => $(i).classList.add("hidden")); if (M) { clearTimeout(M.tm); cancelAnimationFrame(M.raf); M.chatOff && M.chatOff(); M.ctlOff && M.ctlOff(); M.net && clearTimeout(M.net.to); M = null; }
   presOff.forEach(f => f()); presOff = []; clearInterval(hb);
   if (presOn && user) remove(ref(rtdb, "presence/" + user.key)).catch(() => {});
   presOn = false; myStatus = "online";
@@ -3424,7 +3424,18 @@ function userDo(m, T, O, s, pt, ua) {
 function act(m) {
   if (m.flag) { const f = m.flag; m.flag = null; return f(); }
   const T = m.poss, O = other(m, T), s = m.car, pt = m.pt, xa = xaOf(T, pt.x);
-  if (m.ctl && T === m.mine) {
+  if (m.net) { // human vs human: whoever has the ball decides, and the decision is shared so both phones play the same move
+    let ua;
+    if (T === m.mine) {
+      if (m.ctl) { ua = m.userAct; if (!ua) return WAIT; m.userAct = null; } else ua = { k: "auto" };
+      m.hook.send && m.hook.send(m.net.seq, T, ua);
+    } else {
+      const r = m.net.buf[m.net.seq]; if (!r) return WAIT; delete m.net.buf[m.net.seq];
+      ua = { k: r.k, style: r.st || undefined, pw: r.pw || 0, to: r.to >= 0 ? T.pl[r.to] : undefined };
+    }
+    m.net.seq++;
+    if (ua.k !== "auto") { m.stats[T.idx].poss++; return userDo(m, T, O, s, pt, ua); }
+  } else if (m.ctl && T === m.mine) {
     const ua = m.userAct; if (!ua) return WAIT;
     m.userAct = null;
     if (ua.k !== "auto") { m.stats[T.idx].poss++; return userDo(m, T, O, s, pt, ua); }
@@ -3507,7 +3518,7 @@ function showLineups(v){
 }
 function cancelMatchFlow(){
   vsTok++; if (vsCur && vsCur.iv) clearInterval(vsCur.iv);
-  if (M) { clearTimeout(M.tm); clearTimeout(M.dtm); cancelAnimationFrame(M.raf); M.chatOff && M.chatOff(); M = null; }
+  if (M) { clearTimeout(M.tm); clearTimeout(M.dtm); cancelAnimationFrame(M.raf); M.chatOff && M.chatOff(); M.ctlOff && M.ctlOff(); M.net && clearTimeout(M.net.to); M = null; }
   $("mtAct").classList.add("hidden");
   ["vs", "lu", "mt", "mtEnd"].forEach(i => $(i).classList.add("hidden")); setStatus("online");
 }
@@ -3536,6 +3547,10 @@ function mkLive(v){
     half(){ ui.phase = "ht"; ui.sc = M.score.slice(); updScore(); if (M.skipping) return; const d = 2900 / Math.sqrt(M.speed); banner("Half time", `${M.score[M.mi]} - ${M.score[1 - M.mi]}`, "ht", d); ui.popDelay = d - 300; },
     phase(t){ $("mtPh").textContent = t; },
     flash(t, c){ if (!M.skipping) chip(t, c); },
+    send(seq, T, ua){
+      const o = { t: T.idx, k: ua.k, pw: ua.pw || 0, to: ua.to ? T.pl.indexOf(ua.to) : -1 }; if (ua.style) o.st = ua.style;
+      set(ref(rtdb, "matchctl/" + M.net.id + "/s" + seq), o).catch(() => { if (M && !M.netErr) { M.netErr = 1; toast("Couldn't sync controls. Check your database rules for matchctl."); } });
+    },
     clock(){ M.ckT = performance.now(); $("mtClk").textContent = dispMin(M) + "'"; updScore(); updAct(); },
     end(){
       $("mtClk").textContent = "FT"; $("mtPh").textContent = "Full time"; clearTimeout(M.dtm); M.ask = null; M.wait = false; updAct(); ui.sc = M.score.slice(); updScore(); ui.phase = "ft";
@@ -3546,7 +3561,8 @@ function mkLive(v){
   };
   [A, B].forEach(T => T.pl.forEach(p => { p.v = homeXY(T, p, 52.5, 34, true); p.vx = p.vy = 0; }));
   M = mStart(A, B, mine, hooks); M.ui = ui; M.speed = 1; M.skipping = false; M.lt = 0; M.flip = !v.meHome;
-  M.ctl = !!v.opp.bot && manualPref; M.userAct = null; M.ask = null; M.wait = false; // manual control only vs the AI: player-vs-player matches stay in sync because both phones run the same simulation
+  M.net = !v.opp.bot && v.matchId && v.opp.k ? { id: cid(v.matchId), seq: 0, buf: {}, to: 0 } : null;
+  M.ctl = (!!v.opp.bot || !!M.net) && manualPref; M.userAct = null; M.ask = null; M.wait = false; // manual control only vs the AI: player-vs-player matches stay in sync because both phones run the same simulation
 }
 function updScore(){ const q = (M.ui && M.ui.sc) || M.score; $("mtS1").textContent = q[M.mi]; $("mtS2").textContent = q[1 - M.mi]; }
 function startMatch(v){
@@ -3557,6 +3573,7 @@ function startMatch(v){
     const seen = new Set(), t0 = Date.now() - 4000;
     try { M.chatOff = onValue(ref(rtdb, "chat/" + cid(v.matchId)), sn => { const o = sn.val() || {}; Object.keys(o).sort().forEach(k => { if (seen.has(k)) return; seen.add(k); const c = o[k]; if (!c || c.k === user.key || +k.split("_")[0] < t0 || !QCHAT[c.t]) return; chatLine(false, v.opp.name, QCHAT[c.t]); }); }, () => {}); } catch (e) {}
   }
+  if (M.net) try { M.ctlOff = onValue(ref(rtdb, "matchctl/" + M.net.id), sn => { const o = sn.val() || {}; Object.keys(o).forEach(k => { const r = o[k], q = +k.slice(1); if (M && M.net && r && r.t !== M.mine.idx && q >= M.net.seq && M.net.buf[q] === undefined) netGot(q, r); }); }, () => {}); } catch (e) {}
   $("mtN1").textContent = v.my.name; $("mtN2").textContent = v.op.name; $("mtPh").textContent = "1st half"; $("mtClk").textContent = "0'";
   updScore(); sizeCv(); updAct();
   const c = kickoff(M, M.A);
@@ -3565,10 +3582,18 @@ function startMatch(v){
   M.raf = requestAnimationFrame(frame);
   M.tm = setTimeout(loop, 1800);
 }
+function netGot(q, r){
+  const n = M && M.net; if (!n) return; n.buf[q] = r;
+  if (M.wait && !M.paused && M.poss !== M.mine && q === n.seq) { M.wait = false; clearTimeout(n.to); loop(); }
+}
 function loop(){
   if (!M || M.done || M.ask || M.wait) return;
   const d = mStep(M);
-  if (d === WAIT) { M.wait = true; M.waitAt = performance.now(); updAct(); return; } // frame() opens the choice once the ball is at his feet
+  if (d === WAIT) {
+    M.wait = true; M.waitAt = performance.now(); updAct();
+    if (M.net && M.poss !== M.mine) { clearTimeout(M.net.to); const sq = M.net.seq; M.net.to = setTimeout(() => { if (M && M.net && M.wait && M.net.seq === sq && M.net.buf[sq] === undefined) netGot(sq, { k: "auto" }); }, 25000); } // opponent went quiet: play it on
+    return;
+  } // frame() opens the choice once the ball is at his feet
   if (M && !M.done) {
     const quick = M.justUser && M.poss === M.mine; M.justUser = false; // you keep the ball: don't make you wait a full beat
     M.tm = setTimeout(loop, quick ? 300 : 1000 * BEAT * (d || 1) / M.speed);
@@ -3576,13 +3601,13 @@ function loop(){
 }
 /* ---- manual control UI ---- */
 function updAct(){
-  const bar = $("mtAct"), on = !!(M && !M.done && M.vs && M.vs.opp.bot);
+  const bar = $("mtAct"), on = !!(M && !M.done), isBot = !!(on && (M.net || (M.vs && M.vs.opp.bot)));
   bar.classList.toggle("hidden", !on); if (!on) return;
   const turn = !!M.ask, gk = !!(M.car && M.car.pos === "GK");
   bar.classList.toggle("turn", turn);
-  $("mtShoot").disabled = !turn || gk; $("mtPass").disabled = !turn; $("mtDrib").disabled = !turn || gk;
+  $("mtShoot").disabled = !isBot || !turn || gk; $("mtPass").disabled = !isBot || !turn; $("mtDrib").disabled = !isBot || !turn || gk; $("mtMode").disabled = !isBot;
   $("mtMode").classList.toggle("on", M.ctl); $("mtMode").textContent = M.ctl ? "Manual" : "Auto";
-  $("mtHint").innerHTML = !M.ctl ? "Auto-play: tap <b>Auto</b> to take control" : turn ? "<b>Your ball.</b> Pass, shoot, or tap a teammate" : M.poss === M.mine ? "Get ready…" : "Opponent has the ball";
+  $("mtHint").innerHTML = !isBot ? "Controls aren't available in this match" : !M.ctl ? "Auto-play: tap <b>Auto</b> to take control" : turn ? "<b>Your ball.</b> Pass, shoot, or tap a teammate" : M.poss === M.mine ? "Get ready…" : M.net ? "Opponent has the ball, wait…" : "Opponent has the ball";
   $("mtCv").classList.toggle("pick", turn);
   if (!turn) { const t = $("mtTimer"); t.style.transform = "scaleX(0)"; t.classList.remove("low"); }
 }
@@ -3699,6 +3724,7 @@ function setPause(on){
   const d = performance.now() - M.pAt; M.paused = false; if (M.ckT) M.ckT += d; if (M.waitAt) M.waitAt += d;
   if (M.ask) { M.ask.t0 = performance.now(); clearTimeout(M.dtm); M.dtm = setTimeout(() => decide({ k: "auto" }), ASK_MS); }
   else if (!M.wait) loop();
+  else if (M.net && M.poss !== M.mine && M.net.buf[M.net.seq]) { M.wait = false; loop(); }
 }
 let rotOn = false, locked = false;
 function checkRot(){
@@ -3911,7 +3937,7 @@ function frame(t){
   if (!M) return;
   const u = M.ui, rdt = Math.min(.05, (t - (M.lt || t)) / 1000); M.lt = t;
   for (let left = rdt * (M.paused ? 0 : M.speed); left > 1e-4;) { const d = Math.min(.04, left); sim(u, d, t); left -= d; }
-  if (!M.paused && M.wait && !M.ask && ((idle(u) && !u.q.length && u.car === M.car && u.bs >= 1 && (u.phase === "play" || u.phase === "kick")) || t - M.waitAt > 3500)) openAsk();
+  if (!M.paused && M.wait && !M.ask && (!M.net || M.poss === M.mine) && ((idle(u) && !u.q.length && u.car === M.car && u.bs >= 1 && (u.phase === "play" || u.phase === "kick")) || t - M.waitAt > 3500)) openAsk();
   if (M.ask) { const f = Math.max(0, 1 - (performance.now() - M.ask.t0) / ASK_MS), tm = $("mtTimer"); tm.style.transform = `scaleX(${f})`; tm.classList.toggle("low", f < .34); }
   if (t >= u.bsAt) u.bs = Math.min(1, u.bs + rdt * 4);
   u.parts.forEach(p => { p.x += p.vx * rdt; p.y += p.vy * rdt; p.vy += 55 * rdt; p.l -= rdt; }); u.parts = u.parts.filter(p => p.l > 0);
