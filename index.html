@@ -97,15 +97,32 @@ h2{font-size:46px;line-height:1}
 .front.g{background:linear-gradient(155deg,#fbe9a9,#e3b84c 42%,#9c7421);color:#2b1d03}
 .front.r{background:repeating-linear-gradient(60deg,rgba(255,255,255,.18) 0 2px,transparent 2px 12px),linear-gradient(155deg,#fff6c9,#f0c94f 40%,#a57a1d);color:#2b1d03}
 .front.e{background:linear-gradient(155deg,#0f3a8a,#071436 55%,#031a2c);color:#e8fbff;box-shadow:inset 0 0 0 3px rgba(31,210,255,.55)}
-.l{position:absolute;left:28px;top:42px;text-align:center;font-family:'Barlow Condensed';font-weight:700}
-.ovr{font-weight:800;font-size:56px;line-height:.85}.pos{font-size:22px}
-.sep{width:28px;height:2px;background:currentColor;opacity:.4;margin:7px auto}
-.l small{display:block;font-size:14px;margin-top:2px}
-.sil{position:absolute;right:16px;top:30px;width:128px;height:150px;opacity:.3}
-.pname{position:absolute;left:14px;right:14px;top:192px;text-align:center;font-family:'Barlow Condensed';font-weight:800;font-style:italic;text-transform:uppercase;font-size:25px;line-height:1;padding-bottom:6px;border-bottom:1px solid rgba(128,128,128,.4)}
-.pname.s{font-size:19px;padding-top:4px}
-.stats{position:absolute;left:24px;right:24px;top:230px;display:grid;grid-template-columns:1fr 1fr;gap:1px 12px;font-family:'Barlow Condensed';font-weight:700;font-size:20px}
-.stats div{display:flex;gap:7px;justify-content:center}.stats b{font-weight:800}.stats span{opacity:.75;font-size:16px}
+.front.b{background:linear-gradient(155deg,#f0c9a4,#b9743f 45%,#6d3d1a);color:#2a1507}
+.front.s{background:linear-gradient(155deg,#f6f8fb,#aeb7c6 45%,#6a7385);color:#1c2230}
+.face{container-type:inline-size}
+.pc{position:absolute;inset:0;font-size:10px;font-size:calc(100cqw/22);font-family:'Barlow Condensed',sans-serif;overflow:hidden}
+.pc .shine{position:absolute;inset:0;background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.26) 50%,transparent 62%);pointer-events:none}
+.pc::before{content:"";position:absolute;left:0;right:0;top:0;height:19em;background:radial-gradient(circle at 68% 42%,rgba(255,255,255,.34),transparent 62%)}
+.front.e .pc::before{background:radial-gradient(circle at 68% 42%,rgba(31,210,255,.34),transparent 62%)}
+.pc .bust{position:absolute;right:1.2em;top:2.2em;width:13.4em;height:16em;filter:drop-shadow(0 .4em .5em rgba(0,0,0,.28))}
+.lt{position:absolute;left:1.9em;top:3.4em;width:5.6em;display:flex;flex-direction:column;align-items:center;font-weight:700}
+.ovr{font-weight:800;font-size:5.6em;line-height:.85;letter-spacing:-.02em}.pos{font-size:2.2em;line-height:1;margin-top:.15em;font-weight:800}
+.sep{display:block;width:2.8em;height:.2em;background:currentColor;opacity:.4;margin:.55em 0 .7em}
+.pc .fl{width:3.4em;height:2.27em;display:block;margin-bottom:.75em;border-radius:.25em;box-shadow:0 0 0 .12em rgba(0,0,0,.35),0 .15em .4em rgba(0,0,0,.3)}
+.pc .cr{width:3.1em;height:3.65em;display:block;filter:drop-shadow(0 .15em .25em rgba(0,0,0,.35))}
+.pname{position:absolute;left:1.1em;right:1.1em;top:19.3em;height:3em;text-align:center;font-weight:800;font-style:italic;text-transform:uppercase;white-space:nowrap;overflow:hidden;border-bottom:.1em solid rgba(128,128,128,.45);display:flex;align-items:center;justify-content:center}
+.pname span{display:inline-block;line-height:1.1}
+.pname .z1{font-size:2.5em}.pname .z2{font-size:2.1em}.pname .z3{font-size:1.7em}.pname .z4{font-size:1.45em}.pname .z5{font-size:1.25em}
+.stats{position:absolute;left:2.3em;right:2.3em;top:23.1em;display:grid;grid-template-columns:repeat(3,1fr);gap:.35em .4em}
+.stats div{text-align:center;line-height:1}.stats b{display:block;font-size:2.1em;font-weight:800}.stats span{display:block;font-size:1.15em;font-weight:700;opacity:.72;letter-spacing:.06em;margin-top:.1em}
+.fl{display:inline-block;width:22px;height:15px;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.4);vertical-align:-3px}
+.cr{display:inline-block;width:16px;height:19px;vertical-align:-5px}
+.fl.s{width:19px;height:12.7px;vertical-align:-2px}.cr.s{width:14px;height:16.5px;vertical-align:-4px}
+#club.cgrid{grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:14px}
+.pcard{position:relative;aspect-ratio:2/3;filter:drop-shadow(0 4px 10px rgba(0,0,0,.45))}
+.pcard .front{transform:none}
+.pcard .x2{position:absolute;left:50%;transform:translateX(-50%);bottom:.5%;z-index:2;background:#0b1222;color:var(--gold);font:800 14px 'Barlow Condensed';padding:1px 8px;border-radius:9px;box-shadow:0 0 0 1px var(--gold)}
+.row.mk{min-width:0}.mi{display:inline-block;white-space:nowrap;margin-right:10px}
 .done{text-align:center;opacity:0;transition:opacity .5s}
 .done.show{opacity:1}
 .done h3{font-size:34px;color:var(--g);margin-bottom:12px}
@@ -116,11 +133,12 @@ h2{font-size:46px;line-height:1}
 .club h2{font-size:36px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:6px}
 .row{background:var(--p1);display:flex;align-items:center;gap:12px;padding:0 14px 0 0;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
-.row .o{font-family:'Barlow Condensed';font-weight:800;font-style:italic;font-size:30px;width:54px;align-self:stretch;display:grid;place-items:center;background:linear-gradient(155deg,#fbe9a9,#c9993a);color:#2b1d03}
+.row .o{font-family:'Barlow Condensed';font-weight:800;font-style:italic;font-size:30px;width:54px;align-self:stretch;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;background:linear-gradient(155deg,#fbe9a9,#c9993a);color:#2b1d03}
+.row .o small{font:700 12px 'Barlow Condensed',sans-serif;font-style:normal;letter-spacing:.06em;opacity:.8;margin-top:2px}
 .row.e .o{background:linear-gradient(155deg,#0f3a8a,#071436);color:var(--c)}
 .row div:last-child{padding:9px 0}
 .row .n{font-family:'Barlow Condensed';font-weight:700;font-size:19px;line-height:1.1}
-.row .p{font-size:12px;color:var(--m)}
+.row .p{font-size:13px;color:var(--m);line-height:1.5}
 .empty{color:var(--m);background:var(--p1);padding:28px;text-align:center}
 #toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,40px);background:var(--g);color:#03130b;font-weight:600;padding:12px 26px;opacity:0;transition:.4s;z-index:60;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%)}
 #toast.show{opacity:1;transform:translate(-50%,0)}
@@ -444,7 +462,7 @@ input[type=color]{padding:2px;height:46px}
 .row.mk{padding-right:12px}.mk .mki{flex:1;min-width:0;padding:9px 0}.mk .p,.mk .n{display:block}.mk .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mkp{display:flex;flex-direction:column;align-items:flex-end;gap:5px;padding:8px 0}.pc2{display:flex;align-items:center;gap:6px;font:800 italic 22px 'Barlow Condensed',sans-serif;color:var(--gold)}.mkp .cta{padding:6px 16px}
 .sl{font-size:10px;padding:1px 6px;margin-right:4px;letter-spacing:.06em}.sl.ai{background:#b57cff;color:#14041f}.sl.hu{background:var(--c);color:#031018}
-@media(max-width:700px){.evrow3,.mksell,.mkfil{grid-template-columns:1fr}.evh{flex-wrap:wrap}.evt{margin-left:0}.mklist{grid-template-columns:1fr}}
+@media(max-width:700px){.evrow3,.mksell,.mkfil{grid-template-columns:1fr}.evh{flex-wrap:wrap}.evt{margin-left:0}.mklist{grid-template-columns:minmax(0,1fr)}}
 
 /* Admin */
 .admtabs{display:flex;gap:8px;margin:0 0 18px;flex-wrap:wrap}.admtabs button{padding:10px 22px;background:var(--p1);border:0;color:var(--m);font:800 italic 20px 'Barlow Condensed',sans-serif;text-transform:uppercase;cursor:pointer}.admtabs button.on{background:var(--gold);color:#2b1d03}
@@ -460,6 +478,213 @@ input[type=color]{padding:2px;height:46px}
 </style>
 </head>
 <body>
+<script>
+/* ===== UT art: national flags + original club crests + kit busts (all drawn in SVG, built lazily) ===== */
+window.UTA = (function () {
+  const slug = s => String(s).toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "x";
+  const hash = s => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
+  const H = (...c) => c.map((x, i) => `<rect y="${(i * 20 / c.length).toFixed(2)}" width="30" height="${(20 / c.length + .06).toFixed(2)}" fill="${x}"/>`).join("");
+  const V = (...c) => c.map((x, i) => `<rect x="${(i * 30 / c.length).toFixed(2)}" width="${(30 / c.length + .06).toFixed(2)}" height="20" fill="${x}"/>`).join("");
+  const R = (x, y, w, h, f, x2 = "") => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${f}" ${x2}/>`;
+  const star = (cx, cy, r, f) => { let p = []; for (let k = 0; k < 10; k++) { const a = (-90 + k * 36) * Math.PI / 180, rr = k % 2 ? r * .382 : r; p.push((cx + rr * Math.cos(a)).toFixed(2) + "," + (cy + rr * Math.sin(a)).toFixed(2)); } return `<polygon points="${p.join(" ")}" fill="${f}"/>`; };
+  const pent = (cx, cy, r, c, w) => { let p = []; [0, 2, 4, 1, 3].forEach(k => { const a = (-90 + k * 72) * Math.PI / 180; p.push((cx + r * Math.cos(a)).toFixed(2) + "," + (cy + r * Math.sin(a)).toFixed(2)); }); return `<polygon points="${p.join(" ")}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linejoin="miter"/>`; };
+  const stripes9 = (a, b) => { let s = ""; for (let i = 0; i < 9; i++) s += R(0, (i * 20 / 9).toFixed(2), 30, (20 / 9 + .06).toFixed(2), i % 2 ? b : a); return s; };
+  const hr = (f) => R(0, 0, 30, 20, f);
+
+  const FLAGS = {
+    "England": () => hr("#fff") + R(13, 0, 4, 20, "#cf142b") + R(0, 8, 30, 4, "#cf142b"),
+    "Scotland": () => hr("#0a5eb0") + `<path d="M0 0L30 20M30 0L0 20" stroke="#fff" stroke-width="3.2"/>`,
+    "Wales": () => H("#fff", "#00863d") + `<path d="M7 15c1.5-5 5-9 10-9.5l2-2.5 1.2 3 3.3 1-3 2c-.4 3.2-2.4 6-6 7.2l-2.7 2.8-.9-3.2-2 .8z" fill="#d1202f"/>`,
+    "Northern Ireland": () => hr("#fff") + R(13, 0, 4, 20, "#cf142b") + R(0, 8, 30, 4, "#cf142b") + `<circle cx="15" cy="10" r="3.6" fill="#fff"/>` + star(15, 10, 2.8, "#cf142b"),
+    "Ireland": () => V("#169b62", "#fff", "#ff883e"),
+    "France": () => V("#0055a4", "#fff", "#ef4135"),
+    "Italy": () => V("#009246", "#fff", "#ce2b37"),
+    "Belgium": () => V("#000", "#fae042", "#ed2939"),
+    "Mali": () => V("#14b53a", "#fcd116", "#ce1126"),
+    "Nigeria": () => V("#008751", "#fff", "#008751"),
+    "Ivory Coast": () => V("#f77f00", "#fff", "#009e60"),
+    "Romania": () => V("#002b7f", "#fcd116", "#ce1126"),
+    "Peru": () => V("#d91023", "#fff", "#d91023"),
+    "Cameroon": () => V("#007a5e", "#ce1126", "#fcd116") + star(15, 10, 3.6, "#fcd116"),
+    "Senegal": () => V("#00853f", "#fdef42", "#e31b23") + star(15, 10, 3.6, "#00853f"),
+    "Ghana": () => H("#ce1126", "#fcd116", "#006b3f") + star(15, 10, 3.6, "#000"),
+    "Burkina Faso": () => H("#ef2b2d", "#009e49") + star(15, 10, 3.8, "#fcd116"),
+    "Gabon": () => H("#009e60", "#fcd116", "#3a75c4"),
+    "Hungary": () => H("#ce2939", "#fff", "#477050"),
+    "Estonia": () => H("#0072ce", "#000", "#fff"),
+    "Armenia": () => H("#d90012", "#0033a0", "#f2a800"),
+    "Colombia": () => hr("#fcd116") + R(0, 10, 30, 5, "#003893") + R(0, 15, 30, 5, "#ce1126"),
+    "Ecuador": () => hr("#fcd116") + R(0, 10, 30, 5, "#034ea2") + R(0, 15, 30, 5, "#ed1c24") + `<circle cx="15" cy="9.6" r="2.4" fill="#8a6a2e"/>`,
+    "Netherlands": () => H("#ae1c28", "#fff", "#21468b"),
+    "Germany": () => H("#000", "#dd0000", "#ffce00"),
+    "Russia": () => H("#fff", "#0039a6", "#d52b1e"),
+    "Poland": () => H("#fff", "#dc143c"),
+    "Ukraine": () => H("#0057b7", "#ffd700"),
+    "Austria": () => H("#ed2939", "#fff", "#ed2939"),
+    "Slovakia": () => H("#fff", "#0b4ea2", "#ee1c25") + `<path d="M6 4h7v6c0 3.4-3.5 4.6-3.5 4.6S6 13.4 6 10z" fill="#ee1c25" stroke="#fff" stroke-width=".7"/><path d="M9.5 5.6v6M7.6 7.6h3.8M8 9.6h3" stroke="#fff" stroke-width=".9"/>`,
+    "Slovenia": () => H("#fff", "#005da4", "#ed1c24") + `<path d="M5 3h6v5.5c0 2.8-3 3.8-3 3.8s-3-1-3-3.8z" fill="#005da4" stroke="#ed1c24" stroke-width=".6"/>`,
+    "Serbia": () => H("#c6363c", "#0c4076", "#fff") + `<path d="M5.5 4.5h6v5c0 2.6-3 3.6-3 3.6s-3-1-3-3.6z" fill="#c6363c" stroke="#e8d28a" stroke-width=".7"/>`,
+    "Croatia": () => { let c = ""; for (let r = 0; r < 4; r++) for (let q = 0; q < 4; q++) c += R(11.6 + q * 1.7, 5.4 + r * 1.55, 1.7, 1.55, (r + q) % 2 ? "#fff" : "#e41e20"); return H("#ff0000", "#fff", "#171796") + `<path d="M11.4 5.2h6.9v6.5c0 2-3.45 3.1-3.45 3.1s-3.45-1.1-3.45-3.1z" fill="none" stroke="#e41e20" stroke-width=".7"/>` + c; },
+    "Bosnia": () => { let s = ""; for (let i = 0; i < 7; i++) s += `<circle cx="${(9.5 + i * 2.3).toFixed(1)}" cy="${(1.8 + i * 2.7).toFixed(1)}" r=".85" fill="#fff"/>`; return hr("#002395") + `<path d="M8 0H24V20z" fill="#fecb00"/>` + s; },
+    "Czech Republic": () => H("#fff", "#d7141a") + `<path d="M0 0L15 10 0 20z" fill="#11457e"/>`,
+    "Spain": () => hr("#aa151b") + R(0, 5, 30, 10, "#f1bf00") + `<rect x="7" y="7.2" width="3.4" height="5.6" rx=".8" fill="#aa151b"/>`,
+    "Portugal": () => hr("#ff0000") + R(0, 0, 12, 20, "#006600") + `<circle cx="12" cy="10" r="3.8" fill="#ffe000"/><rect x="10.2" y="8" width="3.6" height="4.2" rx=".9" fill="#e41e20" stroke="#fff" stroke-width=".5"/>`,
+    "Denmark": () => hr("#c8102e") + R(9, 0, 3, 20, "#fff") + R(0, 8.5, 30, 3, "#fff"),
+    "Sweden": () => hr("#006aa7") + R(9, 0, 3.6, 20, "#fecc02") + R(0, 8.2, 30, 3.6, "#fecc02"),
+    "Finland": () => hr("#fff") + R(9, 0, 3.8, 20, "#003580") + R(0, 8.1, 30, 3.8, "#003580"),
+    "Norway": () => hr("#ba0c2f") + R(7.5, 0, 4.6, 20, "#fff") + R(0, 7.7, 30, 4.6, "#fff") + R(8.8, 0, 2, 20, "#00205b") + R(0, 9, 30, 2, "#00205b"),
+    "Switzerland": () => hr("#d52b1e") + R(13, 4, 4, 12, "#fff") + R(9, 8, 12, 4, "#fff"),
+    "Greece": () => stripes9("#0d5eaf", "#fff") + R(0, 0, 11, 11.2, "#0d5eaf") + R(4.5, 0, 2, 11.2, "#fff") + R(0, 4.6, 11, 2, "#fff"),
+    "Turkey": () => hr("#e30a17") + `<circle cx="11" cy="10" r="5" fill="#fff"/><circle cx="12.5" cy="10" r="4.1" fill="#e30a17"/>` + star(17.2, 10, 2.5, "#fff"),
+    "Algeria": () => hr("#fff") + R(0, 0, 15, 20, "#006233") + `<clipPath id="al-l"><rect width="15" height="20"/></clipPath><clipPath id="al-r"><rect x="15" width="15" height="20"/></clipPath><circle cx="15" cy="10" r="4.8" fill="#d21034"/><circle cx="16.4" cy="10" r="3.9" fill="#006233" clip-path="url(#al-l)"/><circle cx="16.4" cy="10" r="3.9" fill="#fff" clip-path="url(#al-r)"/>` + star(17.6, 10, 2.2, "#d21034"),
+    "Morocco": () => hr("#c1272d") + pent(15, 10.6, 4.6, "#006233", 1),
+    "Egypt": () => H("#ce1126", "#fff", "#000") + `<circle cx="15" cy="10" r="2" fill="#c09300"/><path d="M12.6 12.2h4.8" stroke="#c09300" stroke-width="1"/>`,
+    "Iran": () => H("#239f40", "#fff", "#da0000") + `<circle cx="15" cy="10" r="2.1" fill="none" stroke="#da0000" stroke-width=".9"/>`,
+    "Israel": () => hr("#fff") + R(0, 2, 30, 2.4, "#0038b8") + R(0, 15.6, 30, 2.4, "#0038b8") + `<path d="M15 5.7l3.7 6.4h-7.4zM15 14.3l-3.7-6.4h7.4z" fill="none" stroke="#0038b8" stroke-width=".9"/>`,
+    "Japan": () => hr("#fff") + `<circle cx="15" cy="10" r="6" fill="#bc002d"/>`,
+    "South Korea": () => { const g = (x, y, a) => `<g transform="translate(${x} ${y}) rotate(${a})">${R(-2.4, -1.7, 4.8, .85, "#000")}${R(-2.4, -.45, 4.8, .85, "#000")}${R(-2.4, .8, 4.8, .85, "#000")}</g>`; return hr("#fff") + `<path d="M11 10a4 4 0 0 1 8 0z" fill="#cd2e3a"/><path d="M11 10a4 4 0 0 0 8 0z" fill="#0047a0"/><circle cx="17" cy="10" r="2" fill="#cd2e3a"/><circle cx="13" cy="10" r="2" fill="#0047a0"/>` + g(5, 4, 34) + g(25, 4, -34) + g(5, 16, -34) + g(25, 16, 34); },
+    "Georgia": () => { const c = (x, y) => `<path d="M${x} ${y - 1.6}v3.2M${x - 1.6} ${y}h3.2" stroke="#e8112d" stroke-width="1.1"/>`; return hr("#fff") + R(13.2, 0, 3.6, 20, "#e8112d") + R(0, 8.2, 30, 3.6, "#e8112d") + c(7, 4.5) + c(23, 4.5) + c(7, 15.5) + c(23, 15.5); },
+    "Brazil": () => hr("#009c3b") + `<path d="M15 1.8L27.4 10 15 18.2 2.6 10z" fill="#ffdf00"/><circle cx="15" cy="10" r="4.6" fill="#002776"/><path d="M10.6 9c3.2-1.2 6.5-.5 8.9 1.6" stroke="#fff" stroke-width=".9" fill="none"/>`,
+    "Argentina": () => H("#74acdf", "#fff", "#74acdf") + `<circle cx="15" cy="10" r="2.1" fill="#f6b40e"/>`,
+    "Uruguay": () => stripes9("#fff", "#0038a8") + R(0, 0, 11, 11.2, "#fff") + `<circle cx="5.5" cy="5.6" r="2.4" fill="#fcd116"/>`,
+    "Mexico": () => V("#006847", "#fff", "#ce1126") + `<circle cx="15" cy="10" r="2.6" fill="#9a7230"/><circle cx="15" cy="10" r="1.2" fill="#6b8e3a"/>`,
+    "USA": () => { let s = ""; for (let i = 0; i < 13; i++) s += R(0, (i * 20 / 13).toFixed(2), 30, (20 / 13 + .05).toFixed(2), i % 2 ? "#fff" : "#b22234"); let d = ""; for (let r = 0; r < 4; r++) for (let q = 0; q < 5; q++) d += `<circle cx="${(1.7 + q * 2.35).toFixed(2)}" cy="${(1.5 + r * 2.4).toFixed(2)}" r=".5" fill="#fff"/>`; return s + R(0, 0, 12.5, 10.8, "#3c3b6e") + d; },
+    "Canada": () => hr("#fff") + R(0, 0, 7.5, 20, "#d52b1e") + R(22.5, 0, 7.5, 20, "#d52b1e") + `<path d="M15 3.4l1.6 3 2.3-.8-.7 4.4 2.5-1.9.4 1.5-3.4 3.1.4 1.2-3.2-.5v3.3h-1.8v-3.3l-3.2.5.4-1.2-3.4-3.1.4-1.5 2.5 1.9-.7-4.4 2.3.8z" fill="#d52b1e"/>`,
+    "Jamaica": () => hr("#009b3a") + `<path d="M0 0L15 10 0 20zM30 0L15 10 30 20z" fill="#000"/><path d="M0 0L30 20M30 0L0 20" stroke="#fed100" stroke-width="2.6"/>`,
+    "DR Congo": () => hr("#007fff") + `<path d="M-2 22L32 -2" stroke="#f7d618" stroke-width="5.6"/><path d="M-2 22L32 -2" stroke="#ce1021" stroke-width="3.6"/>` + star(5.2, 4.6, 3, "#f7d618")
+  };
+
+  /* ---------- crests ---------- */
+  // [primary, secondary, pattern]  v=stripes b=band d=sash q=quarters c=chevron x=cross h=halves t=top/bottom s=solid
+  const CL = {
+    "Arsenal": ["#d8232b", "#fff", "b"], "Tottenham": ["#14234b", "#fff", "c"], "Barcelona": ["#1b3f94", "#a50044", "v"], "West Ham": ["#7a263a", "#7fb7e6", "x"],
+    "Everton": ["#1c4fa5", "#fff", "d"], "Liverpool": ["#c8102e", "#f6eb61", "t"], "Retired": ["#6b7385", "#f2cd68", "s"], "Inter Milan": ["#0d3b8c", "#0a0a0a", "v"],
+    "Manchester United": ["#d81920", "#111", "q"], "Real Madrid": ["#fafafa", "#c9a227", "x"], "Al Ahly": ["#c8102e", "#fff", "d"], "Juventus": ["#0d0d0d", "#fff", "v"],
+    "Bayern Munich": ["#dc052d", "#0066b2", "h"], "AC Milan": ["#d3121f", "#0b0b0b", "v"], "Manchester City": ["#6cabdd", "#fff", "b"], "Zamalek": ["#f4f4f4", "#c8102e", "c"],
+    "Chelsea": ["#034694", "#e6b422", "t"], "Valencia": ["#f7f7f7", "#f08a00", "c"], "Borussia Dortmund": ["#fde100", "#111", "b"], "Aston Villa": ["#7b003c", "#95bfe5", "h"],
+    "Real Betis": ["#0bb363", "#fff", "v"], "Brighton": ["#0057b8", "#fff", "v"], "Bayer Leverkusen": ["#e32219", "#111", "t"], "Porto": ["#003c8f", "#fff", "v"],
+    "Zenit": ["#009fe3", "#0b2a6f", "b"], "Paris Saint-Germain": ["#0a1f44", "#d8232b", "x"], "Sevilla": ["#f6f6f6", "#d8232b", "d"], "Ajax": ["#f6f6f6", "#d8232b", "b"],
+    "America": ["#fbd800", "#0a2c6e", "t"], "Pyramids": ["#7fcdee", "#0a2c6e", "c"], "Burnley": ["#6c1d45", "#99d6ea", "d"], "Atletico Madrid": ["#cb3524", "#fff", "v"],
+    "Real Sociedad": ["#0067b1", "#fff", "v"], "Athletic Bilbao": ["#d8232b", "#fff", "v"], "Newcastle": ["#111", "#fff", "v"], "Al-Ittihad": ["#fcd116", "#111", "v"],
+    "Al Ittihad": ["#fcd116", "#111", "v"], "Crystal Palace": ["#1b458f", "#c4122e", "v"], "Leicester": ["#003090", "#fdbe11", "c"], "Al Nassr": ["#f5c400", "#123a8a", "t"],
+    "Villarreal": ["#fbe300", "#0b4ea2", "b"], "Galatasaray": ["#e8222a", "#fdb912", "h"], "Napoli": ["#12a0d7", "#fff", "c"], "Al Hilal": ["#0a4ba3", "#fff", "d"],
+    "Nantes": ["#fcd91e", "#00844a", "h"], "Inter Miami": ["#f7b5cd", "#111", "b"], "Celta Vigo": ["#8ac3ee", "#fff", "x"], "Southampton": ["#d71920", "#fff", "v"],
+    "Birmingham": ["#0b4ea2", "#fff", "t"], "Roma": ["#8e1f2f", "#f0bc42", "t"], "Nottingham Forest": ["#d00027", "#fff", "c"], "Brentford": ["#e30613", "#fff", "v"],
+    "Granada": ["#c8102e", "#fff", "q"], "Torino": ["#8b1a2b", "#fff", "b"], "Monaco": ["#e51b22", "#fff", "d"], "Atalanta": ["#1d4e9f", "#111", "v"],
+    "Al-Ettifaq": ["#0b8f4e", "#fff", "d"], "Al-Ahli": ["#0b8f4e", "#fff", "t"], "Bologna": ["#cf1f2e", "#0d2b6b", "v"], "Fiorentina": ["#5a2a8a", "#fff", "c"],
+    "Hoffenheim": ["#1961b5", "#fff", "d"], "Trabzonspor": ["#7b1e3b", "#7fc3ea", "h"], "Eintracht Frankfurt": ["#111", "#e1000f", "x"], "Vissel Kobe": ["#8d1b2d", "#fff", "t"],
+    "Al Sadd": ["#f4f4f4", "#7a1d3a", "b"], "RB Leipzig": ["#f4f4f4", "#dd0741", "c"], "Fulham": ["#f4f4f4", "#111", "d"], "Marseille": ["#2faee0", "#fff", "t"],
+    "Bournemouth": ["#d71920", "#111", "v"], "Rangers": ["#1b458f", "#d71920", "x"], "Leeds": ["#f4f4f4", "#1d428a", "b"], "FC Seoul": ["#d71920", "#111", "h"],
+    "Swansea": ["#f4f4f4", "#111", "t"], "Real Valladolid": ["#5b2a86", "#fff", "v"], "Getafe": ["#0b4ea2", "#fff", "c"], "Lyon": ["#f4f4f4", "#1b3f94", "d"],
+    "Benfica": ["#e30613", "#fff", "c"], "Celtic": ["#138a3d", "#fff", "v"], "Lazio": ["#8ac3ee", "#fff", "t"], "Wolves": ["#fdb913", "#111", "c"]
+  };
+  const SHAPES = [
+    "M4 3h32v21c0 11-8 18-16 22C12 42 4 35 4 24z",
+    "M20 1C26 4.5 32 5 37 4v20c0 11-8 18-17 22C11 42 3 35 3 24V4c5 1 11 .5 17-3z",
+    "M2 4h36v22c0 8-7 13-18 18C9 39 2 34 2 26z"
+  ];
+  const ROUND = "M20 3a19 19 0 1 0 .01 0z";
+  function emblem(k, f) {
+    const e = [
+      () => star(0, 0, 5.2, f),
+      () => `<circle r="4.2" fill="${f}"/><polygon points="0,-1.9 1.8,-.6 1.1,1.5 -1.1,1.5 -1.8,-.6" fill="#0c1224"/>`,
+      () => `<path d="M-5 3.4V-2.4l2.7 2.6L0-4.6l2.3 4.4 2.7-2.6v5.8z" fill="${f}"/>`,
+      () => `<path d="M1.2-5.4L-3.8 1.2h3.2L-1.2 5.4 4 -1.4H.8z" fill="${f}"/>`,
+      () => `<path d="M-3.6 4.6V-3.4h2v1.6h1.2v-1.6h1.2v1.6h1.2v-1.6h2v8z" fill="${f}"/>`,
+      () => `<path d="M0-5.2L4 0 0 5.2-4 0z" fill="${f}"/>`,
+      () => { let r = ""; for (let i = 0; i < 8; i++) r += `<path d="M0-5.4V-3.2" stroke="${f}" stroke-width="1.2" transform="rotate(${i * 45})"/>`; return `<circle r="2.3" fill="${f}"/>` + r; },
+      () => `<path d="M-5.2 3.4C-4.6-2.4 0-5 5.2-4.4 2.4-2.6 1.4-.6.6 3.2-1.4 3-3.2 3.4-5.2 3.4z" fill="${f}"/>`
+    ];
+    return e[k % e.length]();
+  }
+  function pattern(p, a, b) {
+    switch (p) {
+      case "v": { let s = ""; for (let i = 0; i < 5; i++) s += R(i * 8, 0, 8.05, 50, i % 2 ? b : a); return s; }
+      case "b": return R(0, 0, 40, 50, a) + R(0, 17, 40, 12, b);
+      case "d": return R(0, 0, 40, 50, a) + `<path d="M-4 8L44 36 44 50 36 50-4 22z" fill="${b}" opacity="1"/>`.replace("M-4 8L44 36 44 50 36 50-4 22z", "M-6 4L46 34V46L-6 16z");
+      case "q": return R(0, 0, 20, 25, a) + R(20, 0, 20, 25, b) + R(0, 25, 20, 25, b) + R(20, 25, 20, 25, a);
+      case "c": return R(0, 0, 40, 50, a) + `<path d="M-2 12L20 28 42 12V22L20 38-2 22z" fill="${b}"/>`;
+      case "x": return R(0, 0, 40, 50, a) + R(16, 0, 8, 50, b) + R(0, 17, 40, 8, b);
+      case "h": return R(0, 0, 20, 50, a) + R(20, 0, 20, 50, b);
+      case "t": return R(0, 0, 40, 25, a) + R(0, 25, 40, 25, b);
+      default: return R(0, 0, 40, 50, a) + `<path d="M0 0H40V8H0z" fill="${b}" opacity=".9"/>`;
+    }
+  }
+  const lum = c => { const n = parseInt(c.slice(1), 16), r = n >> 16 & 255, g = n >> 8 & 255, b = n & 255; return (.299 * r + .587 * g + .114 * b) / 255; };
+  const info = club => {
+    const k = CL[club]; const h = hash(String(club));
+    const hue = h % 360, auto = ["hsl(" + hue + " 62% 42%)", "hsl(" + (hue + 40) % 360 + " 80% 90%)", "vbdxcqth"[h % 8]];
+    return { a: k ? k[0] : auto[0], b: k ? k[1] : auto[1], p: k ? k[2] : auto[2], h };
+  };
+
+  let sprite = null; const have = new Set();
+  function ensure(id, svg) {
+    if (have.has(id)) return; have.add(id);
+    if (!sprite) { sprite = document.createElementNS("http://www.w3.org/2000/svg", "svg"); sprite.setAttribute("width", "0"); sprite.setAttribute("height", "0"); sprite.setAttribute("aria-hidden", "true"); sprite.style.cssText = "position:absolute;width:0;height:0;overflow:hidden"; sprite.innerHTML = `<defs><linearGradient id="ut-gloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".34"/><stop offset=".5" stop-color="#fff" stop-opacity=".04"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs>`; (document.body || document.documentElement).prepend(sprite); }
+    sprite.insertAdjacentHTML("beforeend", svg);
+  }
+  const NAV = n => n.replace(/^Czechia$/, "Czech Republic");
+
+  function flag(nation, cls) {
+    const n = NAV(nation), id = "f-" + slug(n);
+    ensure(id, `<symbol id="${id}" viewBox="0 0 30 20">${(FLAGS[n] || (() => hr("#4a5368") + `<path d="M8 4v12M8 4h12l-2 3 2 3H8" stroke="#fff" stroke-width="1.4" fill="#fff" fill-opacity=".3"/>`))()}</symbol>`);
+    return `<svg class="fl ${cls || ""}" viewBox="0 0 30 20" role="img" aria-label="${n}"><use href="#${id}" width="30" height="20"/></svg>`;
+  }
+  function crest(club, cls) {
+    const id = "c-" + slug(club);
+    if (!have.has(id)) {
+      const { a, b, p, h } = info(club), shape = club === "Retired" ? ROUND : (h % 4 === 3 ? ROUND : SHAPES[h % 3]);
+      const dark = lum(a) < .55, em = dark ? "#fff" : "#0c1224", med = dark ? "rgba(8,12,26,.82)" : "rgba(255,255,255,.9)", ring = lum(b) > .5 && !dark ? "#0c1224" : b;
+      ensure(id, `<symbol id="${id}" viewBox="-3 -3 46 54">
+        <path d="${shape}" fill="#0c1224" stroke="#0c1224" stroke-width="5"/>
+        <path d="${shape}" fill="#fff" stroke="#fff" stroke-width="3"/>
+        <clipPath id="k-${id}"><path d="${shape}"/></clipPath>
+        <g clip-path="url(#k-${id})">${pattern(p, a, b)}<rect width="40" height="50" fill="url(#ut-gloss)"/></g>
+        <path d="${shape}" fill="none" stroke="#0c1224" stroke-opacity=".55" stroke-width="1.1"/>
+        <g transform="translate(20 ${shape === ROUND ? 24 : 22})"><circle r="8.2" fill="${med}" stroke="${ring}" stroke-width="1.3"/><g transform="scale(.95)">${emblem(h >>> 3, em === "#fff" ? "#fff" : "#0c1224")}</g></g>
+      </symbol>`);
+    }
+    return `<svg class="cr ${cls || ""}" viewBox="0 0 46 54" role="img" aria-label="${club}"><use href="#${id}" width="46" height="54"/></svg>`;
+  }
+  function bust(club) {
+    const id = "b-" + slug(club);
+    if (!have.has(id)) {
+      const { a, b, p } = info(club), dark = lum(a) < .55, trim = lum(b) > .5 && lum(a) > .5 ? "#0c1224" : b;
+      let shirt = `<rect width="100" height="120" fill="${a}"/>`;
+      if (p === "v") for (let i = 0; i < 6; i++) if (i % 2) shirt += R(i * 17, 60, 17.1, 60, b);
+      if (p === "b") shirt += R(0, 92, 100, 11, b);
+      if (p === "d") shirt += `<path d="M10 120L96 74v14L22 120z" fill="${b}"/>`;
+      if (p === "h") shirt += R(50, 60, 50, 60, b);
+      if (p === "t") shirt += R(0, 100, 100, 20, b);
+      if (p === "q") shirt += R(50, 60, 50, 30, b) + R(0, 90, 50, 30, b);
+      if (p === "c") shirt += `<path d="M10 92L50 112 90 92V102L50 122 10 102z" fill="${b}"/>`;
+      if (p === "x") shirt += R(44, 60, 12, 60, b);
+      ensure(id, `<symbol id="${id}" viewBox="0 0 100 120">
+        <clipPath id="k-${id}"><path d="M4 120c0-32 14-46 32-50l14 9 14-9c18 4 32 18 32 50z"/></clipPath>
+        <g clip-path="url(#k-${id})">${shirt}<path d="M4 120c0-32 14-46 32-50l14 9 14-9c18 4 32 18 32 50z" fill="url(#ut-gloss)"/>
+          <path d="M4 100L22 86M96 100L78 86" stroke="${trim}" stroke-width="5" opacity=".9"/></g>
+        <path d="M36 70l14 17 14-17" fill="none" stroke="${trim}" stroke-width="5.5" stroke-linejoin="round"/>
+        <path d="M43 64h14v13l-7 5-7-5z" fill="currentColor" opacity=".38"/>
+        <ellipse cx="50" cy="37" rx="17" ry="20" fill="currentColor" opacity=".4"/>
+      </symbol>`);
+    }
+    return `<svg class="bust" viewBox="0 0 100 120" aria-hidden="true"><use href="#${id}" width="100" height="120"/></svg>`;
+  }
+  return { flag, crest, bust, info };
+})();
+
+/* auto-fit player names so long names always fit on a card, whatever font is loaded */
+(function () {
+  const fit = el => { const sp = el.firstElementChild; if (!sp || !el.clientWidth) return false; let f = 2.9; sp.style.fontSize = f + "em";
+    for (let i = 0; i < 40 && sp.offsetWidth > el.clientWidth - 1 && f > 1; i++) { f -= .08; sp.style.fontSize = f.toFixed(2) + "em"; } el.dataset.fit = "1"; return true; };
+  let q = 0; const run = () => { q = 0; document.querySelectorAll(".pname:not([data-fit])").forEach(fit); };
+  const sched = () => { if (!q) q = requestAnimationFrame(run); };
+  new MutationObserver(sched).observe(document.documentElement, { childList: true, subtree: true });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { document.querySelectorAll(".pname[data-fit]").forEach(e => delete e.dataset.fit); sched(); });
+  window.addEventListener("resize", () => { document.querySelectorAll(".pname[data-fit]").forEach(e => delete e.dataset.fit); sched(); });
+})();
+
+</script>
 
 <!-- LOGIN -->
 <section id="auth">
@@ -520,7 +745,7 @@ input[type=color]{padding:2px;height:46px}
     <div class="packs" id="packs"></div>
     <div class="club">
       <h2>My Club <span id="cnt" class="sub" style="font-size:20px;font-style:normal"></span></h2>
-      <div id="club" class="grid"></div>
+      <div id="club" class="grid cgrid"></div>
     </div>
   </main>
   <main id="viewSquad" class="hidden">
@@ -585,7 +810,7 @@ input[type=color]{padding:2px;height:46px}
       <div class="evrow"><div><label>Code (empty = random)</label><input id="rcCode" maxlength="24" placeholder="WELCOME"></div><div><label>Coins</label><input id="rcCoins" type="number" min="0" value="0"></div></div>
       <div class="evrow3"><div><label>Pack 1</label><select id="rc1" class="gp"></select></div><div><label>Pack 2</label><select id="rc2" class="gp"></select></div><div><label>Pack 3</label><select id="rc3" class="gp"></select></div></div>
       <label>Players (names separated by commas, optional)</label><input id="rcPl" placeholder="Rodri, Vinícius Jr">
-      <div class="evrow3"><div><label>Max uses (0 = unlimited)</label><input id="rcMax" type="number" min="0" value="0"></div><div><label>Expires (optional)</label><input id="rcExp" type="datetime-local"></div><div><label>Only while event is live</label><select id="rcEv"></select></div></div>
+      <div class="evrow4"><div><label>Total uses (0 = unlimited)</label><input id="rcMax" type="number" min="0" value="0"></div><div><label>Uses per player (0 = unlimited)</label><input id="rcPer" type="number" min="0" value="1"></div><div><label>Expires (optional)</label><input id="rcExp" type="datetime-local"></div><div><label>Only while event is live</label><select id="rcEv"></select></div></div>
       <button class="cta" id="rcCreate" style="margin-top:18px">Create code</button></div>
       <h2 class="sec">Codes</h2><div class="bar"></div><div id="rcList"></div></div>
     <div id="adm-cp" class="adm hidden"><div class="evform">
@@ -1540,6 +1765,139 @@ const RAW2 = [
 ];
 RAW2.forEach(r => PLAYERS.push({ id: PLAYERS.length + 1, name: r[0], club: r[1], nation: r[2], pos: r[3], ovr: r[4], pac: r[5], sho: r[6], pas: r[7], dri: r[8], def: r[9], phy: r[10] }));
 
+/* players.json entries that were not yet in the game (appended so existing player ids never change) */
+const RAW3 = [
+["Federico Chiesa","Juventus","Italy","RW",83,90,79,78,84,48,70],
+["Wojciech Szczęsny","Juventus","Poland","GK",85,46,14,68,40,16,85],
+["Diogo Dalot","Manchester United","Portugal","RB",80,82,68,76,76,76,74],
+["Luke Shaw","Manchester United","England","LB",81,78,66,78,74,80,78],
+["Lautaro Martínez","Inter Milan","Argentina","ST",87,84,88,78,84,50,82],
+["Lautaro Martínez","Inter Milan","Argentina","ST",88,85,89,79,85,52,82],
+["Carlos Soler","Paris Saint-Germain","Spain","CM",80,76,74,82,80,72,74],
+["Randal Kolo Muani","Paris Saint-Germain","France","ST",82,88,80,74,82,46,76],
+["Karim Benzema","Al-Ittihad","France","ST",85,72,88,80,82,36,78],
+["Jordan Henderson","Al-Ettifaq","England","CDM",79,64,66,82,74,78,80],
+["David Raya","Arsenal","Spain","GK",84,48,15,74,44,18,84],
+["Ederson","Manchester City","Brazil","GK",89,52,18,82,48,18,82],
+["Kevin De Bruyne","Manchester City","Belgium","CM",91,74,86,95,88,65,78],
+["İlkay Gündoğan","Manchester City","Germany","CM",82,72,76,84,80,74,76],
+["Erling Haaland","Manchester City","Norway","ST",92,92,96,68,82,45,90],
+["Matthijs de Ligt","Juventus","Netherlands","CB",85,70,44,72,72,88,86],
+["Bruno Fernandes","Manchester United","Portugal","CAM",87,72,85,92,85,68,78],
+["Marcus Rashford","Manchester United","England","LW",84,92,82,78,84,48,74],
+["André Onana","Manchester United","Cameroon","GK",83,50,16,72,44,18,82],
+["Martin Ødegaard","Arsenal","Norway","CAM",86,78,82,89,87,68,72],
+["Bukayo Saka","Arsenal","England","RW",87,87,84,85,88,65,75],
+["Aaron Ramsdale","Arsenal","England","GK",80,46,14,68,40,16,80],
+["Virgil van Dijk","Liverpool","Netherlands","CB",88,68,52,72,68,91,88],
+["Andrew Robertson","Liverpool","Scotland","LB",86,82,65,84,78,84,78],
+["Trent Alexander-Arnold","Liverpool","England","RB",86,78,82,92,80,78,75],
+["Conor Bradley","Liverpool","Northern Ireland","RB",73,82,60,66,70,72,70],
+["Mohamed Salah","Liverpool","Egypt","RW",89,90,89,82,89,45,76],
+["Luis Díaz","Liverpool","Colombia","LW",86,92,82,80,88,48,74],
+["Alisson","Liverpool","Brazil","GK",89,48,15,78,42,18,85],
+["Jarell Quansah","Liverpool","England","CB",71,68,30,52,56,72,70],
+["Koundé","Barcelona","France","RB",84,84,62,76,78,84,74],
+["Ramos","Sevilla","Spain","CB",82,62,52,70,68,86,84],
+["Pedri","Barcelona","Spain","CM",86,78,75,87,89,72,68],
+["Gavi","Barcelona","Spain","CM",83,82,72,84,86,74,72],
+["Frenkie de Jong","Barcelona","Netherlands","CM",86,82,74,88,88,78,78],
+["Christensen","Barcelona","Denmark","CB",82,70,40,68,68,84,80],
+["Araújo","Barcelona","Uruguay","CB",84,78,42,68,70,86,84],
+["Balde","Barcelona","Spain","LB",82,90,64,74,80,76,72],
+["Alonso","Barcelona","Spain","LB",80,72,66,78,74,78,76],
+["Lewandowski","Barcelona","Poland","ST",87,74,90,82,84,38,82],
+["Raphinha","Barcelona","Brazil","RW",85,87,82,82,87,54,70],
+["Yamal","Barcelona","Spain","RW",84,93,79,83,92,38,62],
+["Ferran Torres","Barcelona","Spain","LW",82,86,78,76,82,46,68],
+["Félix","Barcelona","Portugal","ST",83,82,82,80,86,40,70],
+["Vitor Roque","Barcelona","Brazil","ST",75,82,74,62,72,36,70],
+["Ter Stegen","Barcelona","Germany","GK",87,48,16,76,44,18,84],
+["Bastoni","Inter Milan","Italy","CB",84,76,40,70,72,86,78],
+["Harry Kane","Bayern Munich","England","ST",90,72,94,87,83,48,84],
+["Musiala","Bayern Munich","Germany","CAM",87,88,83,83,91,58,72],
+["Acerbi","Inter Milan","Italy","CB",82,66,40,64,64,84,82],
+["Vinícius Jr","Real Madrid","Brazil","LW",91,96,87,84,95,34,72],
+["Rodrygo","Real Madrid","Brazil","RW",87,89,82,84,88,54,68],
+["Koundé","Barcelona","France","RB",85,84,62,76,78,84,74],
+["Pedri","Barcelona","Spain","CM",86,78,75,87,89,72,68],
+["Raphinha","Barcelona","Brazil","RW",86,87,82,82,87,54,70],
+["Lenglet","Tottenham","France","CB",77,68,38,64,66,80,78],
+["James Tarkowski","Everton","England","CB",78,66,36,58,60,82,80],
+["Mostafa Mohamed","Nantes","Egypt","ST",76,82,78,64,74,38,72],
+["Achraf Bencharki","Zamalek","Egypt","LW",73,82,66,64,76,42,62],
+["Ibrahim Adel","Pyramids","Egypt","RW",72,84,68,64,76,40,62],
+["Shikabala","Zamalek","Egypt","RW",72,76,68,70,78,40,64],
+["Ahmed Fathy","Pyramids","Egypt","CB",70,64,34,54,56,76,74],
+["Emad Mohamed","Zamalek","Egypt","ST",69,74,68,56,66,32,64],
+["Rui Silva","Real Betis","Spain","GK",78,46,14,66,40,16,78],
+["Rodri","Real Betis","Spain","CDM",77,62,60,74,68,80,80],
+["Andros Townsend","Everton","England","RW",75,86,66,64,72,44,66],
+["Anthony Gordon","Everton","England","LW",77,90,68,66,76,44,62],
+["Jarrad Branthwaite","Everton","England","CB",77,74,36,58,62,80,76],
+["Eric Dier","Tottenham","England","CB",79,66,38,58,60,82,80],
+["Bryan Gil","Tottenham","Spain","LW",77,84,68,74,82,46,62],
+["Harry Kane","Tottenham","England","ST",89,72,94,87,83,48,84],
+["Fraser Forster","Tottenham","England","GK",76,44,12,62,38,14,76],
+["Reiss Nelson","Arsenal","England","RW",75,86,70,68,76,44,62],
+["Eddie Nketiah","Arsenal","England","ST",76,84,76,64,74,38,70],
+["Emile Smith Rowe","Arsenal","England","CAM",78,80,72,78,80,56,66],
+["Declan Rice","Arsenal","England","CDM",87,74,75,85,80,87,86],
+["William Saliba","Arsenal","England","CB",87,78,42,72,76,89,84],
+["Ben White","Arsenal","England","RB",81,80,66,76,76,80,76],
+["Rob Holding","Arsenal","England","CB",74,64,34,58,60,78,76],
+["Gabriel Martinelli","Arsenal","England","LW",84,90,82,78,85,54,72],
+["Bukayo Saka","Arsenal","England","RW",87,87,84,85,88,65,75],
+["Aaron Ramsdale","Arsenal","England","GK",80,46,14,68,40,16,80],
+["Eddie Nketiah","Arsenal","England","ST",76,84,76,64,74,38,70],
+["Reiss Nelson","Arsenal","England","RW",75,86,70,68,76,44,62],
+["Micheal Brand","Arsenal","England","RW",44,62,34,32,34,32,36],
+["Catalin Cirjan","Arsenal","England","CM",43,48,32,38,40,42,42],
+["Dan Orford","Arsenal","England","GK",42,34,8,36,26,10,44],
+["Tom Roocroft","Arsenal","England","CM",41,46,30,36,38,40,40],
+["Josh Robinson","Arsenal","England","CB",40,44,16,30,32,48,46],
+["Reuell Walters","Arsenal","England","RB",39,50,24,28,30,42,44],
+["Samuel Akinola","Arsenal","England","ST",38,54,28,26,28,18,36],
+["Billy Vigar","Arsenal","England","CB",37,42,14,28,30,46,44],
+["Harrison Dudziak","Arsenal","England","GK",36,32,8,34,24,10,42],
+["Logan Pye","Arsenal","England","CB",35,40,12,26,28,44,42],
+["Khadra","Arsenal","England","RW",34,52,22,24,26,28,30],
+["Cameron Mucheka","Arsenal","England","ST",33,48,20,22,24,16,28],
+["Saidou Sissoko","Arsenal","England","CM",32,44,18,24,26,36,38],
+["Kara Mbodji","Arsenal","England","CB",31,38,10,24,26,42,40],
+["Miles Lewis-Skelly","Arsenal","England","LB",30,36,12,22,24,40,38],
+["Tim Akinola","Arsenal","England","ST",29,42,18,20,22,14,26],
+["Michael Beamish","Arsenal","England","GK",28,30,8,32,24,10,40],
+["James Hill","Arsenal","England","CB",27,36,10,20,22,38,36],
+["Ollie Harrison","Arsenal","England","CM",26,34,16,22,24,34,36],
+["Arsenal Youth","Arsenal","England","CM",25,32,14,20,22,32,34],
+["Arsenal Academy","Arsenal","England","ST",24,30,12,18,20,12,32],
+["Arsenal Reserves","Arsenal","England","CB",23,28,10,16,18,30,30],
+["Arsenal U21","Arsenal","England","RB",22,26,8,14,16,28,28],
+["Arsenal U18","Arsenal","England","LW",21,24,6,12,14,26,26],
+["Arsenal U23","Arsenal","England","GK",20,22,6,10,14,8,24],
+["Arsenal B Team","Arsenal","England","CM",19,20,4,8,12,24,22],
+["Arsenal Development","Arsenal","England","ST",18,18,2,6,10,20,20],
+["Arsenal Reserves Team","Arsenal","England","CB",17,16,0,4,8,18,18],
+["Arsenal Youth Team","Arsenal","England","RB",16,14,0,2,6,16,16],
+["Arsenal Academy Team","Arsenal","England","LW",15,12,0,0,4,14,14],
+["Arsenal U21 Team","Arsenal","England","GK",14,10,0,0,2,12,12],
+["Arsenal U18 Team","Arsenal","England","CM",13,8,0,0,0,10,10],
+["Arsenal U23 Team","Arsenal","England","ST",12,6,0,0,0,8,8],
+["Arsenal B Team Player","Arsenal","England","CB",11,4,0,0,0,6,6],
+["Arsenal Development Player","Arsenal","England","RB",10,2,0,0,0,4,4],
+["Arsenal Reserves Player","Arsenal","England","LW",9,0,0,0,0,2,2],
+["Arsenal Youth Player","Arsenal","England","GK",8,0,0,0,0,0,0],
+["Arsenal Academy Player","Arsenal","England","CM",7,0,0,0,0,0,0],
+["Arsenal U21 Player","Arsenal","England","ST",6,0,0,0,0,0,0],
+["Arsenal U18 Player","Arsenal","England","CB",5,0,0,0,0,0,0],
+["Arsenal U23 Player","Arsenal","England","RB",4,0,0,0,0,0,0],
+["Arsenal B Team Youth","Arsenal","England","LW",3,0,0,0,0,0,0],
+["Arsenal Development Youth","Arsenal","England","GK",2,0,0,0,0,0,0],
+["Arsenal Reserves Youth","Arsenal","England","CM",1,0,0,0,0,0,0]
+];
+RAW3.forEach(r => PLAYERS.push({ id: PLAYERS.length + 1, name: r[0], club: r[1], nation: r[2], pos: r[3], ovr: r[4], pac: r[5], sho: r[6], pas: r[7], dri: r[8], def: r[9], phy: r[10] }));
+
 const $ = id => document.getElementById(id);
 const START = 3000;
 let evs = {}, mk = {}, mkShow = 40, mkBusy = false, codes = {}, cpacks = {}, rcBusy = false, WK0 = null;
@@ -1623,7 +1981,7 @@ $("out").onclick = () => {
 async function save(){
   if (!user) return;
   try { await update(ref(rtdb, "users/" + user.key), { coins: state.coins, club: state.club, starter: !!state.starter, pend: state.pend || [], updatedAt: Date.now() }); }
-  catch (e) { toast("Couldn't save. Check your Realtime Database rules."); }
+  catch (e) { fail(e, "save"); }
 }
 
 /* ---------- UI ---------- */
@@ -1654,26 +2012,25 @@ function render(){
   $("cnt").textContent = state.club.length ? `${state.club.length} players` : "";
   const c = $("club");
   if (!state.club.length) { c.innerHTML = '<div class="empty">Your club is empty. Open a pack to sign your first players.</div>'; return; }
-  c.innerHTML = state.club.map(P).sort((a, b) => b.ovr - a.ovr).map(p =>
-    `<div class="row ${tier(p)}"><div class="o">${p.ovr}</div><div><div class="n">${p.name}</div><div class="p">${p.pos} · ${p.club}</div></div></div>`).join("");
+  const cnt = {}; state.club.forEach(id => cnt[id] = (cnt[id] || 0) + 1);
+  const uniq = Object.keys(cnt).map(Number).map(P).filter(Boolean).sort((a, b) => b.ovr - a.ovr || a.name.localeCompare(b.name));
+  c.innerHTML = uniq.slice(0, clubShow).map(p => `<div class="pcard">${cardFace(p)}${cnt[p.id] > 1 ? `<span class="x2">x${cnt[p.id]}</span>` : ""}</div>`).join("")
+    + (uniq.length > clubShow ? `<button class="cta alt" id="clubMore" style="grid-column:1/-1">Show more (${uniq.length - clubShow} left)</button>` : "");
 }
+let clubShow = 60;
+$("club").addEventListener("click", e => { if (e.target.closest("#clubMore")) { clubShow += 60; render(); } });
 function toast(t){ const e=$("toast"); e.textContent=t; e.classList.add("show"); setTimeout(()=>e.classList.remove("show"),3400); }
 
-function cardHTML(p){
-  const nat = p.nation.slice(0,3).toUpperCase();
-  const clb = p.club.split(/[ -]/).map(w => w[0]).join("").slice(0,3).toUpperCase();
-  return `<div class="face back">UT</div>
-  <div class="face front ${tier(p)}">
-    <div class="l"><div class="ovr">${p.ovr}</div><div class="pos">${p.pos}</div><div class="sep"></div><small>${nat}</small><small>${clb}</small></div>
-    <svg class="sil" viewBox="0 0 100 120"><circle cx="50" cy="38" r="22" fill="currentColor"/><path d="M8 120c0-34 18-50 42-50s42 16 42 50z" fill="currentColor"/></svg>
-    <div class="pname ${p.name.length>15?"s":""}">${p.name}</div>
-    <div class="stats">
-      <div><b>${p.pac}</b><span>PAC</span></div><div><b>${p.dri}</b><span>DRI</span></div>
-      <div><b>${p.sho}</b><span>SHO</span></div><div><b>${p.def}</b><span>DEF</span></div>
-      <div><b>${p.pas}</b><span>PAS</span></div><div><b>${p.phy}</b><span>PHY</span></div>
-    </div>
-  </div>`;
+function cardFace(p){
+  const n = p.name.length, z = n <= 11 ? 1 : n <= 15 ? 2 : n <= 19 ? 3 : n <= 23 ? 4 : 5;
+  return `<div class="face front ${tier(p)}"><div class="pc"><i class="shine"></i>${UTA.bust(p.club)}
+    <div class="lt"><div class="ovr">${p.ovr}</div><div class="pos">${p.pos}</div><i class="sep"></i>${UTA.flag(p.nation)}${UTA.crest(p.club)}</div>
+    <div class="pname"><span class="z${z}">${escH(p.name)}</span></div>
+    <div class="stats">${[["PAC","pac"],["SHO","sho"],["PAS","pas"],["DRI","dri"],["DEF","def"],["PHY","phy"]].map(([l, k]) => `<div><b>${p[k]}</b><span>${l}</span></div>`).join("")}</div>
+  </div></div>`;
 }
+function cardHTML(p){ return `<div class="face back">UT</div>` + cardFace(p); }
+const rowMeta = p => `<span class="mi">${UTA.flag(p.nation, "s")} ${escH(p.nation)}</span> <span class="mi">${UTA.crest(p.club, "s")} ${escH(p.club)}</span>`;
 function draw(pack, pos, skip = []){
   const ok = p => (pack.pool ? pack.pool.includes(p.id) : p.ovr >= pack.min && p.ovr <= pack.max) && (!pos || p.pos === pos || pack.pool) && !skip.includes(p.id);
   const w = PLAYERS.map(p => ok(p) ? (pack.pool ? 1 : Math.pow(pack.decay, p.ovr - pack.min)) : 0);
@@ -1830,7 +2187,7 @@ function renderPick(){
   const pos = FORMS[sq.formation][selSlot][0], cur = sq.slots[selSlot];
   const list = avail(sq.slots, selSlot).map(P).filter(p => (p.pos === "GK") === (pos === "GK")).sort((a, b) => ((b.pos === pos) - (a.pos === pos)) || b.ovr - a.ovr);
   el.innerHTML = `<div class="ph"><h3>Choose ${POSN[pos]}</h3>${cur ? '<button class="link" data-rm>Remove</button>' : ""}</div>
-    <div class="plist">${list.length ? list.map(p => `<div class="row pk ${tier(p)}" data-id="${p.id}"><div class="o">${p.ovr}</div><div><div class="n">${p.name}</div><div class="p">${p.pos === pos ? p.pos : p.pos + " · out of position"} · ${p.club} · ${p.nation}</div></div></div>`).join("") : '<div class="empty">No players for this position yet. Open packs to find some.</div>'}</div>`;
+    <div class="plist">${list.length ? list.map(p => `<div class="row pk ${tier(p)}" data-id="${p.id}"><div class="o">${p.ovr}<small>${p.pos}</small></div><div><div class="n">${escH(p.name)}</div><div class="p">${rowMeta(p)}${p.pos === pos ? "" : " · out of position"}</div></div></div>`).join("") : '<div class="empty">No players for this position yet. Open packs to find some.</div>'}</div>`;
 }
 function showTab(t){
   document.querySelectorAll("nav button[data-tab]").forEach(b => b.classList.toggle("on", b.dataset.tab === t));
@@ -1856,7 +2213,7 @@ $("clearSq").onclick = () => { sq.slots = Array(11).fill(0); selSlot = -1; rende
 $("saveSq").onclick = async () => {
   if (!user || !sq) return;
   try { await update(ref(rtdb, "users/" + user.key), { squad: { formation: sq.formation, slots: sq.slots } }); toast("Squad saved"); }
-  catch (e) { toast("Couldn't save squad. Check your Realtime Database rules."); }
+  catch (e) { fail(e, "save squad"); }
 };
 
 /* ---------- Match: quick play, friends, ranked ---------- */
@@ -1911,7 +2268,7 @@ $("daily").onclick = async e => {
   if (e.target.id !== "claimD" || !user) return;
   const d = dailyInfo(); if (!d.ok) return;
   state.coins += d.rw; state.lastDaily = todayStr(); state.dStreak = d.nd; render();
-  try { await update(ref(rtdb, "users/" + user.key), { coins: state.coins, lastDaily: state.lastDaily, dStreak: d.nd }); } catch (x) { toast("Couldn't save the reward."); }
+  try { await update(ref(rtdb, "users/" + user.key), { coins: state.coins, lastDaily: state.lastDaily, dStreak: d.nd }); } catch (x) { fail(x, "save the reward"); }
   toast(`+${fmt(d.rw)} coins. Day ${d.nd} streak!`);
 };
 
@@ -1959,7 +2316,7 @@ async function claimWeek(i){
   w.claimed["l" + i] = true; state.wk = w; state.coins += l.coins; state.pend = (state.pend || []).concat(l.packs);
   const cb = $("coinBox"); cb.classList.remove("flash"); void cb.offsetWidth; cb.classList.add("flash");
   render();
-  try { await update(ref(rtdb, "users/" + user.key), { coins: state.coins, wk: w, pend: state.pend, updatedAt: Date.now() }); } catch (x) { toast("Couldn't save the reward."); }
+  try { await update(ref(rtdb, "users/" + user.key), { coins: state.coins, wk: w, pend: state.pend, updatedAt: Date.now() }); } catch (x) { fail(x, "save the reward"); }
   toast(`+${fmt(l.coins)} coins${l.packs.length ? " and " + l.packs.length + " pack" + (l.packs.length > 1 ? "s" : "") : ""}!`);
   if (l.packs.length) setTimeout(openPend, 400);
 }
@@ -2015,11 +2372,11 @@ $("evCreate").onclick = async () => {
   const ev = { title: t, desc: $("evD").value.trim(), icon: $("evI").value.trim() || "🏆", color: $("evC").value, start, end, where, packs, by: user.key, ts: Date.now() };
   if (gc || gp.length) ev.gift = { coins: gc, packs: gp };
   if ($("evTh").checked) ev.theme = Object.fromEntries(THK.map(([k]) => [k, $("evT_" + k).value]));
-  try { const eid = Date.now().toString(36); await set(ref(rtdb, "events/" + eid), ev); const cd = cleanCode($("evCode").value); if (cd && ev.gift && !codes[cd]) await set(ref(rtdb, "codes/" + cd), { coins: gc, packs: gp, players: [], max: 0, used: 0, ev: eid, by: user.key, ts: Date.now() }); toast("Event created" + (miss.length ? ". Couldn't find: " + miss.join(", ") : "")); $("evT").value = ""; document.querySelectorAll("#evPacks .pn").forEach(x => x.value = ""); } catch (x) { toast("Couldn't save. Check your database rules for 'events'."); }
+  try { const eid = Date.now().toString(36); await set(ref(rtdb, "events/" + eid), ev); const cd = cleanCode($("evCode").value); if (cd && ev.gift && !codes[cd]) await set(ref(rtdb, "codes/" + cd), { coins: gc, packs: gp, players: [], max: 0, per: 1, used: 0, ev: eid, by: user.key, ts: Date.now() }); toast("Event created" + (miss.length ? ". Couldn't find: " + miss.join(", ") : "")); $("evT").value = ""; document.querySelectorAll("#evPacks .pn").forEach(x => x.value = ""); } catch (x) { fail(x, "save"); }
 };
 $("evList").onclick = async e => {
   if (!isAdmin()) return; const en = e.target.closest("[data-end]"), dl = e.target.closest("[data-del]");
-  try { if (en) await update(ref(rtdb, "events/" + en.dataset.end), { end: Date.now() }); if (dl && confirm("Delete this event?")) await remove(ref(rtdb, "events/" + dl.dataset.del)); } catch (x) { toast("Couldn't update the event."); }
+  try { if (en) await update(ref(rtdb, "events/" + en.dataset.end), { end: Date.now() }); if (dl && confirm("Delete this event?")) await remove(ref(rtdb, "events/" + dl.dataset.del)); } catch (x) { fail(x, "update the event"); }
 };
 function evClick(e){
   const b = e.target.closest("[data-ev]"), g = e.target.closest("[data-g]");
@@ -2039,7 +2396,7 @@ async function claimGift(id){
   const e = evs[id]; if (!e || !e.gift || !user || !evActive(e) || (state.evClaim || {})[id]) return;
   const g = e.gift, ps = (g.packs || []).filter(p => packById(p));
   state.evClaim = Object.assign({}, state.evClaim, { [id]: true }); state.coins += g.coins || 0; state.pend = (state.pend || []).concat(ps); render();
-  try { await update(ref(rtdb, "users/" + user.key), { coins: state.coins, pend: state.pend, ["evClaim/" + id]: true }); } catch (x) { toast("Couldn't save the gift."); }
+  try { await update(ref(rtdb, "users/" + user.key), { coins: state.coins, pend: state.pend, ["evClaim/" + id]: true }); } catch (x) { fail(x, "save the gift"); }
   toast("Gift claimed!"); if (ps.length) setTimeout(openPend, 400);
 }
 function startShared(){
@@ -2051,6 +2408,13 @@ function startShared(){
   const iv = setInterval(renderEvents, 30000); presOff.push(() => clearInterval(iv));
 }
 
+
+
+/* ---------- UI helpers: no lost clicks, clear errors, busy buttons ---------- */
+function memo(el){ const d = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML"); Object.defineProperty(el, "innerHTML", { get(){ return d.get.call(this); }, set(v){ if (this._h !== v) { this._h = v; d.set.call(this, v); } }, configurable: true }); }
+["daily", "weekly", "packs", "evStore", "evMatch", "evMarket", "evList", "rcList", "cpList", "rcEv", "mkItems", "mkSel"].forEach(i => { const e = $(i); if (e) memo(e); }); // identical re-renders are skipped, so taps and open dropdowns aren't wiped
+function fail(x, what){ const c = x && (x.code || x.message) || ""; console.error(what, x); toast(`Couldn't ${what}${c ? " (" + String(c).replace("PERMISSION_DENIED", "permission denied") + ")" : ""}. Check your database rules.`); }
+async function withBtn(btn, fn){ if (!btn || btn._b) return; btn._b = 1; const t = btn.textContent; btn.disabled = true; btn.textContent = "Working..."; try { await fn(); } finally { btn.disabled = false; btn.textContent = t; btn._b = 0; } }
 
 /* ---------- Admin panel: config, theme, codes, custom packs ---------- */
 const packById = id => PACKS.find(k => k.id === id) || (String(id).startsWith("cp_") && cpacks[String(id).slice(3)] ? cpObj(String(id).slice(3), cpacks[String(id).slice(3)]) : null);
@@ -2087,9 +2451,9 @@ $("cfgForm").onclick = async e => {
     const o = {}; document.querySelectorAll("#cfgForm .cf").forEach(i => o[i.dataset.k] = Math.max(0, Math.round(+i.value) || 0)); o.wkMax = Math.max(1, o.wkMax);
     o.wk = WK0.map((_, i) => { const r = $("wl" + i); return { pts: Math.max(1, Math.round(+r.querySelector(".a").value) || 1), coins: Math.max(0, Math.round(+r.querySelector(".b").value) || 0), packs: [r.querySelector(".p1").value, r.querySelector(".p2").value].filter(Boolean) }; });
     o.theme = $("cfgTh").checked ? Object.fromEntries(THK.map(([k]) => [k, $("cth_" + k).value])) : null;
-    try { await set(ref(rtdb, "config"), o); toast("Settings saved. Live for everyone."); } catch (x) { toast("Couldn't save. Check your rules for 'config'."); }
+    try { await set(ref(rtdb, "config"), o); toast("Settings saved. Live for everyone."); } catch (x) { fail(x, "save"); }
   }
-  if (e.target.id === "cfgReset" && confirm("Reset all settings, rewards and theme to the defaults?")) { try { await remove(ref(rtdb, "config")); toast("Back to defaults."); } catch (x) { toast("Couldn't reset."); } }
+  if (e.target.id === "cfgReset" && confirm("Reset all settings, rewards and theme to the defaults?")) { try { await remove(ref(rtdb, "config")); toast("Back to defaults."); } catch (x) { fail(x, "reset"); } }
 };
 document.querySelector(".admtabs").onclick = e => { const b = e.target.closest("[data-s]"); if (b) showAdm(b.dataset.s); };
 function showAdm(t){
@@ -2102,37 +2466,38 @@ function renderCodes(){
   const sel = $("rcEv"), cur = sel.value; sel.innerHTML = '<option value="">Any time</option>' + Object.entries(evs).map(([id, e]) => `<option value="${id}">${escH(e.title)}</option>`).join(""); sel.value = cur;
   const L = Object.entries(codes).sort((a, b) => (b[1].ts || 0) - (a[1].ts || 0));
   $("rcList").innerHTML = L.length ? L.map(([c, v]) => { const pk = Object.values(v.packs || []).map(p => (packById(p) || {}).short || p).join(", "), pl = Object.values(v.players || []).map(i => P(i) ? P(i).name : "").join(", ");
-    return `<div class="evli"><div><b>${escH(c)}</b><small>${[v.coins ? fmt(v.coins) + " coins" : "", pk ? pk.replace(/<br>/g, " ") + " pack(s)" : "", pl].filter(Boolean).join(" · ") || "empty"} · used ${v.used || 0}${v.max ? "/" + v.max : ""}${v.exp ? " · expires " + new Date(v.exp).toLocaleString() : ""}${v.ev && evs[v.ev] ? " · event: " + escH(evs[v.ev].title) : ""}</small></div><div class="evbt"><button class="cta sm alt" data-cc="${escH(c)}">Copy</button><button class="cta sm alt" data-cd="${escH(c)}">Delete</button></div></div>`; }).join("") : '<div class="empty">No codes yet.</div>';
+    return `<div class="evli"><div><b>${escH(c)}</b><small>${[v.coins ? fmt(v.coins) + " coins" : "", pk ? pk.replace(/<br>/g, " ") + " pack(s)" : "", pl].filter(Boolean).join(" · ") || "empty"} · used ${v.used || 0}${v.max ? "/" + v.max : " (no total limit)"} · ${v.per === 0 ? "unlimited" : (v.per ?? 1) + "x"} per player${v.exp ? " · expires " + new Date(v.exp).toLocaleString() : ""}${v.ev && evs[v.ev] ? " · event: " + escH(evs[v.ev].title) : ""}</small></div><div class="evbt"><button class="cta sm alt" data-cc="${escH(c)}">Copy</button><button class="cta sm alt" data-cd="${escH(c)}">Delete</button></div></div>`; }).join("") : '<div class="empty">No codes yet.</div>';
 }
 $("rcList").onclick = async e => {
   const c = e.target.closest("[data-cc]"), d = e.target.closest("[data-cd]");
   if (c) { try { await navigator.clipboard.writeText(c.dataset.cc); toast("Copied " + c.dataset.cc); } catch (x) { toast(c.dataset.cc); } }
-  if (d && confirm("Delete this code?")) remove(ref(rtdb, "codes/" + d.dataset.cd)).catch(() => toast("Couldn't delete."));
+  if (d && confirm("Delete this code?")) remove(ref(rtdb, "codes/" + d.dataset.cd)).catch(x => fail(x, "delete"));
 };
 $("rcCreate").onclick = async () => {
   if (!isAdmin()) return; let c = cleanCode($("rcCode").value); if (!c) c = Array.from({ length: 8 }, () => "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"[Math.random() * 32 | 0]).join("");
   const pl = findPl($("rcPl").value), packs = ["rc1", "rc2", "rc3"].map(i => $(i).value).filter(Boolean), coins = Math.max(0, Math.round(+$("rcCoins").value) || 0);
   if (!coins && !packs.length && !pl.ids.length) return toast("Put something in the code first.");
   if (codes[c]) return toast("That code already exists.");
-  const o = { coins, packs, players: pl.ids, max: Math.max(0, Math.round(+$("rcMax").value) || 0), used: 0, by: user.key, ts: Date.now() };
+  const o = { coins, packs, players: pl.ids, max: Math.max(0, Math.round(+$("rcMax").value) || 0), per: $("rcPer").value === "" ? 1 : Math.max(0, Math.round(+$("rcPer").value) || 0), used: 0, by: user.key, ts: Date.now() };
   if ($("rcExp").value) o.exp = new Date($("rcExp").value).getTime(); if ($("rcEv").value) o.ev = $("rcEv").value;
-  try { await set(ref(rtdb, "codes/" + c), o); toast("Code " + c + " created" + (pl.miss.length ? ". Couldn't find: " + pl.miss.join(", ") : "")); $("rcCode").value = ""; } catch (x) { toast("Couldn't save. Check your rules for 'codes'."); }
+  try { await set(ref(rtdb, "codes/" + c), o); toast("Code " + c + " created" + (pl.miss.length ? ". Couldn't find: " + pl.miss.join(", ") : "")); $("rcCode").value = ""; } catch (x) { fail(x, "save"); }
 };
 async function redeem(){
   if (!user || rcBusy) return; const c = cleanCode($("rcIn").value); if (!c) return toast("Enter a code.");
-  if ((state.redeemed || {})[c]) return toast("You already used this code.");
   rcBusy = true;
   try {
     const v = (await get(ref(rtdb, "codes/" + c))).val(); if (!v) return toast("That code isn't valid.");
+    const per = v.per === undefined ? 1 : v.per, rv = (state.redeemed || {})[c], mine = rv === true ? 1 : +rv || 0;
+    if (per && mine >= per) return toast(per === 1 ? "You already used this code." : `You've already used this code ${per} times.`);
     if (v.exp && v.exp < Date.now()) return toast("That code has expired.");
     if (v.ev && !evActive(evs[v.ev])) return toast("That code only works while its event is live.");
     let ok = false; await runTransaction(ref(rtdb, "codes/" + c + "/used"), u => { u = u || 0; ok = !v.max || u < v.max; return ok ? u + 1 : u; });
     if (!ok) return toast("That code has been fully used.");
     const ps = Object.values(v.packs || []).filter(p => packById(p)), pls = Object.values(v.players || []).filter(i => P(i));
-    state.coins += v.coins || 0; state.club.push(...pls); state.pend = (state.pend || []).concat(ps); state.redeemed = Object.assign({}, state.redeemed, { [c]: true }); render();
-    await update(ref(rtdb, "users/" + user.key), { coins: state.coins, club: state.club, pend: state.pend, ["redeemed/" + c]: true });
+    state.coins += v.coins || 0; state.club.push(...pls); state.pend = (state.pend || []).concat(ps); state.redeemed = Object.assign({}, state.redeemed, { [c]: mine + 1 }); render();
+    await update(ref(rtdb, "users/" + user.key), { coins: state.coins, club: state.club, pend: state.pend, ["redeemed/" + c]: mine + 1 });
     $("rcIn").value = ""; toast("Code redeemed!" + (v.coins ? " +" + fmt(v.coins) + " coins" : "") + (pls.length ? ". " + pls.map(i => P(i).name).join(", ") + " joined your club" : "")); if (ps.length) setTimeout(openPend, 500);
-  } catch (x) { toast("Couldn't redeem. Try again."); } finally { rcBusy = false; }
+  } catch (x) { fail(x, "redeem"); } finally { rcBusy = false; }
 }
 $("rcBtn").onclick = redeem; $("rcIn").addEventListener("keydown", e => e.key === "Enter" && redeem());
 /* custom packs */
@@ -2142,15 +2507,15 @@ function renderCp(){
 }
 $("cpList").onclick = e => {
   const t = e.target.closest("[data-ct]"), x = e.target.closest("[data-cx]");
-  if (t) update(ref(rtdb, "cpacks/" + t.dataset.ct), { store: !cpacks[t.dataset.ct].store }).catch(() => toast("Couldn't update."));
-  if (x && confirm("Delete this pack?")) remove(ref(rtdb, "cpacks/" + x.dataset.cx)).catch(() => toast("Couldn't delete."));
+  if (t) update(ref(rtdb, "cpacks/" + t.dataset.ct), { store: !cpacks[t.dataset.ct].store }).catch(x => fail(x, "update"));
+  if (x && confirm("Delete this pack?")) remove(ref(rtdb, "cpacks/" + x.dataset.cx)).catch(x => fail(x, "delete"));
 };
 $("cpCreate").onclick = async () => {
   if (!isAdmin()) return; const name = $("cpN").value.trim(); if (!name) return toast("Name the pack.");
   const n = (id, a, b) => Math.max(a, Math.min(b, Math.round(+$(id).value) || 0)), pl = findPl($("cpF").value);
   const c = { name, art: $("cpL").value, price: n("cpP", 0, 1e6), count: n("cpC", 1, 11), min: n("cpMin", 1, 99), max: n("cpMax", 1, 99), decay: +$("cpK").value, desc: $("cpD").value.trim(), store: $("cpS").checked, ts: Date.now() };
   if (c.max < c.min) c.max = c.min; if (pl.ids.length) c.pool = [...new Set(pl.ids)];
-  try { await set(ref(rtdb, "cpacks/" + Date.now().toString(36)), c); toast("Pack saved" + (pl.miss.length ? ". Couldn't find: " + pl.miss.join(", ") : "")); $("cpN").value = ""; } catch (x) { toast("Couldn't save. Check your rules for 'cpacks'."); }
+  try { await set(ref(rtdb, "cpacks/" + Date.now().toString(36)), c); toast("Pack saved" + (pl.miss.length ? ". Couldn't find: " + pl.miss.join(", ") : "")); $("cpN").value = ""; } catch (x) { fail(x, "save"); }
 };
 
 
@@ -2201,7 +2566,7 @@ function renderMarket(){
   const hum = Object.keys(mk).length;
   $("mkInfo").textContent = `${L.length} players shown · ${PLAYERS.length} stocked by AI managers · ${hum} listed by players · ${CFG.fee}% sell fee`;
   $("mkItems").innerHTML = L.slice(0, mkShow).map(x => { const p = x.p, mine = !x.ai && x.sk === user.key;
-    return `<div class="row mk ${tier(p)}"><div class="o">${p.ovr}</div><div class="mki"><span class="n">${escH(p.name)}</span><span class="p">${p.pos} · ${escH(p.club)} · ${escH(p.nation)}</span><span class="p"><b class="sl ${x.ai ? "ai" : "hu"}">${x.ai ? "AI" : mine ? "You" : "Player"}</b> ${escH(x.seller)}</span></div>
+    return `<div class="row mk ${tier(p)}"><div class="o">${p.ovr}<small>${p.pos}</small></div><div class="mki"><span class="n">${escH(p.name)}</span><span class="p">${rowMeta(p)}</span><span class="p"><b class="sl ${x.ai ? "ai" : "hu"}">${x.ai ? "AI" : mine ? "You" : "Player"}</b> ${escH(x.seller)}</span></div>
       <div class="mkp"><span class="pc2"><span class="coin"></span>${fmt(x.price)}</span>${mine ? `<button class="cta sm alt" data-c="${x.id}">Cancel</button>` : `<button class="cta sm" data-b="${x.id}" ${state.coins < x.price || mkBusy ? "disabled" : ""}>Buy</button>`}</div></div>`; }).join("") || '<div class="empty">Nothing matches.</div>';
   $("mkMore").classList.toggle("hidden", L.length <= mkShow);
 }
@@ -2219,13 +2584,13 @@ async function buyMk(id){
       runTransaction(ref(rtdb, "users/" + l.sk + "/coins"), c => (c || 0) + Math.floor(l.price * (1 - CFG.fee / 100))).catch(() => {});
     }
     state.coins -= l.price; state.club.push(l.pid); render(); await save(); toast(`Signed ${P(l.pid).name} for ${fmt(l.price)} coins`);
-  } catch (x) { toast("Market error. Check your database rules for 'market'."); } finally { mkBusy = false; renderMarket(); }
+  } catch (x) { fail(x, "complete the trade"); } finally { mkBusy = false; renderMarket(); }
 }
 async function cancelMk(id){
   const l = mk[id]; if (!l || l.sk !== user.key || mkBusy) return; mkBusy = true;
   try { let ok = false; const r = await runTransaction(ref(rtdb, "market/" + id), cur => { ok = !!cur && cur.sk === user.key; return ok ? null : cur; });
     if (ok && r.committed) { state.club.push(l.pid); render(); await save(); toast("Listing cancelled. Player returned."); } else toast("It was already sold.");
-  } catch (x) { toast("Couldn't cancel."); } finally { mkBusy = false; renderMarket(); }
+  } catch (x) { fail(x, "cancel"); } finally { mkBusy = false; renderMarket(); }
 }
 $("mkListBtn").onclick = async () => {
   if (!user || mkBusy) return; const pid = +$("mkSel").value, price = Math.round(+$("mkPrice").value);
@@ -2235,8 +2600,9 @@ $("mkListBtn").onclick = async () => {
   mkBusy = true;
   try { await set(ref(rtdb, "market/" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5)), { pid, price, seller: state.username, sk: user.key, ts: Date.now() });
     state.club.splice(state.club.indexOf(pid), 1); render(); await save(); toast(`${P(pid).name} listed for ${fmt(price)}`);
-  } catch (x) { toast("Couldn't list. Check your database rules for 'market'."); } finally { mkBusy = false; renderMarket(); }
+  } catch (x) { fail(x, "list"); } finally { mkBusy = false; renderMarket(); }
 };
+["evCreate", "rcCreate", "cpCreate", "mkListBtn", "rcBtn"].forEach(id => { const b = $(id), f = b.onclick; b.onclick = () => withBtn(b, f); });
 const slotsOf = () => Array.from({ length: 11 }, (_, i) => +(state.squad && state.squad.slots && state.squad.slots[i]) || 0);
 const squadReady = () => !!state.squad && slotsOf().every(Boolean);
 const squadRating = () => teamRating(slotsOf());
@@ -2728,7 +3094,7 @@ function showEnd(){
     }
     const oi = rankInfo(oldM), ni = rankInfo(newM);
     state.coins += r; state.stats = st; state.streak = streak; state.aiBeat = beat; state.mmr = newM; state.placed = placedN; state.rform = formN;
-    update(ref(rtdb, "users/" + user.key), { coins: state.coins, stats: st, streak, aiBeat: beat, mmr: newM, placed: placedN, rform: formN, wk: state.wk || null, updatedAt: Date.now() }).catch(() => toast("Couldn't save the result."));
+    update(ref(rtdb, "users/" + user.key), { coins: state.coins, stats: st, streak, aiBeat: beat, mmr: newM, placed: placedN, rform: formN, wk: state.wk || null, updatedAt: Date.now() }).catch(x => fail(x, "save the result"));
     render(); const cb = $("coinBox"); cb.classList.remove("flash"); void cb.offsetWidth; cb.classList.add("flash");
     let rk = "";
     if (ranked) {
