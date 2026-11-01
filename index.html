@@ -1048,7 +1048,7 @@ window.UTA = (function () {
   <div class="mtact hidden" id="mtAct"><div class="mtacthint" id="mtHint"></div><div class="mtbtns">
     <button id="mtPass" class="gb pass" title="Pass: tap = pass, swipe up = through ball, hold = power pass (P / T / L)"><span class="chg"></span><b>Pass</b><em class="gl" data-d="Tap · ↑ through · hold power">Tap · ↑ through · hold power</em></button>
     <button id="mtShoot" class="gb shoot" title="Shoot: tap = finesse, swipe up = chip, hold = power (S / C / V)"><span class="chg"></span><b>Shoot</b><em class="gl" data-d="Tap finesse · ↑ chip · hold power">Tap finesse · ↑ chip · hold power</em></button>
-    <div class="mtrow2"><button id="mtDrib" title="Dribble (D)">Dribble</button><button id="mtMode" class="on" title="Switch between manual control and auto-play">Manual</button></div></div>
+    <div class="mtrow2"><button id="mtDrib" title="Dribble (D)">Dribble</button></div></div>
   <div class="mtacttimer"><i id="mtTimer"></i></div></div>
   <div class="mtfeed" id="mtFeed"></div>
   <div class="qchat" id="qChat"></div>
@@ -3095,7 +3095,7 @@ function stopMatchStuff(){
 /* quick play + ranked: pair with a waiting player, otherwise a bot after 10 seconds */
 async function findMatch(mode){
   if (mm || needSquad()) return;
-  const me = user.key, name = state.username, rating = squadRating(), mmr = myMmr(), WAIT = 10000;
+  const me = user.key, name = state.username, rating = squadRating(), mmr = myMmr();
   mm = { mode, start: Date.now() };
   $("mmMode").textContent = MODE_NAME[mode]; $("mmTxt").textContent = "Searching for an opponent"; $("mm").classList.remove("hidden");
   setStatus("queue");
@@ -3118,16 +3118,12 @@ async function findMatch(mode){
   mm.unsub = onValue(ref(rtdb, "queue/" + mode + "/" + me), sn => { const v = sn.val(); if (v && v.match && mm && !mm.timing) foundMatch(mode, v, false); });
   mm.iv = setInterval(async () => {
     if (!mm || mm.timing) return;
+    // 30s if another free player is online, otherwise only 5s before an AI opponent
+    const free = Object.entries(online).some(([k, v]) => v && k !== me && Date.now() - v.ts < 70000 && v.status !== "match"), WAIT = free ? 30000 : 5000;
     const left = WAIT - (Date.now() - mm.start);
     $("mmSec").textContent = Math.max(0, Math.ceil(left / 1000)); $("ring").style.setProperty("--p", Math.max(0, left / WAIT * 100));
     if (left > 0) return;
     // someone else is online: never fall back to the AI, keep waiting for them to join
-    // only keep waiting for a player who is actually free (not already in a match), and never longer than 30s in total: then you get an AI opponent
-    if (mode !== "ai" && Date.now() - mm.start < 30000 && Object.entries(online).some(([k, v]) => v && k !== me && Date.now() - v.ts < 70000 && v.status !== "match")) {
-      $("mmTxt").textContent = "Waiting for a player to join"; $("mmSec").textContent = "..."; $("ring").style.setProperty("--p", 100);
-      if (Date.now() - (mm.refr || 0) > 8000) { mm.refr = Date.now(); runTransaction(ref(rtdb, "queue/" + mode + "/" + me), cur => cur && !cur.match ? { ...cur, ts: Date.now() } : cur).catch(() => {}); }
-      return;
-    }
     mm.timing = true; clearInterval(mm.iv);
     try { // leave the queue, unless someone grabbed us at the last moment
       const r = await runTransaction(ref(rtdb, "queue/" + mode + "/" + me), cur => cur && cur.match ? cur : null);
@@ -3563,7 +3559,7 @@ function mkLive(v){
   [A, B].forEach(T => T.pl.forEach(p => { p.v = homeXY(T, p, 52.5, 34, true); p.vx = p.vy = 0; }));
   M = mStart(A, B, mine, hooks); M.ui = ui; M.speed = 1; M.skipping = false; M.lt = 0; M.flip = !v.meHome;
   M.net = !v.opp.bot && v.matchId && v.opp.k ? { id: cid(v.matchId), seq: 0, buf: {}, to: 0 } : null;
-  M.ctl = (!!v.opp.bot || !!M.net) && manualPref; M.userAct = null; M.ask = null; M.wait = false; // manual control only vs the AI: player-vs-player matches stay in sync because both phones run the same simulation
+  M.ctl = true; // always manual M.userAct = null; M.ask = null; M.wait = false; // manual control only vs the AI: player-vs-player matches stay in sync because both phones run the same simulation
 }
 function updScore(){ const q = (M.ui && M.ui.sc) || M.score; $("mtS1").textContent = q[M.mi]; $("mtS2").textContent = q[1 - M.mi]; }
 function startMatch(v){
@@ -3606,8 +3602,7 @@ function updAct(){
   bar.classList.toggle("hidden", !on); if (!on) return;
   const turn = !!M.ask, gk = !!(M.car && M.car.pos === "GK");
   bar.classList.toggle("turn", turn);
-  $("mtShoot").disabled = !isBot || !turn || gk; $("mtPass").disabled = !isBot || !turn; $("mtDrib").disabled = !isBot || !turn || gk; $("mtMode").disabled = !isBot;
-  $("mtMode").classList.toggle("on", M.ctl); $("mtMode").textContent = M.ctl ? "Manual" : "Auto";
+  $("mtShoot").disabled = !isBot || !turn || gk; $("mtPass").disabled = !isBot || !turn; $("mtDrib").disabled = !isBot || !turn || gk;
   $("mtHint").innerHTML = !isBot ? "Controls aren't available in this match" : !M.ctl ? "Auto-play: tap <b>Auto</b> to take control" : turn ? "<b>Your ball.</b> Pass, shoot, or tap a teammate" : M.poss === M.mine ? "Get ready…" : M.net ? "Opponent has the ball, wait…" : "Opponent has the ball";
   $("mtCv").classList.toggle("pick", turn);
   if (!turn) { const t = $("mtTimer"); t.style.transform = "scaleX(0)"; t.classList.remove("low"); }
@@ -3691,12 +3686,6 @@ function fireShoot(how, c){
 }
 bindGesture($("mtPass"), "pass", firePass, { swipe: "Through ball", hold: "Power" });
 bindGesture($("mtShoot"), "shoot", fireShoot, { swipe: "Chip", hold: "Power" });
-$("mtMode").onclick = () => {
-  if (!M || M.done) return; M.ctl = !M.ctl; manualPref = M.ctl;
-  if (!M.ctl && M.ask) decide({ k: "auto" });
-  else if (!M.ctl && M.wait) { M.wait = false; loop(); }
-  updAct();
-};
 document.addEventListener("keydown", e => {
   if (!M || !M.ask || e.ctrlKey || e.metaKey || e.altKey || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
   const k = e.key.toLowerCase();
