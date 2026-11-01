@@ -630,6 +630,18 @@ nav button+button::before{content:"";position:absolute;left:-3px;top:30%;bottom:
 #mech .keys kbd{font:700 13px Barlow,sans-serif;color:var(--g);margin-right:6px}
 @media(max-width:600px){#mech h2{font-size:28px}#mech summary{font-size:19px}#mech .mc{font-size:14px}}
 
+/* v9: mechanics guide must always be readable */
+#mech{top:0!important;left:0!important;right:0!important;bottom:0!important;width:100%!important;height:100vh!important;height:100dvh!important;z-index:9999!important;background:#03060d!important;color:#f2f5fb!important;opacity:1!important;visibility:visible!important;display:block}
+#mech.hidden{display:none!important}
+#mech *{visibility:visible!important;opacity:1}
+#mech h2{color:#f2cd68!important;font-size:30px!important}
+#mech .mhd{background:#03060d!important}
+#mech summary{color:#f2f5fb!important}
+#mech .mc,#mech .mc li,#mech .mc p{color:#f2f5fb!important;font-family:Barlow,system-ui,sans-serif!important;font-style:normal!important;text-transform:none!important}
+#mech .mc small{color:#a9b4cf!important}
+#mech .mc b{color:#f2cd68!important}
+#mech .mlead{color:#a9b4cf!important}
+
 /* v8: joystick + side buttons, no commentary, multi-touch */
 .mtfeed{display:none!important}
 .mtpitch .mtacthint{position:absolute;left:8px;bottom:12px;max-width:70%;padding:3px 10px;background:rgba(3,6,13,.72);font:700 13px/1.25 Barlow,sans-serif;color:var(--t);pointer-events:none;border-left:3px solid var(--g);z-index:3}
@@ -1152,6 +1164,7 @@ window.UTA = (function () {
       <li><b>Passing:</b> point the stick at a teammate. The one closest to that direction is highlighted. Normal passes prefer near players, lob and driven passes prefer far ones.</li>
       <li><b>No stick:</b> the game picks the best receiver from positions and your passer's stats.</li>
       <li><b>Through ball:</b> with the stick, only teammates ahead of you count. Without it, an attacker is picked for you.</li>
+      <li><b>Shooting range:</b> inside the box is the best place. From the edge of the box it gets harder, from long range only top shooters can score, and from midfield it almost never goes in. A better shooting stat gives more range, and a strong keeper saves more.</li>
       <li><b>Shot aim:</b> push up or down to aim at a corner. A crosshair shows on the goal when you are close enough. Corners are a bit riskier to hit, but much harder for the keeper to stop.</li></ul></div></details>
     <details><summary><i>🎮</i>Buttons (right thumb)</summary><div class="mc"><ul>
       <li><span class="tag p">Pass</span> Ground pass. Depends on your passer vs the nearest defenders, plus distance. Forward passes are a little harder.</li>
@@ -3106,7 +3119,7 @@ window.addEventListener("appinstalled", () => { installEv = null; $("setInstall"
 })();
 $("setBtn").onclick = e => { e.stopPropagation(); const m = $("setMenu"); m.classList.toggle("hidden"); $("setBtn").setAttribute("aria-expanded", !m.classList.contains("hidden")); };
 document.addEventListener("click", e => { if (!e.target.closest("#setMenu") && e.target.id !== "setBtn") { $("setMenu").classList.add("hidden"); $("setBtn").setAttribute("aria-expanded", "false"); } });
-$("setMech").onclick = () => { $("setMenu").classList.add("hidden"); $("setBtn").setAttribute("aria-expanded", "false"); $("mech").classList.remove("hidden"); $("mech").scrollTop = 0; };
+$("setMech").onclick = () => { $("setMenu").classList.add("hidden"); $("setBtn").setAttribute("aria-expanded", "false"); $("mech").classList.remove("hidden"); $("mech").querySelectorAll("details").forEach(d => d.open = true); $("mech").scrollTop = 0; };
 $("mechX").onclick = () => $("mech").classList.add("hidden");
 document.addEventListener("keydown", e => { if (e.key === "Escape") $("mech").classList.add("hidden"); });
 $("setRefresh").onclick = () => location.reload();
@@ -3507,7 +3520,12 @@ function shoot(m, T, O, s, pt, kind, opt) {
   st.on++;
   const gpAdj = !sty ? 0 : sty === "finesse" ? (xa > .7 ? .02 : 0) + (s.p.dri - 75) / 1000 : sty === "power" ? .02 + pw * .14 + (s.p.phy - 75) / 700 - (pw > .92 ? .04 : 0) : (xa > .82 ? .04 : -.1) + (kind === "one" ? .06 : 0) + (s.p.dri - 75) / 250 - (gk.p.ovr - 80) / 500;
   const gp = kind === "pen" ? .78 : mClamp(.18 + (sho - gk.p.ovr) / 160 + (xa - .8) * .5 + e / 320 + (kind === "one" ? .15 : 0) - (kind === "free" ? .05 : 0) - (kind === "long" ? .04 : 0) + ((T.fin || 0) - (O.kp || 0)) / 100 + gpAdj + Math.abs(aim) * .06, .05, .75);
-  if (mChance(gp)) { m.hook.ball({ x: goalX, y: gy }); return goal(m, T, O, s, kind === "open" || kind === "one" || kind === "head" ? wasAssist(m, T, s) : null, sty || kind); }
+  /* v9 range model: a goal needs you to be close. Inside the box nothing changes; the further out you go the rarer it gets,
+     and from long range only strong shooters (shooting stat) ever score. Midfield shots are close to hopeless. */
+  const RNG = [[0, 0], [.4, .03], [.5, .12], [.65, .4], [.8, .74], [.9, 1]];
+  let rf = 1; if (kind !== "pen" && xa < .9) { for (let i = 1; i < RNG.length; i++) if (xa <= RNG[i][0]) { rf = RNG[i - 1][1] + (RNG[i][1] - RNG[i - 1][1]) * (xa - RNG[i - 1][0]) / (RNG[i][0] - RNG[i - 1][0]); break; } if (kind !== "head" && xa < .8) rf *= mClamp((sho - 62) / 30, .2, 1.05); }
+  const gpf = gp * rf;
+  if (mChance(gpf)) { m.hook.ball({ x: goalX, y: gy }); return goal(m, T, O, s, kind === "open" || kind === "one" || kind === "head" ? wasAssist(m, T, s) : null, sty || kind); }
   m.hook.ball({ x: gk.x, y: gy });
   say(m, mPick([`SAVE by ${g}! ${a}'s shot is kept out.`, `${a} hits it on target but ${g} makes the save!`, `${g} dives and stops ${a}'s effort! What a save!`]));
   if (mChance(.32)) return corner(m, T, O, "Tipped round the post.");
