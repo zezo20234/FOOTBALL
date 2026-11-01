@@ -3880,11 +3880,20 @@ document.addEventListener("keydown", e => {
 document.addEventListener("keyup", e => { const k = e.key.toLowerCase(); if (k === "shift") { IN.pow = false; $("mtPow").classList.remove("dn"); } if (k === "arrowleft" || k === "arrowright") IN.kx = 0; if (k === "arrowup" || k === "arrowdown") IN.ky = 0; });
 function drawAsk(ctx, X, Y, BR, t){
   const a = M.ask, car = M.car;
-  { const st = stick(); // goal target: stick up / down while you are close enough to shoot
-    if (car && xaOf(M.mine, M.pt.x) > .45 && !car.off && car.pos !== "GK" && (st.on || IN.down.shoot || IN.down.chip)) {
-      const aim = shotAim(), gx = X(PW), gy = Y(34 + aim * 3.1), r = Math.max(5, BR * .5);
-      ctx.save(); ctx.setLineDash([5, 6]); ctx.strokeStyle = "rgba(255,255,255,.55)"; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(X(car.v.x), Y(car.v.y)); ctx.lineTo(gx, gy); ctx.stroke(); ctx.setLineDash([]);
-      ctx.strokeStyle = "#f2cd68"; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(gx, gy, r, 0, 7); ctx.moveTo(gx - r * 1.6, gy); ctx.lineTo(gx + r * 1.6, gy); ctx.moveTo(gx, gy - r * 1.6); ctx.lineTo(gx, gy + r * 1.6); ctx.stroke(); ctx.restore(); } }
+  { const st = stick(); // shot aim line: from your player to the corner of the goal you are aiming at
+    if (car && !car.off && car.pos !== "GK" && xaOf(M.mine, M.pt.x) > .45) {
+      const xa = xaOf(M.mine, M.pt.x), act = st.on || IN.down.shoot || IN.down.chip || IN.down.drib || IN.pow, ch = chg("shoot"), aim = shotAim();
+      const col = xa > .8 ? "#00f58a" : xa > .65 ? "#f2cd68" : "#ff4560", x0 = X(car.v.x), y0 = Y(car.v.y), gx = X(PW), gy = Y(34 + aim * 3.1), r = Math.max(5, BR * .5);
+      ctx.save(); ctx.globalAlpha = act ? 1 : .4; ctx.lineCap = "round";
+      ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(gx, Y(GOALY[0])); ctx.lineTo(gx, Y(GOALY[1])); ctx.stroke(); // goal mouth
+      ctx.shadowColor = col; ctx.shadowBlur = act ? 10 : 0; ctx.strokeStyle = col; ctx.lineWidth = (act ? 3.5 : 2.5) + ch * 4;
+      ctx.setLineDash([12, 8]); ctx.lineDashOffset = -t / 28; ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(gx, gy); ctx.stroke(); ctx.setLineDash([]); ctx.shadowBlur = 0;
+      const an = Math.atan2(gy - y0, gx - x0), hd = r * 1.5; // arrow head just before the goal
+      ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(gx - Math.cos(an) * r * 1.2, gy - Math.sin(an) * r * 1.2);
+      ctx.lineTo(gx - Math.cos(an) * (r * 1.2 + hd) + Math.cos(an + 1.57) * hd * .55, gy - Math.sin(an) * (r * 1.2 + hd) + Math.sin(an + 1.57) * hd * .55);
+      ctx.lineTo(gx - Math.cos(an) * (r * 1.2 + hd) - Math.cos(an + 1.57) * hd * .55, gy - Math.sin(an) * (r * 1.2 + hd) - Math.sin(an + 1.57) * hd * .55); ctx.fill();
+      ctx.strokeStyle = "#fff"; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(gx, gy, r, 0, 7); ctx.moveTo(gx - r * 1.6, gy); ctx.lineTo(gx + r * 1.6, gy); ctx.moveTo(gx, gy - r * 1.6); ctx.lineTo(gx, gy + r * 1.6); ctx.stroke(); // target marker
+      ctx.restore(); } }
   a.opts.forEach((o, i) => {
     const p = o.s.v, x = X(p.x), y = Y(p.y), hv = a.hover === o, pp = hv && a.hp != null ? a.hp : o.p, pc = Math.round(pp * 100), col = pp >= .75 ? "#00f58a" : pp >= .5 ? "#f2cd68" : "#ff4560";
     if (hv && car) { ctx.save(); ctx.setLineDash([7, 6]); ctx.strokeStyle = col; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(X(car.v.x), Y(car.v.y)); ctx.lineTo(x, y); ctx.stroke(); ctx.restore(); }
