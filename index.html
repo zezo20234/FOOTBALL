@@ -475,6 +475,31 @@ input[type=color]{padding:2px;height:46px}
 .gear{width:40px;height:40px;border-radius:50%;border:0;background:var(--p1);color:var(--m);font-size:22px;line-height:1;cursor:pointer;display:grid;place-items:center}.gear:hover,.gear[aria-expanded=true]{color:var(--gold);background:#16254a}
 .setmenu{position:absolute;top:calc(100% + 10px);right:0;z-index:40;min-width:230px;display:flex;flex-direction:column;gap:8px;padding:14px;background:var(--p2);box-shadow:0 12px 40px rgba(0,0,0,.6),inset 0 3px 0 var(--gold)}
 .setmenu .cta{width:100%}.setmenu small{color:var(--m);font-size:12px;line-height:1.4}
+
+/* v4: manual controls (tap a teammate to pass) */
+.mtact{flex:0 0 auto;background:var(--p1);border-top:3px solid var(--line);padding:8px 10px 8px;display:flex;flex-direction:column;gap:7px}
+.mtact.turn{border-top-color:var(--g);background:linear-gradient(180deg,rgba(0,245,138,.1),var(--p1) 70%)}
+.mtactrow{display:flex;align-items:center;gap:8px}
+.mtacthint{flex:1;min-width:0;font:600 15px Barlow,sans-serif;color:var(--m);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mtact.turn .mtacthint{color:var(--t)}
+.mtact.turn .mtacthint b{color:var(--g)}
+.mtact button{border:0;font:800 italic 20px/1 'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.5px;padding:0 20px;min-height:44px;color:var(--t);background:#1b2a52;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);transition:filter .15s}
+.mtact button:hover:not(:disabled){filter:brightness(1.2)}
+.mtact button:disabled{opacity:.35;cursor:not-allowed}
+.mtact #mtShoot{background:var(--g);color:#03130b}
+.mtact #mtMode{background:var(--p2);color:var(--m)}
+.mtact #mtMode.on{color:var(--c)}
+.mtacttimer{height:4px;background:var(--line);transform:skewX(-30deg);overflow:hidden}
+.mtacttimer i{display:block;height:100%;width:100%;background:var(--g);transform-origin:left;transform:scaleX(0)}
+.mtacttimer i.low{background:var(--r)}
+#mtCv.pick{cursor:pointer}
+@media(max-width:600px){
+  .mtact{padding:6px 8px}
+  .mtactrow{flex-wrap:wrap}
+  .mtacthint{flex:1 0 100%;font-size:14px}
+  .mtact button{flex:1;padding:0 8px;font-size:19px}
+}
+@media(max-height:520px) and (orientation:landscape){.mtact{padding:4px 8px}.mtact button{min-height:34px}.mtacthint{flex:1 1 0}}
 </style>
 </head>
 <body>
@@ -847,6 +872,7 @@ window.UTA = (function () {
 <div id="mt" class="hidden"><div class="mtw">
   <div class="mtscore"><div class="tm me"><b id="mtN1"></b><i id="mtS1">0</i></div><div class="mtclk"><span id="mtClk">0'</span><small id="mtPh">1st half</small></div><div class="tm op"><i id="mtS2">0</i><b id="mtN2"></b></div></div>
   <div class="mtpitch"><canvas id="mtCv"></canvas><div id="mtBanner"></div><div id="mtChip"></div><div id="mtBub"></div></div>
+  <div class="mtact hidden" id="mtAct"><div class="mtactrow"><div class="mtacthint" id="mtHint"></div><button id="mtShoot" title="Shoot (S or Space)">Shoot</button><button id="mtDrib" title="Dribble (D)">Dribble</button><button id="mtMode" class="on" title="Switch between manual control and auto-play">Manual</button></div><div class="mtacttimer"><i id="mtTimer"></i></div></div>
   <div class="mtfeed" id="mtFeed"></div>
   <div class="qchat" id="qChat"></div>
 </div>
@@ -2802,13 +2828,14 @@ function goal(m, T, O, s, as, how, extra) {
   say(m, `${t} ${scoreTxt(m)}.`, "goal"); restartAfterGoal(m, O); return 3.4;
 }
 
-function pass(m, T, O, s, pt, long) {
+function pass(m, T, O, s, pt, long, fx) {
   const xa = xaOf(T, pt.x), e = edge(m, T, O);
-  const c = live(T).filter(r => r !== s && (r.pos !== "GK" || (xa < .25 && mChance(.25))));
+  const c = fx ? [] : live(T).filter(r => r !== s && (r.pos !== "GK" || (xa < .25 && mChance(.25))));
   const w = c.map(r => { const d = dist(r, pt), f = xaOf(T, r.x) - xa; let k = (f > .02 ? 1.9 : .6) / (1 + d / (long ? 70 : 24)); if (long && f < .2) k *= .1; if (!long && d > 48) k *= .2; return k; });
-  const r = mWPick(c, w), rp = { x: mClamp(r.x + mRnd(-3, 3), 2, PW - 2), y: mClamp(r.y + mRnd(-4, 4), 3, PH - 3) };
+  const r = fx ? fx.r : mWPick(c, w), rp = { x: mClamp(r.x + mRnd(-3, 3), 2, PW - 2), y: mClamp(r.y + mRnd(-4, 4), 3, PH - 3) };
   const mid = { x: (pt.x + rp.x) / 2, y: (pt.y + rp.y) / 2 }, ch = nearest(O, mid), d = dist(pt, rp);
-  const pr = mClamp(.83 + (s.p.pas - ch.p.def) / 260 - d / 500 - (long ? .16 : 0) + e / 350 + (T.psk || 0) / 100, .45, .95);
+  if (fx) long = d > 40;
+  const pr = fx ? fx.p : mClamp(.83 + (s.p.pas - ch.p.def) / 260 - d / 500 - (long ? .16 : 0) + e / 350 + (T.psk || 0) / 100, .45, .95);
   if (mChance(pr)) {
     m.last = { team: T, slot: s }; setBall(m, rp, r, T);
     const a = nm(T, s), b = nm(T, r), at = attackText(T, r, rp);
@@ -2816,9 +2843,11 @@ function pass(m, T, O, s, pt, long) {
       : mPick([`${a} passes to ${b}. ${at}.`, `${a} finds ${b}, who has the ball. ${at}.`, `${b} receives from ${a}. ${at}.`, `Neat ball from ${a} to ${b}. ${at}.`]));
   } else if (mChance(.72)) {
     takeBall(m, O, ch, { x: mClamp(ch.x + mRnd(-2, 2), 2, PW - 2), y: ch.y });
+    if (fx && m.hook.flash) m.hook.flash("Pass intercepted", "red");
     say(m, mPick([`${nm(T, s)}'s pass is intercepted by ${nm(O, ch)}! ${tn(O)} have the ball.`, `${nm(O, ch)} reads it and wins the ball from ${nm(T, s)}. ${tn(O)} break.`]));
   } else {
     const t = nearest(O, rp);
+    if (fx && m.hook.flash) m.hook.flash("Overhit", "red");
     takeBall(m, O, t, { x: mClamp(rp.x, 2, PW - 2), y: rp.y < 34 ? 1 : PH - 1 });
     say(m, `${nm(T, s)} overhits it and it goes out. Throw-in to ${tn(O)}, ${nm(O, t)} takes it.`);
   }
@@ -2924,9 +2953,32 @@ function corner(m, T, O, why) {
   };
   return 1.2;
 }
+/* ---- manual control: only used when m.ctl is true (matches vs the AI). Never runs in player-vs-player matches. ---- */
+const WAIT = -1;                 // act() returns this when it needs the player to choose
+const ASK_MS = 6000;             // time to choose before the AI plays the move for you
+const PASS_BASE = .92, PASS_DIST = 170;   // tune pass difficulty here: lower BASE = more failed passes, lower DIST = distance hurts more
+function userPassP(m, T, O, s, pt, r) {
+  const rp = { x: r.x, y: r.y }, d = dist(pt, rp), mid = { x: (pt.x + rp.x) / 2, y: (pt.y + rp.y) / 2 };
+  const a = nearest(O, mid), b = nearest(O, rp), dfn = (a.p.def + b.p.def) / 2;
+  const fwd = xaOf(T, rp.x) - xaOf(T, pt.x);
+  return mClamp(PASS_BASE + (s.p.pas - dfn) / 260 - d / PASS_DIST - (fwd > .12 ? (fwd - .12) * .25 : 0) + edge(m, T, O) / 350 + (T.psk || 0) / 100, .15, .95);
+}
+function userDo(m, T, O, s, pt, ua) {
+  const xa = xaOf(T, pt.x), bo = m.boost; m.boost = 0; m.justUser = true;
+  if (ua.k === "pass" && ua.to && !ua.to.off && ua.to !== s) return pass(m, T, O, s, pt, false, { r: ua.to, p: userPassP(m, T, O, s, pt, ua.to) });
+  if (s.pos === "GK") return pass(m, T, O, s, pt, mChance(.4));
+  if (ua.k === "shoot") return shoot(m, T, O, s, pt, bo ? "one" : xa > .75 ? "open" : "long");
+  if (ua.k === "dribble") return dribble(m, T, O, s, pt);
+  return pass(m, T, O, s, pt, false);
+}
 function act(m) {
   if (m.flag) { const f = m.flag; m.flag = null; return f(); }
   const T = m.poss, O = other(m, T), s = m.car, pt = m.pt, xa = xaOf(T, pt.x);
+  if (m.ctl && T === m.mine) {
+    const ua = m.userAct; if (!ua) return WAIT;
+    m.userAct = null;
+    if (ua.k !== "auto") { m.stats[T.idx].poss++; return userDo(m, T, O, s, pt, ua); }
+  }
   m.stats[T.idx].poss++;
   if (s.pos === "GK") return pass(m, T, O, s, pt, mChance(.4));
   const att = ["ST", "LW", "RW", "CAM"].includes(s.pos), dfn = ["CB", "LB", "RB", "CDM"].includes(s.pos), wide = s.lat < 28 || s.lat > 72, boost = m.boost; m.boost = 0;
@@ -2947,12 +2999,13 @@ function mStep(m) {
     say(m, `Half time. ${scoreTxt(m)}.`, "goal"); m.hook.half && m.hook.half(); kickoff(m, m.B); m.hook.phase("2nd half"); return 4;
   }
   if (m.half === 2 && m.min >= 90 + m.stop[1]) { m.done = true; say(m, `Full time! ${scoreTxt(m)}.`, "goal"); m.hook.end(); return 0; }
-  const d = act(m) || 1; m.lastSecs = d * BEAT; m.hook.clock(); return d;
+  const a = act(m); if (a === WAIT) return WAIT;
+  const d = a || 1; m.lastSecs = d * BEAT; m.hook.clock(); return d;
 }
 /*ENGINE_END*/
 
 /* ---------- Lineups + live match screen ---------- */
-let M = null, vsCur = null, vsTok = 0;
+let M = null, vsCur = null, vsTok = 0, manualPref = true;
 
 /* 1) opponent found: show the versus card, load both squads */
 async function prepareMatch(v){
@@ -3001,7 +3054,8 @@ function showLineups(v){
 }
 function cancelMatchFlow(){
   vsTok++; if (vsCur && vsCur.iv) clearInterval(vsCur.iv);
-  if (M) { clearTimeout(M.tm); cancelAnimationFrame(M.raf); M.chatOff && M.chatOff(); M = null; }
+  if (M) { clearTimeout(M.tm); clearTimeout(M.dtm); cancelAnimationFrame(M.raf); M.chatOff && M.chatOff(); M = null; }
+  $("mtAct").classList.add("hidden");
   ["vs", "lu", "mt", "mtEnd"].forEach(i => $(i).classList.add("hidden")); setStatus("online");
 }
 
@@ -3028,9 +3082,10 @@ function mkLive(v){
     goal(team, sc){ const g = M.goals[M.goals.length - 1]; later(ui, () => celebrate(ui, team, sc, g)); botSay(team.me ? [3, 5, 4] : [6, 2, 5], .55); },
     half(){ ui.phase = "ht"; ui.sc = M.score.slice(); updScore(); if (M.skipping) return; const d = 2900 / Math.sqrt(M.speed); banner("Half time", `${M.score[M.mi]} - ${M.score[1 - M.mi]}`, "ht", d); ui.popDelay = d - 300; },
     phase(t){ $("mtPh").textContent = t; },
-    clock(){ M.ckT = performance.now(); $("mtClk").textContent = dispMin(M) + "'"; updScore(); },
+    flash(t, c){ if (!M.skipping) chip(t, c); },
+    clock(){ M.ckT = performance.now(); $("mtClk").textContent = dispMin(M) + "'"; updScore(); updAct(); },
     end(){
-      $("mtClk").textContent = "FT"; $("mtPh").textContent = "Full time"; ui.sc = M.score.slice(); updScore(); ui.phase = "ft";
+      $("mtClk").textContent = "FT"; $("mtPh").textContent = "Full time"; clearTimeout(M.dtm); M.ask = null; M.wait = false; updAct(); ui.sc = M.score.slice(); updScore(); ui.phase = "ft";
       if (!M.skipping) banner("Full time", `${M.score[M.mi]} - ${M.score[1 - M.mi]}`, "ft", 2500 / Math.sqrt(M.speed));
       botSay([7, 4], .8); setTimeout(showEnd, 2700);
     },
@@ -3038,6 +3093,7 @@ function mkLive(v){
   };
   [A, B].forEach(T => T.pl.forEach(p => { p.v = homeXY(T, p, 52.5, 34, true); p.vx = p.vy = 0; }));
   M = mStart(A, B, mine, hooks); M.ui = ui; M.speed = 1; M.skipping = false; M.lt = 0; M.flip = !v.meHome;
+  M.ctl = !!v.opp.bot && manualPref; M.userAct = null; M.ask = null; M.wait = false; // manual control only vs the AI: player-vs-player matches stay in sync because both phones run the same simulation
 }
 function updScore(){ const q = (M.ui && M.ui.sc) || M.score; $("mtS1").textContent = q[M.mi]; $("mtS2").textContent = q[1 - M.mi]; }
 function startMatch(v){
@@ -3049,7 +3105,7 @@ function startMatch(v){
     try { M.chatOff = onValue(ref(rtdb, "chat/" + cid(v.matchId)), sn => { const o = sn.val() || {}; Object.keys(o).sort().forEach(k => { if (seen.has(k)) return; seen.add(k); const c = o[k]; if (!c || c.k === user.key || +k.split("_")[0] < t0 || !QCHAT[c.t]) return; chatLine(false, v.opp.name, QCHAT[c.t]); }); }, () => {}); } catch (e) {}
   }
   $("mtN1").textContent = v.my.name; $("mtN2").textContent = v.op.name; $("mtPh").textContent = "1st half"; $("mtClk").textContent = "0'";
-  updScore(); sizeCv();
+  updScore(); sizeCv(); updAct();
   const c = kickoff(M, M.A);
   M.hook.say("0", `Kick-off! ${tn(M.mine)} <small>(${M.mine.rating})</small> vs ${tn(other(M, M.mine))} <small>(${other(M, M.mine).rating})</small>. ${nm(M.A, c)} has the ball in the centre circle for ${tn(M.A)}.`, "goal");
   M.ui.sc = [0, 0]; M.ui.bsAt = performance.now() + 800; banner("Kick off", "", "ko", 1600);
@@ -3057,12 +3113,76 @@ function startMatch(v){
   M.tm = setTimeout(loop, 1800);
 }
 function loop(){
-  if (!M || M.done) return;
+  if (!M || M.done || M.ask || M.wait) return;
   const d = mStep(M);
-  if (M && !M.done) M.tm = setTimeout(loop, 1000 * BEAT * (d || 1) / M.speed);
+  if (d === WAIT) { M.wait = true; M.waitAt = performance.now(); updAct(); return; } // frame() opens the choice once the ball is at his feet
+  if (M && !M.done) {
+    const quick = M.justUser && M.poss === M.mine; M.justUser = false; // you keep the ball: don't make you wait a full beat
+    M.tm = setTimeout(loop, quick ? 300 : 1000 * BEAT * (d || 1) / M.speed);
+  }
+}
+/* ---- manual control UI ---- */
+function updAct(){
+  const bar = $("mtAct"), on = !!(M && !M.done && M.vs && M.vs.opp.bot);
+  bar.classList.toggle("hidden", !on); if (!on) return;
+  const turn = !!M.ask, gk = !!(M.car && M.car.pos === "GK");
+  bar.classList.toggle("turn", turn);
+  $("mtShoot").disabled = !turn || gk; $("mtDrib").disabled = !turn || gk;
+  $("mtMode").classList.toggle("on", M.ctl); $("mtMode").textContent = M.ctl ? "Manual" : "Auto";
+  $("mtHint").innerHTML = !M.ctl ? "Auto-play: tap <b>Auto</b> to take control" : turn ? "<b>Your ball.</b> Tap a teammate to pass" : M.poss === M.mine ? "Get ready…" : "Opponent has the ball";
+  $("mtCv").classList.toggle("pick", turn);
+  if (!turn) { const t = $("mtTimer"); t.style.transform = "scaleX(0)"; t.classList.remove("low"); }
+}
+function openAsk(){
+  const m = M, T = m.mine, O = other(m, T), s = m.car, pt = m.pt;
+  m.wait = false;
+  m.ask = { t0: performance.now(), hover: null, opts: live(T).filter(r => r !== s).map(r => ({ s: r, p: userPassP(m, T, O, s, pt, r) })) };
+  m.dtm = setTimeout(() => decide({ k: "auto" }), ASK_MS);
+  updAct();
+}
+function decide(ua){
+  const m = M; if (!m || !m.ask) return;
+  clearTimeout(m.dtm); m.ask = null; m.userAct = ua; updAct(); loop();
+}
+function askPick(e){
+  if (!M || !M.ask) return null;
+  const c = cv(), rc = c.getBoundingClientRect(), r = Math.min(2, window.devicePixelRatio || 1), w = c.width / r, k = w / rc.width, s = w / (PW + 6);
+  const px = (e.clientX - rc.left) * k, py = (e.clientY - rc.top) * k; let best = null, bd = 1e9;
+  M.ask.opts.forEach(o => { const x = ((M.flip ? PW - o.s.v.x : o.s.v.x) + 3) * s, y = ((M.flip ? PH - o.s.v.y : o.s.v.y) + 2) * s, d = Math.hypot(x - px, y - py); if (d < bd) { bd = d; best = o; } });
+  return best && bd <= Math.max(34, 3.2 * s) ? best : null;
+}
+$("mtCv").addEventListener("click", e => { const o = askPick(e); if (o) decide({ k: "pass", to: o.s }); });
+$("mtCv").addEventListener("pointermove", e => { if (M && M.ask && e.pointerType === "mouse") M.ask.hover = askPick(e); });
+$("mtCv").addEventListener("pointerleave", () => { if (M && M.ask) M.ask.hover = null; });
+const doShoot = () => { if (M && M.ask && M.car.pos !== "GK") decide({ k: "shoot" }); };
+const doDribble = () => { if (M && M.ask && M.car.pos !== "GK") decide({ k: "dribble" }); };
+$("mtShoot").onclick = doShoot; $("mtDrib").onclick = doDribble;
+$("mtMode").onclick = () => {
+  if (!M || M.done) return; M.ctl = !M.ctl; manualPref = M.ctl;
+  if (!M.ctl && M.ask) decide({ k: "auto" });
+  else if (!M.ctl && M.wait) { M.wait = false; loop(); }
+  updAct();
+};
+document.addEventListener("keydown", e => {
+  if (!M || !M.ask || e.ctrlKey || e.metaKey || e.altKey || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+  const k = e.key.toLowerCase();
+  if (k === " " || k === "s") { e.preventDefault(); doShoot(); } else if (k === "d") { e.preventDefault(); doDribble(); }
+});
+function drawAsk(ctx, X, Y, BR, t){
+  const a = M.ask, car = M.car;
+  a.opts.forEach((o, i) => {
+    const p = o.s.v, x = X(p.x), y = Y(p.y), hv = a.hover === o, pc = Math.round(o.p * 100), col = o.p >= .75 ? "#00f58a" : o.p >= .5 ? "#f2cd68" : "#ff4560";
+    if (hv && car) { ctx.save(); ctx.setLineDash([7, 6]); ctx.strokeStyle = col; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(X(car.v.x), Y(car.v.y)); ctx.lineTo(x, y); ctx.stroke(); ctx.restore(); }
+    const r = BR * (hv ? 1.05 : .8) + Math.sin(t / 200 + i) * 1.1;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fillStyle = col + (hv ? "55" : "26"); ctx.fill(); ctx.lineWidth = hv ? 3 : 2; ctx.strokeStyle = col; ctx.stroke();
+    const nmz = o.s.short.length > 10 ? o.s.short.slice(0, 9) + "…" : o.s.short;
+    const fs = Math.max(11, Math.min(13, BR * .85)); ctx.font = `700 ${fs}px Barlow, sans-serif`; ctx.textAlign = "center"; ctx.lineWidth = 4; ctx.lineJoin = "round"; ctx.strokeStyle = "rgba(3,6,13,.88)";
+    ctx.textBaseline = "bottom"; ctx.strokeText(nmz, x, y - r - 3); ctx.fillStyle = "#fff"; ctx.fillText(nmz, x, y - r - 3);
+    ctx.textBaseline = "top"; ctx.strokeText(pc + "%", x, y + r + 2); ctx.fillStyle = col; ctx.fillText(pc + "%", x, y + r + 2);
+  });
 }
 function skipMatch(){
-  if (!M || M.done) return; clearTimeout(M.tm); M.skipping = true;
+  if (!M || M.done) return; clearTimeout(M.tm); clearTimeout(M.dtm); M.ctl = false; M.ask = null; M.wait = false; M.skipping = true;
   let n = 0; while (!M.done && n++ < 5000) mStep(M);
   M.hook.snap();
 }
@@ -3253,6 +3373,8 @@ function frame(t){
   if (!M) return;
   const u = M.ui, rdt = Math.min(.05, (t - (M.lt || t)) / 1000); M.lt = t;
   for (let left = rdt * M.speed; left > 1e-4;) { const d = Math.min(.04, left); sim(u, d, t); left -= d; }
+  if (M.wait && !M.ask && ((idle(u) && !u.q.length && u.car === M.car && u.bs >= 1 && (u.phase === "play" || u.phase === "kick")) || t - M.waitAt > 3500)) openAsk();
+  if (M.ask) { const f = Math.max(0, 1 - (performance.now() - M.ask.t0) / ASK_MS), tm = $("mtTimer"); tm.style.transform = `scaleX(${f})`; tm.classList.toggle("low", f < .34); }
   if (t >= u.bsAt) u.bs = Math.min(1, u.bs + rdt * 4);
   u.parts.forEach(p => { p.x += p.vx * rdt; p.y += p.vy * rdt; p.vy += 55 * rdt; p.l -= rdt; }); u.parts = u.parts.filter(p => p.l > 0);
   const c = cv(), ctx = c.getContext("2d"), r = Math.min(2, window.devicePixelRatio || 1), w = c.width / r, h = c.height / r, s = w / (PW + 6);
@@ -3276,6 +3398,7 @@ function frame(t){
   if (u.car && !u.car.off && !u.shot && !(u.hold === u.car || u.dead)) { ctx.save(); ctx.setLineDash([6, 6]); ctx.strokeStyle = "rgba(255,255,255,.35)"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(X(u.b.x), Y(u.b.y)); ctx.lineTo(X(u.car.v.x), Y(u.car.v.y)); ctx.stroke(); ctx.restore(); }
   // while the ball is still travelling, the receiver gets a faded dashed ring instead of the ring jumping to him
   if (u.car && !u.car.off) { const held = u.hold === u.car || u.dead; ring(ctx, X(u.car.v.x), Y(u.car.v.y), BR, u.team.me ? "#2f8bff" : "#ff4560", held ? [] : [4, 4], u.car.short, t, held ? 1 : .6); }
+  if (M.ask) drawAsk(ctx, X, Y, BR, t);
   // ball trail + spin that follows how far the ball actually moved
   const bmv = u.px === undefined ? 0 : Math.hypot(u.b.x - u.px, u.b.y - u.py); u.px = u.b.x; u.py = u.b.y;
   u.spin = (u.spin || 0) + bmv * .5;
