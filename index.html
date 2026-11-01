@@ -531,17 +531,6 @@ input[type=color]{padding:2px;height:46px}
 .lpl .mc{width:38px;height:48px}.lpl .mc b{font-size:18px}.lpl .mc span{font-size:10px}
 @media(max-width:900px){.sp{width:68px}}
 @media(max-width:600px){.lpl .mc{width:28px;height:35px}.lpl .mc b{font-size:13px}.lpl .mc span{font-size:8px}.sp{width:60px}.sp .fc .fl.s{width:15px;height:10px}.sp .fc .cr.s{width:10px;height:12px}}
-.clgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
-.clc{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--p1);border:0;border-bottom:3px solid var(--g);color:inherit;padding:14px 8px 10px;cursor:pointer;text-align:center;font:inherit}
-.clc:hover{background:var(--p2,#1a2238)}
-.clc .cr.xl{width:56px;height:66px}.clc b{font:800 italic 18px/1.1 'Barlow Condensed',sans-serif;text-transform:uppercase}.clc small{color:var(--m);font-size:11px}
-.clc .clr{font:800 italic 20px/1 'Barlow Condensed',sans-serif;color:var(--gold)}
-.cr.xl{width:64px;height:76px}
-.clhead{display:flex;align-items:center;gap:14px;margin:6px 0 14px}.clhead h3{margin:0;font:800 italic 32px/1 'Barlow Condensed',sans-serif;text-transform:uppercase}
-.clback{background:none;border:0;color:var(--c);cursor:pointer;font:inherit;padding:6px 0}
-.clsale{color:var(--m);font-size:12px;display:block}
-#clQ,#clSort{background:var(--p1);color:inherit;border:1px solid rgba(255,255,255,.12);padding:9px 10px;font:inherit}
-#clTop,#clSortBar{display:flex;gap:8px;margin:10px 0 14px;align-items:center;flex-wrap:wrap}#clQ{flex:1;min-width:160px}
 
 /* v6: cups, objectives, player of the match */
 .cup{background:linear-gradient(160deg,#16254a,#0a1124);padding:22px;margin-bottom:22px;display:flex;flex-direction:column;gap:16px;box-shadow:inset 0 3px 0 var(--gold);clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,22px 100%,0 calc(100% - 22px))}
@@ -594,6 +583,13 @@ textarea.fbt:focus{outline:none;border-bottom-color:var(--g);background:#08112a}
 .fbi p{white-space:pre-wrap;word-break:break-word}
 .fbb{display:flex;gap:8px}.fbb .cta{padding:6px 18px;font-size:16px}
 nav button .nb{background:var(--r);color:#fff;font-size:11px;font-style:normal;padding:1px 6px;margin-left:6px;border-radius:9px;vertical-align:middle}
+
+/* v8: tab bar scrolls left and right when the buttons don't fit */
+nav{flex:1 1 0;min-width:0;overflow-x:auto;overflow-y:hidden;gap:6px;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;overscroll-behavior-x:contain}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:0 0 auto;padding:0 16px;margin:0}
+nav button+button::before{content:"";position:absolute;left:-3px;top:30%;bottom:30%;width:1px;background:var(--line);transform:skewX(-20deg)}
+@media(max-width:800px){nav{flex:0 0 auto;width:100%}nav button{padding:0 14px}}
 </style>
 </head>
 <body>
@@ -832,7 +828,6 @@ window.UTA = (function () {
       <button data-tab="obj">Objectives</button>
       <button data-tab="zezo" id="navZ">Zezo</button>
       <button data-tab="market">Market</button>
-      <button data-tab="clubs">Clubs</button>
       <button data-tab="events" id="navEv" class="hidden">Admin</button>
     </nav>
     <div class="right">
@@ -948,14 +943,6 @@ window.UTA = (function () {
       <select id="mkSrc"><option value="all">All sellers</option><option value="ai">AI managers</option><option value="human">Players</option><option value="mine">My listings</option></select>
       <select id="mkSort"><option value="ovr">Rating: high to low</option><option value="pa">Price: low to high</option><option value="pd">Price: high to low</option></select></div>
     <div class="sub" id="mkInfo"></div><div class="mklist" id="mkItems"></div><button class="cta alt" id="mkMore" style="margin-top:14px">Show more</button>
-  </main>
-  <main id="viewClubs" class="hidden">
-    <h2>Clubs</h2><div class="bar"></div>
-    <p class="sub">Every club in the game. Tap a club to see its players, what they last sold for and who is selling them.</p>
-    <div id="clTop"><input id="clQ" placeholder="Search clubs"></div>
-    <div id="clSortBar" class="hidden"><button class="clback" data-back="1">&larr; All clubs</button>
-      <select id="clSort"><option value="ovr">Rating: high to low</option><option value="pa">Price: low to high</option><option value="pd">Price: high to low</option><option value="pos">Position</option></select></div>
-    <div id="clDet"></div><div id="clList" class="clgrid"></div>
   </main>
   <main id="viewEvents" class="hidden">
     <h2>Admin panel</h2><div class="bar"></div>
@@ -2089,9 +2076,9 @@ RAW3.forEach(r => PLAYERS.push({ id: PLAYERS.length + 1, name: r[0], club: r[1],
 
 const $ = id => document.getElementById(id);
 const START = 3000;
-let fbItems = [], cups = {}, cupBusy = false, evs = {}, mk = {}, mkShow = 40, mkBusy = false, codes = {}, cpacks = {}, rcBusy = false, WK0 = null;
-const CFG0 = { win: 100, draw: 50, lose: 50, streak: 50, dBase: 200, dStep: 100, wkMax: 14, fee: 5, aiBuy: 100, starter: 2500, bronze: 400, silver: 700, gold: 1000, rare: 2500, elite: 6000 };
-const CFGL = [["win", "Win reward (coins)"], ["draw", "Draw reward"], ["lose", "Loss reward"], ["streak", "3+ win streak bonus"], ["dBase", "Daily reward, day 1"], ["dStep", "Daily reward, extra per streak day"], ["wkMax", "Weekly point cap"], ["fee", "Market sell fee (%)"], ["aiBuy", "AI buys player listings at or below (% of market price, 0 = off)"], ["starter", "Starter pack price"], ["bronze", "Bronze pack price"], ["silver", "Silver pack price"], ["gold", "Gold pack price"], ["rare", "Rare Gold pack price"], ["elite", "Elite pack price"]];
+let qSeen = {}, fbItems = [], cups = {}, cupBusy = false, evs = {}, mk = {}, mkShow = 40, mkBusy = false, codes = {}, cpacks = {}, rcBusy = false, WK0 = null;
+const CFG0 = { win: 100, draw: 50, lose: 50, streak: 50, dBase: 200, dStep: 100, wkMax: 14, fee: 5, starter: 2500, bronze: 400, silver: 700, gold: 1000, rare: 2500, elite: 6000 };
+const CFGL = [["win", "Win reward (coins)"], ["draw", "Draw reward"], ["lose", "Loss reward"], ["streak", "3+ win streak bonus"], ["dBase", "Daily reward, day 1"], ["dStep", "Daily reward, extra per streak day"], ["wkMax", "Weekly point cap"], ["fee", "Market sell fee (%)"], ["starter", "Starter pack price"], ["bronze", "Bronze pack price"], ["silver", "Silver pack price"], ["gold", "Gold pack price"], ["rare", "Rare Gold pack price"], ["elite", "Elite pack price"]];
 const THK = [["g", "Main accent"], ["c", "Second accent"], ["gold", "Gold / coins"], ["bg", "Background"], ["p1", "Panels"]], THEME_DEF = { g: "#00f58a", c: "#1fd2ff", gold: "#f2cd68", bg: "#050810", p1: "#0b1222" };
 let CFG = Object.assign({ theme: {} }, CFG0);
 let user = null, state = { coins: START, club: [], starter: false }, signup = false, busy = false, unsub = null, loaded = false, sq = null, sqInit = false, selSlot = -1;
@@ -2189,7 +2176,6 @@ let lastN = 3, lastFree = false;
 function render(){
   $("coins").textContent = fmt(state.coins); renderDaily(); $("navEv").classList.toggle("hidden", !isAdmin()); renderEvents(); try { renderObj(); renderCups(); renderZezo(); } catch (e) {}
   if (!$("viewMarket").classList.contains("hidden")) { mkSellOpts(); renderMarket(); }
-  renderClubs();
   if (sq && !$("viewSquad").classList.contains("hidden")) renderSquad();
   if (!$("viewMatch").classList.contains("hidden")) renderMatch();
   $("starter").classList.toggle("hidden", !loaded || state.starter);
@@ -2392,14 +2378,16 @@ function renderPick(){
 }
 function showTab(t){
   document.querySelectorAll("nav button[data-tab]").forEach(b => b.classList.toggle("on", b.dataset.tab === t));
-  $("viewStore").classList.toggle("hidden", t !== "store"); $("viewSquad").classList.toggle("hidden", t !== "squad"); $("viewMatch").classList.toggle("hidden", t !== "match"); $("viewMarket").classList.toggle("hidden", t !== "market"); $("viewClubs").classList.toggle("hidden", t !== "clubs"); $("viewCups").classList.toggle("hidden", t !== "cups"); $("viewObj").classList.toggle("hidden", t !== "obj"); $("viewZezo").classList.toggle("hidden", t !== "zezo"); $("viewEvents").classList.toggle("hidden", t !== "events" || !isAdmin());
-  if (t === "market") { mkShow = 40; mkSellOpts(); renderMarket(); } if (t === "events") renderEvList(); if (t === "clubs") { clubSel = null; renderClubs(); }
+  $("viewStore").classList.toggle("hidden", t !== "store"); $("viewSquad").classList.toggle("hidden", t !== "squad"); $("viewMatch").classList.toggle("hidden", t !== "match"); $("viewMarket").classList.toggle("hidden", t !== "market"); $("viewCups").classList.toggle("hidden", t !== "cups"); $("viewObj").classList.toggle("hidden", t !== "obj"); $("viewZezo").classList.toggle("hidden", t !== "zezo"); $("viewEvents").classList.toggle("hidden", t !== "events" || !isAdmin());
+  if (t === "market") { mkShow = 40; mkSellOpts(); renderMarket(); } if (t === "events") renderEvList();
   if (t === "match") renderMatch();
   if (t === "cups") { fillPackSelects(); renderCups(); } if (t === "obj") renderObj(); if (t === "zezo") renderZezo();
   if (t === "squad") { selSlot = -1; renderSquad(); }
   window.scrollTo(0, 0);
 }
 document.querySelectorAll("nav button[data-tab]").forEach(b => b.onclick = () => showTab(b.dataset.tab));
+const navFocus = () => { const b = document.querySelector("nav button.on"); if (b && b.scrollIntoView) b.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" }); };
+document.querySelectorAll("nav button[data-tab]").forEach(b => b.addEventListener("click", () => setTimeout(navFocus, 30)));
 $("pitch").onclick = e => { const x = e.target.closest(".sp"); if (x) { selSlot = selSlot === +x.dataset.i ? -1 : +x.dataset.i; renderSquad(); } };
 $("pick").onclick = e => {
   if (e.target.closest("[data-rm]")) { sq.slots[selSlot] = 0; selSlot = -1; return renderSquad(); }
@@ -2438,16 +2426,16 @@ function mmrDelta(my, opp, res, placed){ // Elo: beating a stronger player is wo
 const rankIdx = m => rankInfo(m).i;
 const MODE_NAME = { quick: "Quick play", ranked: "Ranked", friend: "Friend match", cup: "Cup match" };
 const AI = [
-  { n: "Rookie Rico", r: 58, bonus: -2, fin: -4, psk: -6, kp: -4, tag: "Just started playing" },
-  { n: "Steady Sam", r: 64, bonus: -1, fin: -2, psk: -1, kp: -2, tag: "Plays it safe" },
-  { n: "Gina Gold", r: 69, bonus: 0.5, fin: 1, psk: 1, kp: 0, tag: "Balanced all round" },
-  { n: "Pavel Press", r: 73, bonus: 1.5, fin: 2, psk: 4, kp: 2, tag: "Neat passer" },
-  { n: "Dani Diamond", r: 77, bonus: 3, fin: 5, psk: 3, kp: 4, tag: "Clinical finisher" },
-  { n: "Mateo Maestro", r: 80, bonus: 4.5, fin: 4, psk: 8, kp: 6, tag: "Passes you to death" },
-  { n: "Greta Grand", r: 83, bonus: 6, fin: 6, psk: 6, kp: 10, tag: "Rock solid keeper" },
-  { n: "Luca Legend", r: 86, bonus: 8, fin: 10, psk: 8, kp: 8, tag: "Deadly in front of goal" },
-  { n: "Kai Champion", r: 88, bonus: 10, fin: 11, psk: 10, kp: 11, tag: "Rarely makes mistakes" },
-  { n: "The Architect", r: 90, bonus: 13, fin: 14, psk: 13, kp: 14, tag: "Almost unbeatable" }
+  { n: "Rookie Rico", r: 58, bonus: -3, fin: -6, psk: -8, kp: -6, tag: "Just started playing" },
+  { n: "Steady Sam", r: 64, bonus: -2, fin: -4, psk: -2, kp: -3, tag: "Plays it safe" },
+  { n: "Gina Gold", r: 69, bonus: -1, fin: 0, psk: 0, kp: -2, tag: "Balanced all round" },
+  { n: "Pavel Press", r: 73, bonus: 0, fin: 0, psk: 3, kp: 0, tag: "Neat passer" },
+  { n: "Dani Diamond", r: 77, bonus: 1, fin: 3, psk: 0, kp: 2, tag: "Clinical finisher" },
+  { n: "Mateo Maestro", r: 80, bonus: 1.5, fin: 1, psk: 5, kp: 3, tag: "Passes you to death" },
+  { n: "Greta Grand", r: 83, bonus: 2.5, fin: 3, psk: 3, kp: 6, tag: "Rock solid keeper" },
+  { n: "Luca Legend", r: 86, bonus: 3.5, fin: 6, psk: 4, kp: 4, tag: "Deadly in front of goal" },
+  { n: "Kai Champion", r: 88, bonus: 4.5, fin: 6, psk: 6, kp: 6, tag: "Rarely makes mistakes" },
+  { n: "The Architect", r: 90, bonus: 6, fin: 8, psk: 8, kp: 8, tag: "Almost unbeatable" }
 ];
 MODE_NAME.ai = "Vs AI";
 const QCHAT = ["Great pass!", "What a save!", "What a goal!", "Unlucky!", "Well played", "Wow!", "Take that!", "Good game"];
@@ -2716,9 +2704,7 @@ async function claimGift(id){
   try { await update(ref(rtdb, "users/" + user.key), { coins: state.coins, pend: state.pend, ["evClaim/" + id]: true }); } catch (x) { fail(x, "save the gift"); }
   toast("Gift claimed!"); if (ps.length) setTimeout(openPend, 400);
 }
-let sales = {}, mkSeen = false; const mkGone = new Set(), aiBusy = new Set();
 function startShared(){
-  mkSeen = false;
   presOff.push(onValue(ref(rtdb, "events"), sn => { evs = sn.val() || {}; render(); }, () => {}));
   presOff.push(onValue(ref(rtdb, isAdmin() ? "feedback" : "feedback/" + user.key), sn => {
     const v = sn.val() || {}, L = [];
@@ -2727,11 +2713,7 @@ function startShared(){
     fbItems = L.sort((a, b) => (b.ts || 0) - (a.ts || 0)); renderZezo();
   }, () => {}));
   presOff.push(onValue(ref(rtdb, "cups"), sn => { cups = sn.val() || {}; renderCups(); }, () => {}));
-  presOff.push(onValue(ref(rtdb, "market"), sn => { const nm = sn.val() || {};
-    if (mkSeen && user) Object.entries(mk).forEach(([id, l]) => { if (l && l.sk === user.key && !nm[id] && !mkGone.has(id) && P(l.pid)) toast(`${P(l.pid).name} sold for ${fmt(l.price)} coins`); });
-    mk = nm; mkSeen = true; if (!$("viewMarket").classList.contains("hidden")) renderMarket(); renderClubs(); }, () => {}));
-  presOff.push(onValue(ref(rtdb, "sales"), sn => { sales = sn.val() || {}; renderClubs(); }, () => {}));
-  const aiIv = setInterval(aiTick, 8000); presOff.push(() => clearInterval(aiIv));
+  presOff.push(onValue(ref(rtdb, "market"), sn => { mk = sn.val() || {}; if (!$("viewMarket").classList.contains("hidden")) renderMarket(); }, () => {}));
   presOff.push(onValue(ref(rtdb, "config"), sn => { applyCfg(sn.val()); render(); }, () => {}));
   presOff.push(onValue(ref(rtdb, "cpacks"), sn => { cpacks = sn.val() || {}; fillPackSelects(); render(); if (isAdmin()) renderCp(); }, () => {}));
   if (isAdmin()) presOff.push(onValue(ref(rtdb, "codes"), sn => { codes = sn.val() || {}; renderCodes(); }, () => {}));
@@ -2742,7 +2724,7 @@ function startShared(){
 
 /* ---------- UI helpers: no lost clicks, clear errors, busy buttons ---------- */
 function memo(el){ const d = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML"); Object.defineProperty(el, "innerHTML", { get(){ return d.get.call(this); }, set(v){ if (this._h !== v) { this._h = v; d.set.call(this, v); } }, configurable: true }); }
-["daily", "weekly", "packs", "evStore", "evMatch", "evMarket", "evList", "rcList", "cpList", "rcEv", "mkItems", "mkSel", "clList", "clDet"].forEach(i => { const e = $(i); if (e) memo(e); }); // identical re-renders are skipped, so taps and open dropdowns aren't wiped
+["daily", "weekly", "packs", "evStore", "evMatch", "evMarket", "evList", "rcList", "cpList", "rcEv", "mkItems", "mkSel"].forEach(i => { const e = $(i); if (e) memo(e); }); // identical re-renders are skipped, so taps and open dropdowns aren't wiped
 function fail(x, what){ const c = x && (x.code || x.message) || ""; console.error(what, x); toast(`Couldn't ${what}${c ? " (" + String(c).replace("PERMISSION_DENIED", "permission denied") + ")" : ""}. Check your database rules.`); }
 async function withBtn(btn, fn){ if (!btn || btn._b) return; btn._b = 1; const t = btn.textContent; btn.disabled = true; btn.textContent = "Working..."; try { await fn(); } finally { btn.disabled = false; btn.textContent = t; btn._b = 0; } }
 
@@ -2965,61 +2947,6 @@ $("setClear").onclick = async () => {
 };
 $("setInstall").onclick = async () => { if (!installEv) return; installEv.prompt(); try { await installEv.userChoice; } catch (x) {} installEv = null; $("setInstall").classList.add("hidden"); };
 
-/* clubs */
-let clubSel = null, clubSort = "ovr", clubQ = "";
-const POSO = ["ST", "LW", "RW", "CAM", "CM", "CDM", "CB", "LB", "RB", "GK"];
-const agoT = ts => { const m = Math.max(0, Math.round((Date.now() - ts) / 6e4)); return m < 1 ? "just now" : m < 60 ? m + "m ago" : m < 1440 ? Math.round(m / 60) + "h ago" : Math.round(m / 1440) + "d ago"; };
-function clubMap(){ const m = {}; PLAYERS.forEach(p => (m[p.club] = m[p.club] || []).push(p)); return m; }
-const top11 = l => { const t = l.map(p => p.ovr).sort((a, b) => b - a).slice(0, 11); return t.length ? Math.round(t.reduce((a, b) => a + b, 0) / t.length) : 0; };
-function renderClubs(){
-  if (!loaded || $("viewClubs").classList.contains("hidden")) return;
-  const M = clubMap(), grid = $("clList"), det = $("clDet");
-  $("clTop").classList.toggle("hidden", !!clubSel); $("clSortBar").classList.toggle("hidden", !clubSel);
-  if (!clubSel || !M[clubSel]) {
-    clubSel = null; det.innerHTML = ""; grid.className = "clgrid"; const q = clubQ.trim().toLowerCase();
-    grid.innerHTML = Object.keys(M).filter(c => !q || c.toLowerCase().includes(q)).sort((a, b) => top11(M[b]) - top11(M[a]) || a.localeCompare(b)).map(c => { const l = M[c], best = Math.max(...l.map(p => p.ovr));
-      return `<button class="clc" data-club="${escH(c)}">${UTA.crest(c, "xl")}<b>${escH(c)}</b><small>${l.length} players · best ${best}</small><span class="clr">${top11(l)}</span></button>`; }).join("") || '<div class="empty">No clubs match.</div>';
-    return;
-  }
-  const l = M[clubSel].slice(), cheapest = {};
-  l.forEach(p => { let b = mkAi(p); Object.entries(mk).forEach(([id, h]) => { if (h && h.pid === p.id && h.sk !== user.key && h.price < b.price) b = { id, pid: p.id, price: h.price, seller: h.seller, ai: false }; }); cheapest[p.id] = b; });
-  const so = clubSort; l.sort(so === "pa" ? (a, b) => cheapest[a.id].price - cheapest[b.id].price : so === "pd" ? (a, b) => cheapest[b.id].price - cheapest[a.id].price : so === "pos" ? (a, b) => POSO.indexOf(a.pos) - POSO.indexOf(b.pos) || b.ovr - a.ovr : (a, b) => b.ovr - a.ovr);
-  const val = l.reduce((a, p) => a + mkAi(p).price, 0), own = {}; state.club.forEach(id => own[id] = (own[id] || 0) + 1);
-  det.innerHTML = `<div class="clhead">${UTA.crest(clubSel, "xl")}<h3>${escH(clubSel)}</h3></div>
-    <div class="statrow"><div><b>${l.length}</b><span>Players</span></div><div><b>${top11(l)}</b><span>Top-11 rating</span></div><div><b>${Math.max(...l.map(p => p.ovr))}</b><span>Best</span></div><div><b>${fmt(val)}</b><span>Market value</span></div></div>
-    <div class="mklist">` + l.map(p => { const c = cheapest[p.id], s = sales[p.id];
-      const sold = s ? `Last sold ${fmt(s.price)} · ${s.by === "ai" ? "AI" : "player"} ${escH(s.buyer || "")} · ${agoT(s.ts)}` : "No sales yet";
-      return `<div class="row mk ${tier(p)}"><div class="o">${p.ovr}<small>${p.pos}</small></div><div class="mki"><span class="n">${escH(p.name)}</span><span class="p"><span class="mi">${UTA.flag(p.nation, "s")} ${escH(p.nation)}</span>${own[p.id] ? ` <span class="mi">Owned x${own[p.id]}</span>` : ""}</span><span class="clsale">${sold}</span><span class="p"><b class="sl ${c.ai ? "ai" : "hu"}">${c.ai ? "AI" : "Player"}</b> ${escH(c.seller)}</span></div>
-        <div class="mkp"><span class="pc2"><span class="coin"></span>${fmt(c.price)}</span><button class="cta sm" data-b="${c.id}" ${state.coins < c.price || mkBusy ? "disabled" : ""}>Buy</button></div></div>`; }).join("") + "</div>";
-  grid.className = ""; grid.innerHTML = "";
-}
-$("viewClubs").onclick = e => { const c = e.target.closest("[data-club]"), bk = e.target.closest("[data-back]"), b = e.target.closest("[data-b]");
-  if (c) { clubSel = c.dataset.club; clubSort = $("clSort").value; renderClubs(); window.scrollTo(0, 0); } else if (bk) { clubSel = null; renderClubs(); } else if (b) buyMk(b.dataset.b); };
-$("clQ").oninput = () => { clubQ = $("clQ").value; renderClubs(); };
-$("clSort").onchange = () => { clubSort = $("clSort").value; renderClubs(); };
-
-/* AI managers snap up well-priced player listings */
-const aiDue = {};
-function aiTick(){
-  if (!loaded || !user || !(CFG.aiBuy > 0)) return; const now = Date.now();
-  Object.entries(mk).forEach(([id, l]) => {
-    if (!l || !P(l.pid) || aiBusy.has(id)) return; const fair = mkAi(P(l.pid)).price;
-    if (l.price > fair * CFG.aiBuy / 100) { delete aiDue[id]; return; }
-    if (!aiDue[id]) { const bargain = l.price <= fair * .8; aiDue[id] = now + (15e3 + Math.random() * 75e3) * (bargain ? .5 : 1); return; }
-    if (now >= aiDue[id]) { delete aiDue[id]; aiBuy(id, l); }
-  });
-}
-async function aiBuy(id, l){
-  aiBusy.add(id); const who = AI[mkH(id + ":" + l.pid) % AI.length].n;
-  try {
-    let ok = false; const r = await runTransaction(ref(rtdb, "market/" + id), cur => { ok = !!cur && cur.price === l.price && cur.pid === l.pid; return ok ? null : cur; });
-    if (!ok || !r.committed) return;
-    runTransaction(ref(rtdb, "users/" + l.sk + "/coins"), c => (c || 0) + Math.floor(l.price * (1 - CFG.fee / 100))).catch(() => {});
-    recordSale(l.pid, l.price, "ai", who);
-  } catch (x) { console.error("ai buy", x); } finally { aiBusy.delete(id); }
-}
-function recordSale(pid, price, by, buyer){ set(ref(rtdb, "sales/" + pid), { price, by, buyer, ts: Date.now() }).catch(() => {}); }
-
 /* market */
 const mkDay = () => Math.floor(Date.now() / 864e5);
 const mkH = t => { let h = 2166136261; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
@@ -3061,11 +2988,11 @@ async function buyMk(id){
       if (!ok || !r.committed) return toast("Someone already bought this player.");
       runTransaction(ref(rtdb, "users/" + l.sk + "/coins"), c => (c || 0) + Math.floor(l.price * (1 - CFG.fee / 100))).catch(() => {});
     }
-    state.coins -= l.price; state.club.push(l.pid); render(); await save(); toast(`Signed ${P(l.pid).name} for ${fmt(l.price)} coins`); recordSale(l.pid, l.price, "player", state.username);
-  } catch (x) { fail(x, "complete the trade"); } finally { mkBusy = false; renderMarket(); renderClubs(); }
+    state.coins -= l.price; state.club.push(l.pid); render(); await save(); toast(`Signed ${P(l.pid).name} for ${fmt(l.price)} coins`);
+  } catch (x) { fail(x, "complete the trade"); } finally { mkBusy = false; renderMarket(); }
 }
 async function cancelMk(id){
-  const l = mk[id]; if (!l || l.sk !== user.key || mkBusy) return; mkBusy = true; mkGone.add(id);
+  const l = mk[id]; if (!l || l.sk !== user.key || mkBusy) return; mkBusy = true;
   try { let ok = false; const r = await runTransaction(ref(rtdb, "market/" + id), cur => { ok = !!cur && cur.sk === user.key; return ok ? null : cur; });
     if (ok && r.committed) { state.club.push(l.pid); render(); await save(); toast("Listing cancelled. Player returned."); } else toast("It was already sold.");
   } catch (x) { fail(x, "cancel"); } finally { mkBusy = false; renderMarket(); }
@@ -3105,7 +3032,8 @@ function startPresence(){
   const pref = ref(rtdb, "presence/" + user.key);
   presOff.push(onValue(ref(rtdb, ".info/connected"), sn => { if (sn.val() && user) { onDisconnect(pref).remove(); setStatus(myStatus); } }));
   hb = setInterval(() => setStatus(myStatus), 20000);
-  presOff.push(onValue(ref(rtdb, "presence"), sn => { online = sn.val() || {}; renderFriends(); renderCups(); }));
+  presOff.push(onValue(ref(rtdb, "presence"), sn => { online = sn.val() || {}; renderFriends(); renderCups();
+    Object.entries(online).forEach(([k, v]) => { if (!v || k === user.key) return; if (v.status !== "queue") { delete qSeen[k]; return; } if (!qSeen[k] && myStatus === "online") { qSeen[k] = 1; toast(`${v.username} is searching for a match. Open Match to play them.`); } else qSeen[k] = 1; }); }));
   presOff.push(onValue(ref(rtdb, "invites/" + user.key), sn => onInvites(sn.val() || {})));
   startShared();
 }
@@ -3147,6 +3075,12 @@ async function findMatch(mode){
     const left = WAIT - (Date.now() - mm.start);
     $("mmSec").textContent = Math.max(0, Math.ceil(left / 1000)); $("ring").style.setProperty("--p", Math.max(0, left / WAIT * 100));
     if (left > 0) return;
+    // someone else is online: never fall back to the AI, keep waiting for them to join
+    if (mode !== "ai" && Object.entries(online).some(([k, v]) => v && k !== me && Date.now() - v.ts < 70000)) {
+      $("mmTxt").textContent = "Waiting for a player to join"; $("mmSec").textContent = "..."; $("ring").style.setProperty("--p", 100);
+      if (Date.now() - (mm.refr || 0) > 8000) { mm.refr = Date.now(); runTransaction(ref(rtdb, "queue/" + mode + "/" + me), cur => cur && !cur.match ? { ...cur, ts: Date.now() } : cur).catch(() => {}); }
+      return;
+    }
     mm.timing = true; clearInterval(mm.iv);
     try { // leave the queue, unless someone grabbed us at the last moment
       const r = await runTransaction(ref(rtdb, "queue/" + mode + "/" + me), cur => cur && cur.match ? cur : null);
@@ -3514,25 +3448,12 @@ function cancelMatchFlow(){
   ["vs", "lu", "mt", "mtEnd"].forEach(i => $(i).classList.add("hidden")); setStatus("online");
 }
 
-/* quiet difficulty: the AI tightens up on hot streaks, but only some of the time and never by much */
-function hiddenPush(mode){
-  const st = state.streak || 0, rf = String(state.rform || ""), recent = rf.slice(-5), w = (recent.match(/w/gi) || []).length;
-  let ch = 0, amt = 0;
-  if (st >= 3) { ch = Math.min(.7, .5 + (st - 3) * .06); amt = 2.5 + Math.min(2.5, (st - 3) * .6); }
-  else if (st === 2) { ch = .25; amt = 1.5; }
-  else if (w >= 4) { ch = .3; amt = 2; }
-  if (mode === "ranked" && placedDone() && rankInfo(myMmr()).pct >= 70) { ch = Math.max(ch, .3); amt = Math.max(amt, 2); } // close to ranking up
-  if (mode !== "ranked") { ch *= .6; amt *= .7; }
-  return ch && Math.random() < ch ? amt * (.7 + Math.random() * .6) : 0;
-}
-const placedDone = () => (state.placed || 0) >= PLACEMENTS;
 /* 2) the match */
 function mkLive(v){
   mRand = v.matchId && !v.opp.bot ? mSeeded(mHash(v.matchId)) : Math.random; // same match id = same match for both players
   const mine = mkTeam(true, v.my.name, v.my.form, v.my.players, v.my.rating, v.meHome ? 1 : -1, v.my.chem);
   const op = mkTeam(false, v.op.name, v.op.form, v.op.players, v.op.rating, v.meHome ? -1 : 1, v.op.chem);
   if (v.opp.bot && v.opp.ai != null) { const a = AI[v.opp.ai]; op.eff += a.bonus; op.fin = a.fin; op.psk = a.psk; op.kp = a.kp; }
-  if (v.opp.bot && v.opp.ai != null) op.eff += hiddenPush(v.mode);
   const A = v.meHome ? mine : op, B = v.meHome ? op : mine;
   const ui = { b: { x: 52.5, y: 34 }, ct: { x: 52.5, y: 34 }, car: null, ch: null, team: A, hold: null, shot: null, dead: false, q: [], d0: 10, h: 0, bs: 1, bsAt: 0, popDelay: 0, phase: "kick", celT: 0, cel: null, net: null, parts: [], sc: [0, 0] };
   const CHIPS = [[/sent off/i, "Red card", "red"], [/yellow card/i, "Yellow card", "yel"], [/PENALTY/, "Penalty!", ""], [/offside/i, "Offside", ""], [/hits the (post|crossbar)/, "Off the woodwork!", ""], [/save/i, "Save!", ""], [/Corner to/, "Corner", ""], [/Free kick to/, "Free kick", ""]];
