@@ -2256,6 +2256,21 @@ const THK = [["g", "Main accent"], ["c", "Second accent"], ["gold", "Gold / coin
 let CFG = Object.assign({ theme: {} }, CFG0);
 let user = null, state = { coins: START, club: [], starter: false }, signup = false, busy = false, unsub = null, loaded = false, sq = null, sqInit = false, selSlot = -1;
 const P = id => PLAYERS[id - 1];
+/* names separated by commas -> player ids (exact name first, then best partial match); unknown names go to miss */
+function findPl(txt){
+  const nz = t => String(t).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
+  const ids = [], miss = [];
+  String(txt || "").split(",").map(x => x.trim()).filter(Boolean).forEach(q => {
+    const n = nz(q); if (!n) return;
+    let c = PLAYERS.filter(p => nz(p.name) === n);
+    if (!c.length) c = PLAYERS.filter(p => nz(p.name).split(" ").includes(n) || nz(p.name).startsWith(n));
+    if (!c.length) c = PLAYERS.filter(p => nz(p.name).includes(n));
+    if (!c.length) return miss.push(q);
+    const best = c.sort((a, b) => b.ovr - a.ovr)[0];
+    if (!ids.includes(best.id)) ids.push(best.id);
+  });
+  return { ids, miss };
+}
 
 /* ---------- Accounts live in Realtime Database: users/{username} (no Firebase Auth needed) ---------- */
 const key = n => n.toLowerCase();
