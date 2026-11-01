@@ -2437,7 +2437,7 @@ function renderEvents(){
 }
 function renderEvList(){
   const L = Object.entries(evs).map(([id, e]) => ({ ...e, id })).sort((a, b) => (b.ts || 0) - (a.ts || 0)), n = Date.now();
-  $("evList").innerHTML = L.length ? L.map(e => `<div class="evli"><div><b>${escH(e.icon || "")} ${escH(e.title)}</b><small>${e.end <= n ? "Ended" : (e.start || 0) > n ? "Scheduled" : "Active"} · ends ${new Date(e.end).toLocaleString()} · on ${(e.where || []).join(", ") || "nowhere"} · ${(e.packs || []).length} pack(s)${e.gift ? " · gift" : ""}</small></div><div class="evbt"><button class="cta sm alt" data-end="${e.id}">End now</button><button class="cta sm alt" data-del="${e.id}">Delete</button></div></div>`).join("") : '<div class="empty">No events yet.</div>';
+  $("evList").innerHTML = L.length ? L.map(e => `<div class="evli"><div><b>${escH(e.icon || "")} ${escH(e.title)}</b><small>${e.end <= n ? "Ended" : (e.start || 0) > n ? "Scheduled" : "Active"} · ends ${new Date(e.end).toLocaleString()} · on ${(e.where || []).join(", ") || "nowhere"} · ${(e.packs || []).length} pack(s)${e.gift ? " · gift" : ""}</small></div><div class="evbt"><button class="cta sm alt" data-edit="${e.id}">Edit</button><button class="cta sm alt" data-end="${e.id}">End now</button><button class="cta sm alt" data-del="${e.id}">Delete</button></div></div>`).join("") : '<div class="empty">No events yet.</div>';
 }
 const EVPRE = { bronze: [45, 64, "b", 400], silver: [65, 74, "s", 700], gold: [75, 89, "g", 1000], rare: [84, 93, "r", 2500], elite: [88, 93, "e", 6000] };
 $("evPacks").innerHTML = [0, 1, 2].map(i => `<div class="evpk"><b>Pack ${i + 1} <small>(leave the name empty to skip)</small></b><input class="pn" maxlength="30" placeholder="Pack name, e.g. Ballon d'Or Pack">
