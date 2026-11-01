@@ -3122,7 +3122,8 @@ async function findMatch(mode){
     $("mmSec").textContent = Math.max(0, Math.ceil(left / 1000)); $("ring").style.setProperty("--p", Math.max(0, left / WAIT * 100));
     if (left > 0) return;
     // someone else is online: never fall back to the AI, keep waiting for them to join
-    if (mode !== "ai" && Object.entries(online).some(([k, v]) => v && k !== me && Date.now() - v.ts < 70000)) {
+    // only keep waiting for a player who is actually free (not already in a match), and never longer than 30s in total: then you get an AI opponent
+    if (mode !== "ai" && Date.now() - mm.start < 30000 && Object.entries(online).some(([k, v]) => v && k !== me && Date.now() - v.ts < 70000 && v.status !== "match")) {
       $("mmTxt").textContent = "Waiting for a player to join"; $("mmSec").textContent = "..."; $("ring").style.setProperty("--p", 100);
       if (Date.now() - (mm.refr || 0) > 8000) { mm.refr = Date.now(); runTransaction(ref(rtdb, "queue/" + mode + "/" + me), cur => cur && !cur.match ? { ...cur, ts: Date.now() } : cur).catch(() => {}); }
       return;
