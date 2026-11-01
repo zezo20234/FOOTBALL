@@ -592,16 +592,6 @@ nav button+button::before{content:"";position:absolute;left:-3px;top:30%;bottom:
 @media(max-width:800px){nav{flex:0 0 auto;width:100%}nav button{padding:0 14px}}
 
 /* v7: gesture buttons, landscape match layout, rotate screen */
-.mtact .mtbtns{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap}
-#mtAct .gb{position:relative;overflow:hidden;flex:1 1 130px;min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 10px;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;font-size:26px}
-#mtAct .gb b{font:800 italic 26px/1 'Barlow Condensed',sans-serif;position:relative;z-index:1}
-#mtAct .gb em{font:700 11px/1.1 Barlow,sans-serif;font-style:normal;text-transform:none;letter-spacing:0;opacity:.85;position:relative;z-index:1;text-align:center}
-#mtAct .gb.pass{background:#2a63d6;color:#fff}
-#mtAct .gb.shoot{background:var(--g);color:#03130b}
-#mtAct .gb .chg{position:absolute;left:0;top:0;bottom:0;width:100%;background:rgba(255,255,255,.38);transform-origin:left;transform:scaleX(0)}
-#mtAct .gb.hold{filter:brightness(1.15);box-shadow:inset 0 0 0 3px #fff}
-#mtAct .mtrow2{flex:1 1 100%;display:flex;gap:8px}
-#mtAct .mtrow2 button{flex:1;min-height:36px;font-size:17px}
 .mtact:not(.turn) .mtacthint{opacity:.8}
 #rot{position:fixed;inset:0;z-index:200;background:rgba(3,6,13,.97);display:flex;align-items:center;justify-content:center;text-align:center;padding:24px}
 #rot.hidden{display:none}
@@ -611,26 +601,78 @@ nav button+button::before{content:"";position:absolute;left:-3px;top:30%;bottom:
 .phone{width:54px;height:92px;margin:0 auto;border:4px solid var(--g);border-radius:12px;position:relative;animation:rotph 2.2s ease-in-out infinite}
 .phone::after{content:"";position:absolute;left:50%;bottom:6px;width:16px;height:3px;margin-left:-8px;background:var(--g);border-radius:2px}
 @keyframes rotph{0%,15%{transform:rotate(0)}55%,85%{transform:rotate(-90deg)}100%{transform:rotate(0)}}
-@media(orientation:landscape) and (max-height:520px){
-  #mt{padding:max(4px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(4px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));overflow:hidden}
-  .mtw{max-width:none;height:100%;display:grid;gap:6px;grid-template-columns:minmax(104px,1fr) max(210px,min(calc((100dvh - 60px) * 1.5417),calc(100vw - 340px))) minmax(150px,1fr);grid-template-rows:auto minmax(0,1fr) auto}
+
+/* mechanics guide */
+#mech{position:fixed;inset:0;z-index:150;background:rgba(3,6,13,.98);overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:0 max(12px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))}
+#mech .mhd{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:680px;margin:0 auto;padding:max(12px,env(safe-area-inset-top)) 4px 12px;background:rgba(3,6,13,.97);border-bottom:2px solid var(--line)}
+#mech h2{margin:0;font-size:34px}
+#mech .mx{flex:0 0 auto;width:46px;height:46px;border:0;border-radius:50%;background:var(--p2);color:var(--t);font-size:22px;line-height:1}
+#mech .mbody{max-width:680px;margin:12px auto 0;display:flex;flex-direction:column;gap:10px}
+#mech .mlead{color:var(--m);font-size:14px;line-height:1.45;margin:0 2px 2px}
+#mech details{background:var(--p1);border-left:4px solid var(--g);border-radius:0 12px 12px 0}
+#mech summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;min-height:54px;padding:10px 14px;font:800 italic 21px/1.1 'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.3px}
+#mech summary::-webkit-details-marker{display:none}
+#mech summary::after{content:"+";margin-left:auto;font-size:26px;color:var(--g);font-style:normal}
+#mech details[open] summary::after{content:"\2212"}
+#mech summary i{font-style:normal;font-size:22px}
+#mech .mc{padding:0 14px 14px;font-size:14.5px;line-height:1.5;color:var(--t)}
+#mech .mc p{margin:0 0 8px}
+#mech .mc ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+#mech .mc li{padding-left:12px;border-left:2px solid var(--line)}
+#mech .mc b{color:var(--gold)}
+#mech .mc small{color:var(--m)}
+#mech .combo{display:flex;flex-direction:column;gap:3px}
+#mech .combo .k{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+#mech .tag{display:inline-block;padding:3px 10px;border-radius:999px;font:800 italic 15px/1.2 'Barlow Condensed',sans-serif;text-transform:uppercase;color:#fff;background:#3a4660}
+#mech .tag.p{background:#2a63d6}#mech .tag.s{background:var(--g);color:#03130b}#mech .tag.t{background:#8a4bd6}#mech .tag.c{background:#e8892b}#mech .tag.d{background:#3a4660}
+#mech .keys{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px}
+#mech .keys span{background:var(--p2);padding:7px 10px;border-radius:8px;font-size:13px}
+#mech .keys kbd{font:700 13px Barlow,sans-serif;color:var(--g);margin-right:6px}
+@media(max-width:600px){#mech h2{font-size:28px}#mech summary{font-size:19px}#mech .mc{font-size:14px}}
+
+/* v8: joystick + side buttons, no commentary, multi-touch */
+.mtfeed{display:none!important}
+.mtpitch .mtacthint{position:absolute;left:8px;bottom:12px;max-width:70%;padding:3px 10px;background:rgba(3,6,13,.72);font:700 13px/1.25 Barlow,sans-serif;color:var(--t);pointer-events:none;border-left:3px solid var(--g);z-index:3}
+.mtpitch .mtacthint:empty{display:none}
+.mtpitch .mtacthint b{color:var(--g)}
+.mtpitch .mtacttimer{position:absolute;left:0;right:0;bottom:0;height:5px;transform:none;background:rgba(0,0,0,.35);z-index:3}
+#mtAct{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;background:none;border:0;padding:6px 4px;flex:0 0 auto}
+#mtAct,#mtAct *{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#mtAct .mtl,#mtAct .mtr{display:flex;flex-direction:column;gap:8px}
+#mtAct .mtl{align-items:center}
+#mtAct .mtmods{display:flex;gap:8px;width:100%}
+#mtAct button{position:relative;overflow:hidden;border:0;border-radius:14px;clip-path:none;padding:4px 6px;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font:800 italic 22px/1 'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.4px;color:#fff;background:#1b2a52;box-shadow:0 3px 0 rgba(0,0,0,.45);transition:transform .06s,filter .1s}
+#mtAct button b,#mtAct button em{position:relative;z-index:1;font:inherit}
+#mtAct button em{font:700 10px/1.1 Barlow,sans-serif;font-style:normal;text-transform:none;letter-spacing:0;opacity:.85}
+#mtAct button.dn{transform:translateY(3px) scale(.96);filter:brightness(1.3);box-shadow:inset 0 0 0 3px #fff}
+#mtAct button:disabled{opacity:.35}
+#mtAct .mb{flex:1;min-height:38px;font-size:16px;background:var(--p2);color:var(--m)}
+#mtAct .mb.dn{color:var(--gold)}
+#mtAct .pass{background:#2a63d6}#mtAct .shoot{background:var(--g);color:#03130b}#mtAct .thru{background:#8a4bd6}#mtAct .lob{background:#e8892b}#mtAct .drib{background:#3a4660}
+#mtAct .chg{position:absolute;inset:0;background:rgba(255,255,255,.4);transform-origin:left;transform:scaleX(var(--c,0));pointer-events:none}
+#mtAct .rbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:clamp(150px,22vw,240px)}
+#mtAct .rbtns button{min-height:clamp(44px,9vh,66px)}
+#mtAct .rbtns .drib{grid-column:1/-1;min-height:38px}
+#mtAct .combos{font:600 10px/1.3 Barlow,sans-serif;color:var(--m);text-align:center;max-width:240px;align-self:center}
+#joy{position:relative;width:clamp(104px,min(32vh,20vw),176px);aspect-ratio:1;border-radius:50%;flex:0 0 auto;border:3px solid var(--line);background:linear-gradient(var(--line),var(--line)) center/2px 70% no-repeat,linear-gradient(var(--line),var(--line)) center/70% 2px no-repeat,radial-gradient(circle,rgba(255,255,255,.12),rgba(255,255,255,.03) 70%)}
+#mtAct:not(.turn) #joy{opacity:.55}
+#joyK{position:absolute;left:50%;top:50%;width:42%;height:42%;margin:-21% 0 0 -21%;border-radius:50%;pointer-events:none;background:radial-gradient(circle at 35% 30%,#7dffc4,var(--g));box-shadow:0 0 0 4px rgba(0,245,138,.25),0 6px 14px #0009}
+.qchat button .qt{margin-left:2px}
+@media(orientation:landscape) and (min-width:640px){
+  #mt{overflow:hidden;padding:max(4px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(4px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))}
+  .mtw{--pw:clamp(240px,min(calc((100dvh - 104px) * 1.5417),calc(100vw - 300px)),960px);max-width:none;height:100%;display:grid;gap:6px 10px;grid-template-columns:minmax(110px,1fr) var(--pw) minmax(130px,1fr);grid-template-rows:auto auto minmax(0,1fr)}
   .mtscore{grid-column:1/-1;grid-row:1;padding:2px 12px}
   .mtscore .tm{font-size:16px}.mtscore .tm i{font-size:26px;padding:0 10px;min-width:40px}
   #mtClk{font-size:22px}.mtclk small{font-size:10px}
-  .mtpitch{grid-column:2;grid-row:2/4;align-self:start;width:100%}
-  .mtfeed{grid-column:1;grid-row:2/4;height:auto;min-height:0;border-left:0;border-top:3px solid var(--line)}
-  .mtfeed .ln{font-size:12px;padding:5px 8px}.mtfeed .ln:first-child{font-size:13px}
-  .qchat{grid-column:3;grid-row:3;padding:0 0 2px}.qchat button{padding:5px 10px;font-size:12px}
-  .mtact{position:fixed;z-index:70;right:max(8px,env(safe-area-inset-right));top:max(50px,calc(env(safe-area-inset-top) + 46px));bottom:max(8px,env(safe-area-inset-bottom));width:min(190px,30vw);border:0;border-top:3px solid var(--line);padding:6px;gap:6px;justify-content:center;min-height:0;overflow:hidden;background:rgba(10,17,36,.94)}
-  .mtact .mtacthint{flex:0 0 auto;white-space:normal;font-size:12px;line-height:1.2}
-  .mtact .mtbtns{flex-direction:column;flex-wrap:nowrap;flex:1 1 auto;min-height:0}
-  #mtAct .gb{flex:1 1 0;min-height:48px;padding:4px 6px}
-  #mtAct .gb b{font-size:24px}
-  #mtAct .gb em{font-size:10px}
-  #mtAct .mtrow2{flex:0 0 auto}
-  #mtAct .mtrow2 button{min-height:32px;font-size:15px;padding:0 6px}
+  .mtpitch{grid-column:2;grid-row:2;width:100%}
+  .qchat{grid-column:2;grid-row:3;align-self:start;padding:0 0 2px}.qchat button{padding:5px 10px;font-size:12px}
+  #mtAct{display:contents}
+  #mtAct .mtl{grid-column:1;grid-row:2/4;align-self:end;justify-self:start;width:100%}
+  #mtAct .mtr{grid-column:3;grid-row:2/4;align-self:end;justify-self:end;align-items:flex-end}
+  #mtAct .rbtns{width:min(100%,240px)}
   #mtChip{top:6px}
 }
+@media(orientation:landscape) and (max-height:430px){#mtAct .combos,#mtAct button em,.qchat .qt{display:none}#mtAct .rbtns button{min-height:44px}#mtAct .rbtns .drib{min-height:34px}}
 </style>
 </head>
 <body>
@@ -874,6 +916,7 @@ window.UTA = (function () {
     <div class="right">
       <button id="setBtn" class="gear" aria-label="Settings" aria-expanded="false">&#9881;</button>
       <div id="setMenu" class="setmenu hidden">
+        <button class="cta sm" id="setMech">Mechanics</button>
         <button class="cta sm alt" id="setRefresh">Refresh</button>
         <button class="cta sm alt" id="setClear">Clear cache &amp; reload</button>
         <button class="cta sm hidden" id="setInstall">Install app</button>
@@ -1021,6 +1064,18 @@ window.UTA = (function () {
       <p class="sub" style="margin-top:12px">Saved packs also appear in the pack pickers for events gifts, codes and weekly rewards.</p>
       <div id="cpList"></div></div>
     <div id="adm-cf" class="adm hidden"><div class="evform" id="cfgForm"></div></div>
+    <div id="qcSec">
+      <h2 class="sec">Quick codes</h2><div class="bar"></div>
+      <p class="sub">Make a redeem code any time. No event needed.</p>
+      <div class="evform">
+        <div class="evrow"><div><label>Code (empty = random)</label><input id="qcCode" maxlength="24" placeholder="WELCOME"></div><div><label>Coins</label><input id="qcCoins" type="number" min="0" value="0"></div></div>
+        <div class="evrow3"><div><label>Pack 1</label><select id="qc1" class="gp"></select></div><div><label>Pack 2</label><select id="qc2" class="gp"></select></div><div><label>Pack 3</label><select id="qc3" class="gp"></select></div></div>
+        <label>Players (names separated by commas, optional)</label><input id="qcPl" placeholder="Rodri, Vinícius Jr">
+        <div class="evrow"><div><label>Total uses (0 = unlimited)</label><input id="qcMax" type="number" min="0" value="0"></div><div><label>Uses per player (0 = unlimited)</label><input id="qcPer" type="number" min="0" value="1"></div></div>
+        <button class="cta" id="qcCreate" style="margin-top:18px">Create code</button>
+      </div>
+      <h2 class="sec" style="font-size:28px">All codes</h2><div class="bar"></div><div id="qcList"></div>
+    </div>
   </main>
 </div>
 
@@ -1044,12 +1099,23 @@ window.UTA = (function () {
 <div id="lu" class="ov hidden"><div class="rays"></div><h3 class="lut">Starting lineups</h3><div class="lug"><div class="luc me" id="luL"></div><div class="luc op" id="luR"></div></div><div class="luct">Kick-off in <b id="luCt">12</b></div><button class="cta alt" id="luBack">Leave match</button></div>
 <div id="mt" class="hidden"><div class="mtw">
   <div class="mtscore"><div class="tm me"><b id="mtN1"></b><i id="mtS1">0</i></div><div class="mtclk"><span id="mtClk">0'</span><small id="mtPh">1st half</small></div><div class="tm op"><i id="mtS2">0</i><b id="mtN2"></b></div></div>
-  <div class="mtpitch"><canvas id="mtCv"></canvas><div id="mtBanner"></div><div id="mtChip"></div><div id="mtBub"></div></div>
-  <div class="mtact hidden" id="mtAct"><div class="mtacthint" id="mtHint"></div><div class="mtbtns">
-    <button id="mtPass" class="gb pass" title="Pass: tap = pass, swipe up = through ball, hold = power pass (P / T / L)"><span class="chg"></span><b>Pass</b><em class="gl" data-d="Tap · ↑ through · hold power">Tap · ↑ through · hold power</em></button>
-    <button id="mtShoot" class="gb shoot" title="Shoot: tap = finesse, swipe up = chip, hold = power (S / C / V)"><span class="chg"></span><b>Shoot</b><em class="gl" data-d="Tap finesse · ↑ chip · hold power">Tap finesse · ↑ chip · hold power</em></button>
-    <div class="mtrow2"><button id="mtDrib" title="Dribble (D)">Dribble</button></div></div>
-  <div class="mtacttimer"><i id="mtTimer"></i></div></div>
+  <div class="mtpitch"><canvas id="mtCv"></canvas><div id="mtBanner"></div><div id="mtChip"></div><div id="mtBub"></div><div class="mtacthint" id="mtHint"></div><div class="mtacttimer"><i id="mtTimer"></i></div></div>
+  <div class="mtact hidden" id="mtAct">
+    <div class="mtl">
+      <div class="mtmods"><button id="mtPow" class="mb" title="Hold Power, then Pass or Shoot (Shift)"><b>Power</b><em>hold</em></button><button id="mtAuto" class="mb" title="Let the AI play this move (A)"><b>Auto</b></button></div>
+      <div id="joy" aria-label="Aim joystick"><i id="joyK"></i></div>
+    </div>
+    <div class="mtr">
+      <div class="rbtns">
+        <button id="mtPass" class="gb pass" title="Pass (P). Hold = driven pass (V). With Chip = lob pass (L)"><span class="chg"></span><b>Pass</b><em>hold = driven</em></button>
+        <button id="mtShoot" class="gb shoot" title="Shoot (S / Space). Hold to charge power"><span class="chg"></span><b>Shoot</b><em>aim with stick</em></button>
+        <button id="mtThru" class="gb thru" title="Through ball (T)"><b>Through</b><em>behind defence</em></button>
+        <button id="mtLob" class="gb lob" title="Chip shot (C)"><b>Chip</b><em>over the keeper</em></button>
+        <button id="mtDrib" class="gb drib" title="Dribble (D)"><b>Dribble</b></button>
+      </div>
+      <div class="combos">Two at once: Pass+Shoot Cross · Pass+Chip Lob pass · Pass+Through Driven through ball · Pass+Dribble One-two · Shoot+Dribble Skill shot</div>
+    </div>
+  </div>
   <div class="mtfeed" id="mtFeed"></div>
   <div class="qchat" id="qChat"></div>
 </div>
@@ -1072,6 +1138,54 @@ window.UTA = (function () {
   <div class="spinner"></div>
   <h2 id="loadingTitle">Loading...</h2>
   <p id="loadingText">Please wait</p>
+</div>
+<div id="mech" class="hidden" role="dialog" aria-label="Mechanics">
+  <div class="mhd"><h2>Mechanics</h2><button class="mx" id="mechX" aria-label="Close">&#10005;</button></div>
+  <div class="mbody">
+    <p class="mlead">Matches are turn-based: when you get the ball, play stops and waits for you. Tap a section to open it.</p>
+    <details open><summary><i>⏱</i>Your turn</summary><div class="mc"><ul>
+      <li>You have <b>6 seconds</b> (the bar along the bottom of the pitch). If you run out, the AI plays the move for you.</li>
+      <li>Every teammate shows a <b>pass success %</b>: green is safe, yellow is risky, red is unlikely.</li>
+      <li>You can also <b>tap a teammate</b> on the pitch to pass to them.</li>
+      <li>Buttons fire when you <b>let go</b>. Joystick and buttons work at the same time.</li></ul></div></details>
+    <details><summary><i>🕹</i>Joystick (left thumb)</summary><div class="mc"><ul>
+      <li><b>Passing:</b> point the stick at a teammate. The one closest to that direction is highlighted. Normal passes prefer near players, lob and driven passes prefer far ones.</li>
+      <li><b>No stick:</b> the game picks the best receiver from positions and your passer's stats.</li>
+      <li><b>Through ball:</b> with the stick, only teammates ahead of you count. Without it, an attacker is picked for you.</li>
+      <li><b>Shot aim:</b> push up or down to aim at a corner. A crosshair shows on the goal when you are close enough. Corners are a bit riskier to hit, but much harder for the keeper to stop.</li></ul></div></details>
+    <details><summary><i>🎮</i>Buttons (right thumb)</summary><div class="mc"><ul>
+      <li><span class="tag p">Pass</span> Ground pass. Depends on your passer vs the nearest defenders, plus distance. Forward passes are a little harder.</li>
+      <li><span class="tag s">Shoot</span> Finesse shot, based on shooting and dribbling.</li>
+      <li><span class="tag t">Through</span> Ball in behind to a forward. About 14% offside risk in the final third.</li>
+      <li><span class="tag c">Chip</span> Chip shot over the keeper. Great close to goal, poor from distance.</li>
+      <li><span class="tag d">Dribble</span> Beat the defender: your dribbling vs his defending. Fail and you lose the ball or give away a foul (maybe a card).</li>
+      <li><b>Power</b> (left, hold) makes Pass a driven pass and Shoot a power shot.</li>
+      <li><b>Auto</b> (left) lets the AI play this move.</li>
+      <li><small>A goalkeeper with the ball can only pass.</small></li></ul></div></details>
+    <details><summary><i>🎯</i>Pass types</summary><div class="mc"><ul>
+      <li><span class="tag p">Ground</span> Tap Pass. Safe and accurate over short and medium range.</li>
+      <li><span class="tag p">Driven</span> Hold Pass, or hold Power and press Pass. Travels much further and rewards a good passer. Over-hitting a short ball is punished.</li>
+      <li><span class="tag c">Lob</span> Pass + Chip. Goes over defenders and further, but is harder to control.</li></ul></div></details>
+    <details><summary><i>⚡</i>Charging</summary><div class="mc"><ul>
+      <li>Hold Pass or Shoot: the first 0.26 s counts as a tap, then the white bar fills over about 1.1 s.</li>
+      <li>Power shots use shooting and physical. Overcharging past about 92% makes them fly wide, and overcharged driven passes are punished too.</li></ul></div></details>
+    <details open><summary><i>🔥</i>5 combos: two buttons at once</summary><div class="mc"><p><small>Press both together, or within a split second of each other.</small></p><ul>
+      <li class="combo"><div class="k"><span class="tag p">Pass</span>+<span class="tag s">Shoot</span><b>Cross</b></div>Whips it into the box for a header. Needs teammates in the box. The duel uses physical and shooting vs the defender.</li>
+      <li class="combo"><div class="k"><span class="tag p">Pass</span>+<span class="tag c">Chip</span><b>Lob pass</b></div>Over the defence and far, but harder to control.</li>
+      <li class="combo"><div class="k"><span class="tag p">Pass</span>+<span class="tag t">Through</span><b>Driven through ball</b></div>Faster ball with a better success chance and half the offside risk.</li>
+      <li class="combo"><div class="k"><span class="tag p">Pass</span>+<span class="tag d">Dribble</span><b>One-two</b></div>Very safe when short, risky when long. A good one with the receiver in the attacking area makes his next shot a one-on-one finish.</li>
+      <li class="combo"><div class="k"><span class="tag s">Shoot</span>+<span class="tag d">Dribble</span><b>Skill shot</b></div>Finesse shot with extra power from your player's dribbling. Aim the corner with the stick.</li></ul></div></details>
+    <details><summary><i>🏟</i>Team factors</summary><div class="mc"><ul>
+      <li>Your team <b>rating and chemistry</b> give an edge on almost every success chance.</li>
+      <li>Each <b>red card</b> lowers your team's edge.</li>
+      <li><b>Player positions are random</b> every match, so no two games start the same.</li>
+      <li>Some AI opponents have bonuses to finishing, passing or goalkeeping.</li></ul></div></details>
+    <details><summary><i>⌨</i>Keyboard</summary><div class="mc"><div class="keys">
+      <span><kbd>Arrows</kbd>Aim</span><span><kbd>S / Space</kbd>Shoot</span><span><kbd>P</kbd>Pass</span><span><kbd>V</kbd>Driven pass</span><span><kbd>L</kbd>Lob pass</span><span><kbd>T</kbd>Through</span><span><kbd>C</kbd>Chip</span><span><kbd>D</kbd>Dribble</span><span><kbd>X</kbd>Cross</span><span><kbd>A</kbd>Auto</span><span><kbd>Shift</kbd>Power</span></div></div></details>
+    <details><summary><i>🌐</i>Online matches</summary><div class="mc"><ul>
+      <li>Both phones run the same match from a shared match ID, and your moves are sent so both screens stay identical.</li>
+      <li>If the other player goes quiet for 25 seconds, the match plays on for them.</li></ul></div></details>
+  </div>
 </div>
 <div id="toast"></div>
 
@@ -2762,7 +2876,7 @@ function startShared(){
   presOff.push(onValue(ref(rtdb, "market"), sn => { mk = sn.val() || {}; if (!$("viewMarket").classList.contains("hidden")) renderMarket(); }, () => {}));
   presOff.push(onValue(ref(rtdb, "config"), sn => { applyCfg(sn.val()); render(); }, () => {}));
   presOff.push(onValue(ref(rtdb, "cpacks"), sn => { cpacks = sn.val() || {}; fillPackSelects(); render(); if (isAdmin()) renderCp(); }, () => {}));
-  if (isAdmin()) presOff.push(onValue(ref(rtdb, "codes"), sn => { codes = sn.val() || {}; renderCodes(); }, () => {}));
+  if (isAdmin()) presOff.push(onValue(ref(rtdb, "codes"), sn => { codes = sn.val() || {}; renderCodes(); $("qcList").innerHTML = $("rcList").innerHTML; }, () => {}));
   const iv = setInterval(renderEvents, 30000); presOff.push(() => clearInterval(iv));
 }
 
@@ -2924,6 +3038,15 @@ $("rcCreate").onclick = async () => {
   if ($("rcExp").value) o.exp = new Date($("rcExp").value).getTime(); if ($("rcEv").value) o.ev = $("rcEv").value;
   try { await set(ref(rtdb, "codes/" + c), o); toast("Code " + c + " created" + (pl.miss.length ? ". Couldn't find: " + pl.miss.join(", ") : "")); $("rcCode").value = ""; } catch (x) { fail(x, "save"); }
 };
+$("qcList").onclick = $("rcList").onclick;
+$("qcCreate").onclick = async () => {
+  if (!isAdmin()) return; let c = cleanCode($("qcCode").value); if (!c) c = Array.from({ length: 8 }, () => "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"[Math.random() * 32 | 0]).join("");
+  const pl = findPl($("qcPl").value), packs = ["qc1", "qc2", "qc3"].map(i => $(i).value).filter(Boolean), coins = Math.max(0, Math.round(+$("qcCoins").value) || 0);
+  if (!coins && !packs.length && !pl.ids.length) return toast("Put something in the code first.");
+  if (codes[c]) return toast("That code already exists.");
+  const o = { coins, packs, players: pl.ids, max: Math.max(0, Math.round(+$("qcMax").value) || 0), per: $("qcPer").value === "" ? 1 : Math.max(0, Math.round(+$("qcPer").value) || 0), used: 0, by: user.key, ts: Date.now() };
+  try { await set(ref(rtdb, "codes/" + c), o); toast("Code " + c + " created" + (pl.miss.length ? ". Couldn't find: " + pl.miss.join(", ") : "")); $("qcCode").value = ""; $("qcCoins").value = 0; $("qcPl").value = ""; } catch (x) { fail(x, "save"); }
+};
 async function redeem(){
   if (!user || rcBusy) return; const c = cleanCode($("rcIn").value); if (!c) return toast("Enter a code.");
   rcBusy = true;
@@ -2983,6 +3106,9 @@ window.addEventListener("appinstalled", () => { installEv = null; $("setInstall"
 })();
 $("setBtn").onclick = e => { e.stopPropagation(); const m = $("setMenu"); m.classList.toggle("hidden"); $("setBtn").setAttribute("aria-expanded", !m.classList.contains("hidden")); };
 document.addEventListener("click", e => { if (!e.target.closest("#setMenu") && e.target.id !== "setBtn") { $("setMenu").classList.add("hidden"); $("setBtn").setAttribute("aria-expanded", "false"); } });
+$("setMech").onclick = () => { $("setMenu").classList.add("hidden"); $("setBtn").setAttribute("aria-expanded", "false"); $("mech").classList.remove("hidden"); $("mech").scrollTop = 0; };
+$("mechX").onclick = () => $("mech").classList.add("hidden");
+document.addEventListener("keydown", e => { if (e.key === "Escape") $("mech").classList.add("hidden"); });
 $("setRefresh").onclick = () => location.reload();
 $("setClear").onclick = async () => {
   $("setClear").textContent = "Clearing..."; $("setClear").disabled = true;
@@ -3053,7 +3179,7 @@ $("mkListBtn").onclick = async () => {
     state.club.splice(state.club.indexOf(pid), 1); render(); await save(); toast(`${P(pid).name} listed for ${fmt(price)}`);
   } catch (x) { fail(x, "list"); } finally { mkBusy = false; renderMarket(); }
 };
-["evCreate", "rcCreate", "cpCreate", "mkListBtn", "rcBtn"].forEach(id => { const b = $(id), f = b.onclick; b.onclick = () => withBtn(b, f); });
+["evCreate", "rcCreate", "qcCreate", "cpCreate", "mkListBtn", "rcBtn"].forEach(id => { const b = $(id), f = b.onclick; b.onclick = () => withBtn(b, f); });
 const slotsOf = () => Array.from({ length: 11 }, (_, i) => +(state.squad && state.squad.slots && state.squad.slots[i]) || 0);
 const squadReady = () => !!state.squad && slotsOf().every(Boolean);
 const squadRating = () => teamRating(slotsOf());
@@ -3206,10 +3332,20 @@ function mLines(form, players) {
   const av = a => Math.round(a.reduce((x, y) => x + y, 0) / (a.length || 1));
   return { att: av(g.att), mid: av(g.mid), def: av(g.def) };
 }
-function mkTeam(isMe, name, formation, players, rating, dir, chem) {
+/* every match gets its own player layout: same-position players swap spots, the whole team sits higher or deeper, and everyone drifts a little.
+   With a seed (online match id + side) both phones get the identical layout. */
+function mkLayout(form, seed) {
+  const rnd = seed ? mSeeded(mHash(seed)) : Math.random, F = FORMS[form], L = F.map(([p, x, y]) => [x, y]), g = {};
+  F.forEach(([p], i) => { if (p !== "GK") (g[p] = g[p] || []).push(i); });
+  Object.values(g).forEach(ix => { const sp = ix.map(i => L[i].slice()); for (let k = sp.length - 1; k > 0; k--) { const j = Math.floor(rnd() * (k + 1)); [sp[k], sp[j]] = [sp[j], sp[k]]; } ix.forEach((i, k) => { L[i] = sp[k]; }); });
+  const push = (rnd() - .5) * 12;
+  return L.map(([x, y], i) => F[i][0] === "GK" ? [mClamp(x + (rnd() - .5) * 8, 40, 60), y] : [mClamp(x + (rnd() - .5) * 28, 6, 94), mClamp(y + push + (rnd() - .5) * 16, 12, 82)]);
+}
+function mkTeam(isMe, name, formation, players, rating, dir, chem, lay) {
   const t = { me: isMe, name, form: formation, dir, rating, idx: dir > 0 ? 0 : 1, red: 0, eff: rating + ((chem == null ? 16.5 : chem) - 16.5) / 5.5 };
-  t.pl = FORMS[formation].map(([pos, x, y], i) => {
-    const xa = (89 - y) / 74;
+  lay = lay || mkLayout(formation, null);
+  t.pl = FORMS[formation].map(([pos], i) => {
+    const [x, y] = lay[i], xa = (89 - y) / 74;
     return { p: players[i], pos, lat: x, x: dir > 0 ? 5 + xa * 75 : PW - (5 + xa * 75), y: dir > 0 ? x / 100 * PH : PH - x / 100 * PH, short: lastName(players[i]), yc: 0, off: false };
   });
   return t;
@@ -3285,18 +3421,18 @@ function pass(m, T, O, s, pt, long, fx) {
   }
   return 1;
 }
-function through(m, T, O, s, pt) {
+function through(m, T, O, s, pt, to, fast) {
   const xa = xaOf(T, pt.x), e = edge(m, T, O);
   const c = live(T).filter(r => r !== s && ["ST", "LW", "RW", "CAM"].includes(r.pos) && xaOf(T, r.x) > xa + .1);
-  if (!c.length) return pass(m, T, O, s, pt, false);
-  const r = mWPick(c, c.map(x => x.p.pac - 40)), rp = { x: mClamp(r.x + T.dir * mRnd(0, 5), 2, PW - 2), y: mClamp(r.y + mRnd(-4, 4), 3, PH - 3) };
+  if (!c.length && !to) return pass(m, T, O, s, pt, false);
+  const r = to && to !== s && !to.off ? to : mWPick(c, c.map(x => x.p.pac - 40)), rp = { x: mClamp(r.x + T.dir * mRnd(0, 5), 2, PW - 2), y: mClamp(r.y + mRnd(-4, 4), 3, PH - 3) };
   const ch = nearest(O, rp), a = nm(T, s), b = nm(T, r);
-  if (xaOf(T, rp.x) > .78 && mChance(.14)) {
+  if (xaOf(T, rp.x) > .78 && mChance(fast ? .07 : .14)) {
     m.hook.aim(rp, r, T);
     say(m, `${a} threads it through to ${b}... but the flag is up. Offside! Free kick to ${tn(O)}.`);
     const k = nearest(O, rp); takeBall(m, O, k, { x: k.x, y: k.y }); return 1.2;
   }
-  const pr = mClamp(.5 + (s.p.pas - 70) / 200 + (r.p.pac - ch.p.def) / 300 + edge(m, T, O) / 300, .25, .82);
+  const pr = mClamp(.5 + (s.p.pas - 70) / 200 + (r.p.pac - ch.p.def) / 300 + edge(m, T, O) / 300 + (fast ? .06 : 0), .25, .82);
   if (mChance(pr)) {
     m.last = { team: T, slot: s }; setBall(m, rp, r, T); m.boost = xaOf(T, rp.x) > .7 ? .6 : 0;
     say(m, `${a} slides a brilliant through ball to ${b}! ${m.boost ? `${b} is through on goal!` : attackText(T, r, rp) + "."}`);
@@ -3349,7 +3485,9 @@ function shoot(m, T, O, s, pt, kind, opt) {
     sho = blend * (kind === "long" && sty !== "power" ? .9 : 1) + (kind === "one" ? 4 : 0);
     if (m.hook.flash && !m.skipping) m.hook.flash(sty === "power" ? "Power shot" : sty === "chip" ? "Chip" : "Finesse", "");
   }
-  const goalX = T.dir > 0 ? PW + 1.5 : -1.5, gy = mRnd(GOALY[0] + 1, GOALY[1] - 1);
+  const goalX = T.dir > 0 ? PW + 1.5 : -1.5, aim = (opt && opt.aim) || 0, gy = aim ? 34 + aim * 3.1 : mRnd(GOALY[0] + 1, GOALY[1] - 1);
+  if (aim) mRand(); // keep the random sequence the same whether or not a corner was aimed
+  if (opt && opt.sk) sho += (s.p.dri - 70) / 10 + 2;
   st.shots++;
   if ((kind === "open" || kind === "long") && sty !== "chip") {
     const bl = nearest(O, pt);
@@ -3360,7 +3498,7 @@ function shoot(m, T, O, s, pt, kind, opt) {
     }
   }
   const offAdj = !sty ? 0 : sty === "finesse" ? -.05 - Math.max(0, s.p.dri - 80) / 500 : sty === "power" ? .04 + pw * .1 + (pw > .92 ? .18 : 0) - xs * .2 : .11 + xs * .9 - (kind === "one" ? .08 : 0) - Math.max(0, s.p.dri - 80) / 400;
-  const off = kind === "pen" ? .06 : mClamp(.33 - (sho - 70) / 160 + (.85 - xa) * .6 + (kind === "free" ? .15 : 0) + (kind === "head" ? .08 : 0) - (kind === "one" ? .12 : 0) + offAdj, .06, .7);
+  const off = kind === "pen" ? .06 : mClamp(.33 - (sho - 70) / 160 + (.85 - xa) * .6 + (kind === "free" ? .15 : 0) + (kind === "head" ? .08 : 0) - (kind === "one" ? .12 : 0) + offAdj + Math.abs(aim) * .07 - (opt && opt.sk ? .04 : 0), .06, .7);
   if (mChance(off)) {
     m.hook.ball({ x: goalX, y: mChance(.5) ? GOALY[0] - 5 : GOALY[1] + 5 });
     say(m, mChance(.12) ? `${a} hits the ${mPick(["post", "crossbar"])}! So close for ${tn(T)}!` : kind === "head" ? `${a} heads it over the bar.` : mPick([`${a} fires it wide of the post!`, `${a} blasts it over the bar!`, `${a} drags the shot just wide.`]));
@@ -3368,7 +3506,7 @@ function shoot(m, T, O, s, pt, kind, opt) {
   }
   st.on++;
   const gpAdj = !sty ? 0 : sty === "finesse" ? (xa > .7 ? .02 : 0) + (s.p.dri - 75) / 1000 : sty === "power" ? .02 + pw * .14 + (s.p.phy - 75) / 700 - (pw > .92 ? .04 : 0) : (xa > .82 ? .04 : -.1) + (kind === "one" ? .06 : 0) + (s.p.dri - 75) / 250 - (gk.p.ovr - 80) / 500;
-  const gp = kind === "pen" ? .78 : mClamp(.18 + (sho - gk.p.ovr) / 160 + (xa - .8) * .5 + e / 320 + (kind === "one" ? .15 : 0) - (kind === "free" ? .05 : 0) - (kind === "long" ? .04 : 0) + ((T.fin || 0) - (O.kp || 0)) / 100 + gpAdj, .05, .75);
+  const gp = kind === "pen" ? .78 : mClamp(.18 + (sho - gk.p.ovr) / 160 + (xa - .8) * .5 + e / 320 + (kind === "one" ? .15 : 0) - (kind === "free" ? .05 : 0) - (kind === "long" ? .04 : 0) + ((T.fin || 0) - (O.kp || 0)) / 100 + gpAdj + Math.abs(aim) * .06, .05, .75);
   if (mChance(gp)) { m.hook.ball({ x: goalX, y: gy }); return goal(m, T, O, s, kind === "open" || kind === "one" || kind === "head" ? wasAssist(m, T, s) : null, sty || kind); }
   m.hook.ball({ x: gk.x, y: gy });
   say(m, mPick([`SAVE by ${g}! ${a}'s shot is kept out.`, `${a} hits it on target but ${g} makes the save!`, `${g} dives and stops ${a}'s effort! What a save!`]));
@@ -3407,14 +3545,17 @@ function userPassP(m, T, O, s, pt, r, style, pw) {
     pw = pw || 0; dd = d / (PASS_DIST * (1 + pw * 1.2)); skill = (s.p.pas - dfn) / 210 + (s.p.pas + s.p.ovr - 150) / 700; fp *= .35;
     if (d < 32) skill -= pw * (32 - d) / 60; if (pw > .92) skill -= .1;
   }
+  if (style === "onetwo") { skill += .1; if (d > 38) skill -= (d - 38) / 60; } // give and go: very safe when short, risky when long
+  if (style === "lob") { dd = d / (PASS_DIST * 1.9); skill -= .05; fp *= .3; } // lofted ball: flies over players and goes much further, but is harder to control
   return mClamp(PASS_BASE + skill - dd - fp + edge(m, T, O) / 350 + (T.psk || 0) / 100, .15, .95);
 }
 function userDo(m, T, O, s, pt, ua) {
   const xa = xaOf(T, pt.x), bo = m.boost; m.boost = 0; m.justUser = true;
-  if (ua.k === "pass" && ua.style === "through" && s.pos !== "GK") return through(m, T, O, s, pt);
-  if (ua.k === "pass" && ua.to && !ua.to.off && ua.to !== s) return pass(m, T, O, s, pt, false, { r: ua.to, p: userPassP(m, T, O, s, pt, ua.to, ua.style, ua.pw) });
+  if (ua.k === "pass" && (ua.style === "through" || ua.style === "thruf") && s.pos !== "GK") return through(m, T, O, s, pt, ua.to, ua.style === "thruf");
+  if (ua.k === "cross" && s.pos !== "GK") return cross(m, T, O, s, pt);
+  if (ua.k === "pass" && ua.to && !ua.to.off && ua.to !== s) { const res = pass(m, T, O, s, pt, false, { r: ua.to, p: userPassP(m, T, O, s, pt, ua.to, ua.style, ua.pw) }); if (ua.style === "onetwo" && m.car === ua.to && m.poss === T && xaOf(T, ua.to.x) > .6) m.boost = .5; return res; } // a good one-two leaves the receiver in on goal
   if (s.pos === "GK") return pass(m, T, O, s, pt, mChance(.4));
-  if (ua.k === "shoot") return shoot(m, T, O, s, pt, bo ? "one" : xa > .75 ? "open" : "long", ua.style ? { style: ua.style, pw: ua.pw || 0 } : null);
+  if (ua.k === "shoot") return shoot(m, T, O, s, pt, bo ? "one" : xa > .75 ? "open" : "long", ua.style ? { style: ua.style === "skill" ? "finesse" : ua.style, pw: ua.pw || 0, aim: ua.aim || 0, sk: ua.style === "skill" } : null);
   if (ua.k === "dribble") return dribble(m, T, O, s, pt);
   return pass(m, T, O, s, pt, false);
 }
@@ -3428,7 +3569,7 @@ function act(m) {
       m.hook.send && m.hook.send(m.net.seq, T, ua);
     } else {
       const r = m.net.buf[m.net.seq]; if (!r) return WAIT; delete m.net.buf[m.net.seq];
-      ua = { k: r.k, style: r.st || undefined, pw: r.pw || 0, to: r.to >= 0 ? T.pl[r.to] : undefined };
+      const sp = String(r.st || "").split("@"); ua = { k: r.k, style: sp[0] || undefined, pw: r.pw || 0, aim: sp[1] ? (+sp[1] || 0) / 10 : 0, to: r.to >= 0 ? T.pl[r.to] : undefined };
     }
     m.net.seq++;
     if (ua.k !== "auto") { m.stats[T.idx].poss++; return userDo(m, T, O, s, pt, ua); }
@@ -3487,14 +3628,15 @@ async function prepareMatch(v){
   }
   v.op = { name: v.opp.name, ...op };
   v.meHome = v.opp.bot || !v.opp.k ? true : user.key < v.opp.k; // both players work out the same home/away
+  { const sd = t => v.matchId && !v.opp.bot ? v.matchId + t : null; v.my.lay = mkLayout(v.my.form, sd(v.meHome ? "H" : "A")); v.op.lay = mkLayout(v.op.form, sd(v.meHome ? "A" : "H")); } // random player positions, fresh every match
   await new Promise(r => setTimeout(r, Math.max(0, 2600 - (Date.now() - t0))));
   if (v.tok !== vsTok) return;
   showLineups(v);
 }
 function luCard(t){
   const ln = mLines(t.form, t.players);
-  const dots = FORMS[t.form].map(([pos, x, y], i) => {
-    const p = t.players[i];
+  const dots = FORMS[t.form].map(([pos], i) => {
+    const p = t.players[i], [x, y] = t.lay ? t.lay[i] : FORMS[t.form][i].slice(1);
     return `<div class="lpl" style="left:${x}%;top:${y}%" title="${mEsc(p.name)}"><div class="mc ${tier(p)}"><b>${p.ovr}</b><span class="${p.pos !== pos ? "oop" : ""}">${pos}</span></div></div>`;
   }).join("");
   return `<div class="lh"><b>${mEsc(t.name)}</b><small>${t.form}</small></div>
@@ -3523,15 +3665,14 @@ function cancelMatchFlow(){
 /* 2) the match */
 function mkLive(v){
   mRand = v.matchId && !v.opp.bot ? mSeeded(mHash(v.matchId)) : Math.random; // same match id = same match for both players
-  const mine = mkTeam(true, v.my.name, v.my.form, v.my.players, v.my.rating, v.meHome ? 1 : -1, v.my.chem);
-  const op = mkTeam(false, v.op.name, v.op.form, v.op.players, v.op.rating, v.meHome ? -1 : 1, v.op.chem);
+  const mine = mkTeam(true, v.my.name, v.my.form, v.my.players, v.my.rating, v.meHome ? 1 : -1, v.my.chem, v.my.lay);
+  const op = mkTeam(false, v.op.name, v.op.form, v.op.players, v.op.rating, v.meHome ? -1 : 1, v.op.chem, v.op.lay);
   if (v.opp.bot && v.opp.ai != null) { const a = AI[v.opp.ai]; op.eff += a.bonus; op.fin = a.fin; op.psk = a.psk; op.kp = a.kp; }
   const A = v.meHome ? mine : op, B = v.meHome ? op : mine;
   const ui = { b: { x: 52.5, y: 34 }, ct: { x: 52.5, y: 34 }, car: null, ch: null, team: A, hold: null, shot: null, dead: false, q: [], d0: 10, h: 0, bs: 1, bsAt: 0, popDelay: 0, phase: "kick", celT: 0, cel: null, net: null, parts: [], sc: [0, 0] };
   const CHIPS = [[/sent off/i, "Red card", "red"], [/yellow card/i, "Yellow card", "yel"], [/PENALTY/, "Penalty!", ""], [/offside/i, "Offside", ""], [/hits the (post|crossbar)/, "Off the woodwork!", ""], [/save/i, "Save!", ""], [/Corner to/, "Corner", ""], [/Free kick to/, "Free kick", ""]];
   const hooks = {
-    say(min, html, cls){
-      const d = document.createElement("div"); d.className = "ln" + (cls ? " " + cls : ""); d.innerHTML = `<em>${min}'</em>${html}`; addFeed(d);
+    say(min, html, cls){ // no written commentary any more: only the quick pop-up chips (save, corner, card...)
       const tx = html.replace(/<[^>]+>/g, ""), c = CHIPS.find(x => x[0].test(tx)); if (c && !M.skipping) chip(c[1], c[2]);
     },
     aim(pt, s, team){ const it = { pt: { x: pt.x, y: pt.y }, s, team }; idle(ui) && !ui.q.length ? applyAim(ui, it) : ui.q.push(it); },
@@ -3545,7 +3686,7 @@ function mkLive(v){
     phase(t){ $("mtPh").textContent = t; },
     flash(t, c){ if (!M.skipping) chip(t, c); },
     send(seq, T, ua){
-      const o = { t: T.idx, k: ua.k, pw: ua.pw || 0, to: ua.to ? T.pl.indexOf(ua.to) : -1 }; if (ua.style) o.st = ua.style;
+      const o = { t: T.idx, k: ua.k, pw: ua.pw || 0, to: ua.to ? T.pl.indexOf(ua.to) : -1 }; if (ua.style || ua.aim) o.st = (ua.style || "") + (ua.aim ? "@" + Math.round(ua.aim * 10) : "");
       set(ref(rtdb, "matchctl/" + M.net.id + "/s" + seq), o).catch(() => { if (M && !M.netErr) { M.netErr = 1; toast("Couldn't sync controls. Check your database rules for matchctl."); } });
     },
     clock(){ M.ckT = performance.now(); $("mtClk").textContent = dispMin(M) + "'"; updScore(); updAct(); },
@@ -3600,12 +3741,13 @@ function loop(){
 function updAct(){
   const bar = $("mtAct"), on = !!(M && !M.done), isBot = !!(on && (M.net || (M.vs && M.vs.opp.bot)));
   bar.classList.toggle("hidden", !on); if (!on) return;
-  const turn = !!M.ask, gk = !!(M.car && M.car.pos === "GK");
+  const turn = !!M.ask, gk = !!(M.car && M.car.pos === "GK"), off = !isBot || !turn;
   bar.classList.toggle("turn", turn);
-  $("mtShoot").disabled = !isBot || !turn || gk; $("mtPass").disabled = !isBot || !turn; $("mtDrib").disabled = !isBot || !turn || gk;
-  $("mtHint").innerHTML = !isBot ? "Controls aren't available in this match" : !M.ctl ? "Auto-play: tap <b>Auto</b> to take control" : turn ? "<b>Your ball.</b> Pass, shoot, or tap a teammate" : M.poss === M.mine ? "Get ready…" : M.net ? "Opponent has the ball, wait…" : "Opponent has the ball";
+  ["mtPass", "mtThru", "mtAuto"].forEach(i => $(i).disabled = off);
+  ["mtShoot", "mtLob", "mtDrib"].forEach(i => $(i).disabled = off || gk);
+  $("mtHint").innerHTML = !isBot ? "Controls aren't available in this match" : !M.ctl ? "Auto-play" : turn ? "<b>Your ball.</b> Stick = aim, buttons = action" : M.poss === M.mine ? "Get ready…" : "Opponent has the ball";
   $("mtCv").classList.toggle("pick", turn);
-  if (!turn) { const t = $("mtTimer"); t.style.transform = "scaleX(0)"; t.classList.remove("low"); }
+  if (!turn) { const t = $("mtTimer"); t.style.transform = "scaleX(0)"; t.classList.remove("low"); IN.down = {}; if (pend) { clearTimeout(pend.tm); pend = null; } document.querySelectorAll("#mtAct .dn").forEach(x => { if (x.id !== "mtPow") x.classList.remove("dn"); }); $("mtPass").style.setProperty("--c", 0); $("mtShoot").style.setProperty("--c", 0); }
 }
 function openAsk(){
   const m = M, T = m.mine, O = other(m, T), s = m.car, pt = m.pt;
@@ -3629,72 +3771,120 @@ $("mtCv").addEventListener("click", e => { const o = askPick(e); if (o) decide({
 $("mtCv").addEventListener("pointermove", e => { if (M && M.ask && e.pointerType === "mouse") M.ask.hover = askPick(e); });
 $("mtCv").addEventListener("pointerleave", () => { if (M && M.ask) M.ask.hover = null; });
 const doDribble = () => { if (M && M.ask && M.car.pos !== "GK") decide({ k: "dribble" }); };
-$("mtDrib").onclick = doDribble;
-/* ---- v7: Pass / Shoot buttons. tap = normal, swipe up = special, hold = power ---- */
-const HOLD_MS = 260, CHARGE_MS = 1100, SWIPE_PX = 26;
-function passTarget(style, pw){ // the engine picks the receiver for you, using positions and your passer's stats
+/* ---- v8: joystick on the left, buttons on the right. Every control works at the same time (multi-touch),
+   and two buttons pressed together make a combo. ---- */
+const HOLD_MS = 260, CHARGE_MS = 1100, COMBO_MS = 80;
+const IN = { joy: { x: 0, y: 0, on: false }, kx: 0, ky: 0, down: {}, pow: false };
+let pend = null;
+const stick = () => { const j = IN.joy; if (j.on) return { x: j.x, y: j.y, on: true }; if (IN.kx || IN.ky) { const m = Math.hypot(IN.kx, IN.ky) || 1; return { x: IN.kx / m, y: IN.ky / m, on: true }; } return { x: 0, y: 0, on: false }; };
+const chg = n => { const d = IN.down[n]; return d ? mClamp((performance.now() - d.t - HOLD_MS) / CHARGE_MS, 0, 1) : 0; };
+function passTarget(style, pw){ // no stick input: the engine picks the receiver for you, using positions and your passer's stats
   const a = M.ask; if (!a || !a.opts.length) return null;
-  const T = M.mine, O = other(M, T), s = M.car, pt = M.pt, xa0 = xaOf(T, pt.x); let best = null, bs = -9;
+  const T = M.mine, O = other(M, T), s = M.car, pt = M.pt, xa0 = xaOf(T, pt.x), far = style === "power" || style === "lob"; let best = null, bs = -9;
   a.opts.forEach(o => {
     const d = dist(pt, o.s), f = xaOf(T, o.s.x) - xa0;
     if (o.s.pos === "GK" && xa0 > .3) return;
     let sc;
-    if (style === "power") { if (d < 26 || f < .05) return; sc = userPassP(M, T, O, s, pt, o.s, "power", pw) + f * 1.3 + (["ST", "LW", "RW", "CAM"].includes(o.s.pos) ? .08 : 0); }
+    if (far) { if (d < 26 || f < .05) return; sc = userPassP(M, T, O, s, pt, o.s, style, pw) + f * 1.3 + (["ST", "LW", "RW", "CAM"].includes(o.s.pos) ? .08 : 0); }
     else sc = o.p + mClamp(f, -.15, .3) * .9 - (d > 40 ? (d - 40) / 80 : 0);
     if (sc > bs) { bs = sc; best = o; }
   });
-  return best || (style === "power" ? passTarget("normal", 0) : a.opts[0]);
+  return best || (far ? passTarget("normal", 0) : a.opts[0]);
 }
-function bindGesture(btn, kind, fire, key){
-  let st = null, raf = 0;
-  const lbl = btn.querySelector(".gl"), meter = btn.querySelector(".chg");
-  const reset = () => { cancelAnimationFrame(raf); st = null; btn.classList.remove("hold", "swipe"); meter.style.transform = "scaleX(0)"; lbl.textContent = lbl.dataset.d; if (M && M.ask) { M.ask.hover = null; M.ask.hp = null; } };
-  const charge = () => (st && st.hold ? mClamp((performance.now() - st.t - HOLD_MS) / CHARGE_MS, 0, 1) : 0);
-  const tick = () => {
-    if (!st || !M || !M.ask) return reset();
-    const now = performance.now();
-    if (!st.swiped && now - st.t >= HOLD_MS) { st.hold = true; btn.classList.add("hold"); }
-    if (st.swiped) { btn.classList.remove("hold"); meter.style.transform = "scaleX(0)"; lbl.textContent = key.swipe; }
-    else if (st.hold) { const c = charge(); meter.style.transform = `scaleX(${c})`; lbl.textContent = key.hold + " " + Math.round(c * 100) + "%";
-      if (kind === "pass") { const o = passTarget("power", c); if (o) { M.ask.hover = o; M.ask.hp = userPassP(M, M.mine, other(M, M.mine), M.car, M.pt, o.s, "power", c); } } }
-    else { lbl.textContent = lbl.dataset.d; if (kind === "pass") { const o = passTarget("normal", 0); if (o) { M.ask.hover = o; M.ask.hp = null; } } }
-    raf = requestAnimationFrame(tick);
-  };
-  btn.addEventListener("pointerdown", e => {
-    if (btn.disabled || !M || !M.ask) return; e.preventDefault();
-    try { btn.setPointerCapture(e.pointerId); } catch (_) {}
-    st = { x: e.clientX, y: e.clientY, t: performance.now(), swiped: false, hold: false }; raf = requestAnimationFrame(tick);
+function aimTarget(style, pw){ // the joystick points at a team-mate: the one closest to that direction on screen
+  const a = M.ask; if (!a || !a.opts.length) return null; const st = stick();
+  if (!st.on) return style === "through" ? null : passTarget(style, pw);
+  const T = M.mine, car = M.car, fl = M.flip ? -1 : 1, far = style === "power" || style === "lob", xa0 = xaOf(T, M.pt.x);
+  let best = null, bs = -9, any = null, ac = -2;
+  a.opts.forEach(o => {
+    if (style === "through" && (o.s.pos === "GK" || xaOf(T, o.s.x) <= xa0 + .02)) return;
+    const dx = (o.s.v.x - car.v.x) * fl, dy = (o.s.v.y - car.v.y) * fl, d = Math.hypot(dx, dy) || 1, cos = (dx * st.x + dy * st.y) / d;
+    if (cos > ac) { ac = cos; any = o; }
+    if (cos < .45) return;
+    const sc = cos * 2 + o.p * .6 + (far ? Math.min(d, 70) / 90 : -d / 110);
+    if (sc > bs) { bs = sc; best = o; }
   });
-  btn.addEventListener("pointermove", e => { if (st && !st.swiped && st.y - e.clientY > SWIPE_PX) { st.swiped = true; st.hold = false; } });
-  btn.addEventListener("pointerup", e => {
-    if (!st) return; const g = st, c = charge(); reset();
-    if (!M || !M.ask) return;
-    fire(g.swiped ? "swipe" : g.hold ? "hold" : "tap", c);
-  });
-  btn.addEventListener("pointercancel", reset);
-  btn.addEventListener("contextmenu", e => e.preventDefault());
+  return best || any;
 }
-function firePass(how, c){
+function shotAim(){ // stick up / down chooses the corner of the goal (in pitch coordinates, so both phones agree)
+  const st = stick(); if (!st.on || Math.abs(st.y) < .3) return 0;
+  return Math.round(mClamp(st.y * (M.flip ? -1 : 1) * 1.15, -1, 1) * 10) / 10;
+}
+const COMBO_NAME = { cross: "Cross", lobpass: "Lob pass", skill: "Skill shot", thrufast: "Driven through ball", onetwo: "One-two" };
+const comboOf = (a, b) => ({ "pass+shoot": "cross", "chip+pass": "lobpass", "drib+shoot": "skill", "pass+thru": "thrufast", "drib+pass": "onetwo" })[[a, b].sort().join("+")];
+function fire(kind, c){
   if (!M || !M.ask) return;
-  if (how === "swipe") return decide({ k: "pass", style: "through" });
-  const o = passTarget(how === "hold" ? "power" : "normal", c); if (!o) return;
-  decide({ k: "pass", to: o.s, style: how === "hold" ? "power" : "normal", pw: c });
+  const gk = M.car.pos === "GK", pwr = IN.pow || c > 0, pw = pwr ? (IN.pow ? Math.max(.8, c) : c) : 0, aim = shotAim();
+  if (COMBO_NAME[kind] && !gk && M.hook.flash) M.hook.flash(COMBO_NAME[kind], "");
+  else if (kind === "pass" && pwr && M.hook.flash) M.hook.flash("Driven pass", "");
+  if (kind === "pass") { const o = aimTarget(pwr ? "power" : "normal", pw); if (o) decide({ k: "pass", to: o.s, style: pwr ? "power" : "normal", pw }); }
+  else if (kind === "thru") { const o = aimTarget("through"); decide({ k: "pass", style: "through", to: o ? o.s : undefined }); }
+  else if (kind === "thrufast") { const o = aimTarget("through"); decide({ k: "pass", style: "thruf", to: o ? o.s : undefined }); }
+  else if (kind === "onetwo") { const o = aimTarget("normal"); if (o) decide({ k: "pass", to: o.s, style: "onetwo" }); }
+  else if (kind === "lobpass") { const o = aimTarget("lob", 0); if (o) decide({ k: "pass", to: o.s, style: "lob" }); }
+  else if (gk) return;
+  else if (kind === "cross") decide({ k: "cross" });
+  else if (kind === "shoot") decide({ k: "shoot", style: pwr ? "power" : "finesse", pw, aim });
+  else if (kind === "chip") decide({ k: "shoot", style: "chip", aim });
+  else if (kind === "skill") decide({ k: "shoot", style: "skill", aim });
+  else if (kind === "drib") doDribble();
 }
-function fireShoot(how, c){
-  if (!M || !M.ask || M.car.pos === "GK") return;
-  decide({ k: "shoot", style: how === "swipe" ? "chip" : how === "hold" ? "power" : "finesse", pw: c });
+function press(name, pid){
+  if (pend) { const p = pend; pend = null; clearTimeout(p.tm); const k = comboOf(p.name, name); if (k) { IN.down[name] = { t: performance.now(), pid, used: true }; return fire(k, 0); } fire(p.name, p.c); }
+  IN.down[name] = { t: performance.now(), pid, used: false };
 }
-bindGesture($("mtPass"), "pass", firePass, { swipe: "Through ball", hold: "Power" });
-bindGesture($("mtShoot"), "shoot", fireShoot, { swipe: "Chip", hold: "Power" });
-document.addEventListener("keydown", e => {
-  if (!M || !M.ask || e.ctrlKey || e.metaKey || e.altKey || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
-  const k = e.key.toLowerCase();
-  if (k === " " || k === "s") { e.preventDefault(); fireShoot("tap", 0); } else if (k === "c") { e.preventDefault(); fireShoot("swipe", 0); } else if (k === "v") { e.preventDefault(); fireShoot("hold", .7); }
-  else if (k === "p") { e.preventDefault(); firePass("tap", 0); } else if (k === "t") { e.preventDefault(); firePass("swipe", 0); } else if (k === "l") { e.preventDefault(); firePass("hold", .7); }
-  else if (k === "d") { e.preventDefault(); doDribble(); }
+function release(name){
+  const d = IN.down[name]; delete IN.down[name]; if (!d || d.used) return;
+  const c = mClamp((performance.now() - d.t - HOLD_MS) / CHARGE_MS, 0, 1);
+  const o = Object.keys(IN.down).find(k => !IN.down[k].used && comboOf(name, k)); // the other button is still held: combo
+  if (o) { IN.down[o].used = true; return fire(comboOf(name, o), c); }
+  pend = { name, c, tm: setTimeout(() => { const p = pend; pend = null; if (p) fire(p.name, p.c); }, COMBO_MS) }; // a short grace so "almost together" counts as together
+}
+const ACT = { mtPass: "pass", mtShoot: "shoot", mtThru: "thru", mtLob: "chip", mtDrib: "drib" };
+Object.entries(ACT).forEach(([id, name]) => {
+  const b = $(id);
+  b.addEventListener("pointerdown", e => { e.preventDefault(); if (b.disabled || !M || !M.ask) return; try { b.setPointerCapture(e.pointerId); } catch (_) {} b.classList.add("dn"); press(name, e.pointerId); });
+  b.addEventListener("pointerup", e => { const d = IN.down[name]; if (!d || d.pid !== e.pointerId) return; b.classList.remove("dn"); b.style.setProperty("--c", 0); release(name); });
+  b.addEventListener("pointercancel", e => { const d = IN.down[name]; if (d && d.pid === e.pointerId) { delete IN.down[name]; b.classList.remove("dn"); } });
+  b.addEventListener("contextmenu", e => e.preventDefault());
 });
+{ const pb = $("mtPow"), off = () => { IN.pow = false; pb.classList.remove("dn"); };
+  pb.addEventListener("pointerdown", e => { e.preventDefault(); try { pb.setPointerCapture(e.pointerId); } catch (_) {} IN.pow = true; pb.classList.add("dn"); });
+  pb.addEventListener("pointerup", off); pb.addEventListener("pointercancel", off); pb.addEventListener("contextmenu", e => e.preventDefault()); }
+$("mtAuto").addEventListener("click", () => { if (M && M.ask) decide({ k: "auto" }); });
+{ const base = $("joy"), knob = $("joyK"); let pid = null;
+  const move = e => { const rc = base.getBoundingClientRect(), R = rc.width / 2; let dx = (e.clientX - rc.left - R) / R, dy = (e.clientY - rc.top - R) / R; const m = Math.hypot(dx, dy); if (m > 1) { dx /= m; dy /= m; }
+    IN.joy.x = dx; IN.joy.y = dy; IN.joy.on = Math.min(1, m) > .28; knob.style.transform = `translate(${dx * R * .55}px,${dy * R * .55}px)`; };
+  const end = e => { if (e.pointerId !== pid) return; pid = null; IN.joy.x = IN.joy.y = 0; IN.joy.on = false; knob.style.transform = ""; };
+  base.addEventListener("pointerdown", e => { e.preventDefault(); pid = e.pointerId; try { base.setPointerCapture(pid); } catch (_) {} move(e); });
+  base.addEventListener("pointermove", e => { if (e.pointerId === pid) move(e); });
+  base.addEventListener("pointerup", end); base.addEventListener("pointercancel", end); base.addEventListener("contextmenu", e => e.preventDefault()); }
+function aimUpdate(){ // runs every frame while it is your ball: highlights who the stick / pass buttons point at, and shows the charge
+  const a = M.ask, d = IN.down, st = stick(); let style = null;
+  if (d.chip && d.pass) style = "lob"; else if (d.thru) style = "through"; else if (d.pass) style = IN.pow || chg("pass") > 0 ? "power" : "normal";
+  else if (st.on && !d.shoot && !d.chip && !d.drib) style = IN.pow ? "power" : "normal";
+  $("mtPass").style.setProperty("--c", chg("pass")); $("mtShoot").style.setProperty("--c", chg("shoot"));
+  if (style) { const pw = style === "power" ? (IN.pow ? Math.max(.8, chg("pass")) : chg("pass")) : 0, o = aimTarget(style, pw); a.hover = o; a.hp = o && style !== "through" ? userPassP(M, M.mine, other(M, M.mine), M.car, M.pt, o.s, style, pw) : null; a.own = true; }
+  else if (a.own) { a.hover = null; a.hp = null; a.own = false; }
+}
+document.addEventListener("keydown", e => {
+  if (!M || e.ctrlKey || e.metaKey || e.altKey || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+  const k = e.key.toLowerCase();
+  if (k === "shift") { IN.pow = true; $("mtPow").classList.add("dn"); return; }
+  if (k.startsWith("arrow")) { e.preventDefault(); if (k === "arrowleft") IN.kx = -1; else if (k === "arrowright") IN.kx = 1; else if (k === "arrowup") IN.ky = -1; else IN.ky = 1; return; }
+  if (!M.ask) return;
+  if (k === "v") { e.preventDefault(); return fire("pass", .7); } // driven pass
+  const m = { " ": "shoot", s: "shoot", p: "pass", t: "thru", c: "chip", d: "drib", x: "cross", l: "lobpass", a: "auto" }[k]; if (!m) return; e.preventDefault();
+  m === "auto" ? decide({ k: "auto" }) : fire(m, 0);
+});
+document.addEventListener("keyup", e => { const k = e.key.toLowerCase(); if (k === "shift") { IN.pow = false; $("mtPow").classList.remove("dn"); } if (k === "arrowleft" || k === "arrowright") IN.kx = 0; if (k === "arrowup" || k === "arrowdown") IN.ky = 0; });
 function drawAsk(ctx, X, Y, BR, t){
   const a = M.ask, car = M.car;
+  { const st = stick(); // goal target: stick up / down while you are close enough to shoot
+    if (car && xaOf(M.mine, M.pt.x) > .45 && !car.off && car.pos !== "GK" && (st.on || IN.down.shoot || IN.down.chip)) {
+      const aim = shotAim(), gx = X(PW), gy = Y(34 + aim * 3.1), r = Math.max(5, BR * .5);
+      ctx.save(); ctx.setLineDash([5, 6]); ctx.strokeStyle = "rgba(255,255,255,.55)"; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(X(car.v.x), Y(car.v.y)); ctx.lineTo(gx, gy); ctx.stroke(); ctx.setLineDash([]);
+      ctx.strokeStyle = "#f2cd68"; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(gx, gy, r, 0, 7); ctx.moveTo(gx - r * 1.6, gy); ctx.lineTo(gx + r * 1.6, gy); ctx.moveTo(gx, gy - r * 1.6); ctx.lineTo(gx, gy + r * 1.6); ctx.stroke(); ctx.restore(); } }
   a.opts.forEach((o, i) => {
     const p = o.s.v, x = X(p.x), y = Y(p.y), hv = a.hover === o, pp = hv && a.hp != null ? a.hp : o.p, pc = Math.round(pp * 100), col = pp >= .75 ? "#00f58a" : pp >= .5 ? "#f2cd68" : "#ff4560";
     if (hv && car) { ctx.save(); ctx.setLineDash([7, 6]); ctx.strokeStyle = col; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(X(car.v.x), Y(car.v.y)); ctx.lineTo(x, y); ctx.stroke(); ctx.restore(); }
@@ -3952,7 +4142,7 @@ function frame(t){
   if (u.car && !u.car.off && !u.shot && !(u.hold === u.car || u.dead)) { ctx.save(); ctx.setLineDash([6, 6]); ctx.strokeStyle = "rgba(255,255,255,.35)"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(X(u.b.x), Y(u.b.y)); ctx.lineTo(X(u.car.v.x), Y(u.car.v.y)); ctx.stroke(); ctx.restore(); }
   // while the ball is still travelling, the receiver gets a faded dashed ring instead of the ring jumping to him
   if (u.car && !u.car.off) { const held = u.hold === u.car || u.dead; ring(ctx, X(u.car.v.x), Y(u.car.v.y), BR, u.team.me ? "#2f8bff" : "#ff4560", held ? [] : [4, 4], u.car.short, t, held ? 1 : .6); }
-  if (M.ask) drawAsk(ctx, X, Y, BR, t);
+  if (M.ask) { aimUpdate(); drawAsk(ctx, X, Y, BR, t); }
   // ball trail + spin that follows how far the ball actually moved
   const bmv = u.px === undefined ? 0 : Math.hypot(u.b.x - u.px, u.b.y - u.py); u.px = u.b.x; u.py = u.b.y;
   u.spin = (u.spin || 0) + bmv * .5;
@@ -3968,7 +4158,7 @@ function frame(t){
 }
 $("luBack").onclick = cancelMatchFlow;
 $("mtBack").onclick = () => { const cp = M && M.vs && M.vs.cup; cancelMatchFlow(); if (cp) showTab("cups"); };
-function addFeed(d){ const f = $("mtFeed"); f.append(d); while (f.children.length > 80) f.firstChild.remove(); f.scrollTop = f.scrollHeight; }
+function addFeed(d){} // commentary removed
 function bubble(txt, mine, name){ const b = $("mtBub"); b.className = ""; b.innerHTML = `<span class="${mine ? "me" : "op"}">${mEsc(name)}</span> ${mEsc(txt)}`; void b.offsetWidth; b.className = "show " + (mine ? "mine" : "theirs"); clearTimeout(b._t); b._t = setTimeout(() => b.className = "", 2400); }
 function chatLine(mine, name, txt){ if (!M) return; const d = document.createElement("div"); d.className = "ln chat " + (mine ? "mine" : "theirs"); d.innerHTML = `<span class="${mine ? "me" : "op"}">${mEsc(name)}</span>: ${mEsc(txt)}`; addFeed(d); bubble(txt, mine, name); }
 function botSay(a, p){ const v = M && M.vs; if (!v || !v.opp.bot || Math.random() > p) return; const i = a[Math.floor(Math.random() * a.length)]; setTimeout(() => { if (M && M.vs === v) chatLine(false, v.opp.name, QCHAT[i]); }, 1200 + Math.random() * 1500); }
@@ -3978,7 +4168,7 @@ function sendQ(i){
   if (v && !v.opp.bot && v.matchId) set(ref(rtdb, "chat/" + cid(v.matchId) + "/" + Date.now() + "_" + Math.random().toString(36).slice(2, 6)), { k: user.key, t: i }).catch(() => {});
   else botSay([4, 5, 5, 7, 4, 6, 3, 7].slice(i, i + 1), .65);
 }
-$("qChat").innerHTML = QCHAT.map((t, i) => `<button data-q="${i}">${QICON[i]} ${t}</button>`).join("");
+$("qChat").innerHTML = QCHAT.map((t, i) => `<button data-q="${i}" title="${t}">${QICON[i]}<span class="qt"> ${t}</span></button>`).join("");
 $("qChat").onclick = e => { const b = e.target.closest("[data-q]"); if (b) sendQ(+b.dataset.q); };
 $("mtAgain").onclick = () => { const v = M && M.vs; if (!v || !v.opp.bot) return; const mode = v.mode, ai = v.opp.ai; cancelMatchFlow(); startBot(mode, ai); };
 
