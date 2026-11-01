@@ -531,6 +531,69 @@ input[type=color]{padding:2px;height:46px}
 .lpl .mc{width:38px;height:48px}.lpl .mc b{font-size:18px}.lpl .mc span{font-size:10px}
 @media(max-width:900px){.sp{width:68px}}
 @media(max-width:600px){.lpl .mc{width:28px;height:35px}.lpl .mc b{font-size:13px}.lpl .mc span{font-size:8px}.sp{width:60px}.sp .fc .fl.s{width:15px;height:10px}.sp .fc .cr.s{width:10px;height:12px}}
+.clgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.clc{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--p1);border:0;border-bottom:3px solid var(--g);color:inherit;padding:14px 8px 10px;cursor:pointer;text-align:center;font:inherit}
+.clc:hover{background:var(--p2,#1a2238)}
+.clc .cr.xl{width:56px;height:66px}.clc b{font:800 italic 18px/1.1 'Barlow Condensed',sans-serif;text-transform:uppercase}.clc small{color:var(--m);font-size:11px}
+.clc .clr{font:800 italic 20px/1 'Barlow Condensed',sans-serif;color:var(--gold)}
+.cr.xl{width:64px;height:76px}
+.clhead{display:flex;align-items:center;gap:14px;margin:6px 0 14px}.clhead h3{margin:0;font:800 italic 32px/1 'Barlow Condensed',sans-serif;text-transform:uppercase}
+.clback{background:none;border:0;color:var(--c);cursor:pointer;font:inherit;padding:6px 0}
+.clsale{color:var(--m);font-size:12px;display:block}
+#clQ,#clSort{background:var(--p1);color:inherit;border:1px solid rgba(255,255,255,.12);padding:9px 10px;font:inherit}
+#clTop,#clSortBar{display:flex;gap:8px;margin:10px 0 14px;align-items:center;flex-wrap:wrap}#clQ{flex:1;min-width:160px}
+
+/* v6: cups, objectives, player of the match */
+.cup{background:linear-gradient(160deg,#16254a,#0a1124);padding:22px;margin-bottom:22px;display:flex;flex-direction:column;gap:16px;box-shadow:inset 0 3px 0 var(--gold);clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,22px 100%,0 calc(100% - 22px))}
+.cuph{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.cuph h3{font-size:34px;line-height:1}
+.cbd{font:800 italic 14px 'Barlow Condensed',sans-serif;text-transform:uppercase;padding:3px 12px;background:var(--p2);color:var(--m)}
+.cbd.open{background:var(--c);color:#03130b}.cbd.live{background:var(--g);color:#03130b}.cbd.done{background:var(--gold);color:#241a02}
+.cchips{display:flex;gap:8px;flex-wrap:wrap}.cchips span{background:var(--p1);padding:5px 10px;font-size:13px;color:var(--m)}
+.crw,.cslots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.crw div{background:var(--p1);padding:10px 12px;border-left:3px solid var(--gold)}
+.crw small{display:block;color:var(--m);text-transform:uppercase;font-size:11px;letter-spacing:.08em}.crw b{font-size:14px;font-weight:600}
+.cslots div{background:var(--p1);padding:14px;text-align:center;font:700 20px 'Barlow Condensed',sans-serif}.cslots div.e{color:var(--m);font-weight:500}
+.cupw{overflow-x:auto}.cupt{width:100%;border-collapse:collapse;font-size:15px}
+.cupt th{color:var(--m);font-size:12px;text-transform:uppercase;text-align:center;padding:6px}
+.cupt td{padding:9px 6px;text-align:center;background:var(--p1);border-top:2px solid var(--bg)}
+.cupt td:nth-child(2){text-align:left;font-weight:700}.cupt tr.me td{background:#14264a}.cupt td:last-child{font-weight:800;color:var(--g)}
+.cfxs{display:flex;flex-direction:column;gap:6px}
+.cfx{display:grid;grid-template-columns:1fr auto 1fr auto;align-items:center;gap:10px;background:var(--p1);padding:10px 14px}
+.cfx .cn{font:700 20px 'Barlow Condensed',sans-serif}.cfx .cn.r{text-align:right}
+.cfx .cs{font:800 italic 26px 'Barlow Condensed',sans-serif;min-width:64px;text-align:center;color:var(--m)}.cfx.fin .cs{color:var(--gold)}
+.cfx .cm{grid-column:1/-1;color:var(--m);font-size:12px}.cfx .cta{padding:8px 22px;font-size:18px}
+.cwarn{color:var(--r);font-size:13px}.cwin{font:800 italic 24px 'Barlow Condensed',sans-serif;color:var(--gold);text-transform:uppercase}
+.cbtns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.obg{font-size:30px;margin:30px 0 12px}
+.obgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.ob{background:var(--p1);padding:14px;display:flex;flex-direction:column;gap:8px;box-shadow:inset 0 3px 0 var(--line);clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%)}
+.ob b{font:800 italic 22px/1.05 'Barlow Condensed',sans-serif;text-transform:uppercase}.ob p{color:var(--m);font-size:13px;flex:1}
+.obp{height:6px;background:#1a2540}.obp i{display:block;height:100%;background:var(--c)}
+.ob small{color:var(--m);font-size:12px}.ob .obr{color:var(--gold);font-size:13px;font-weight:600}
+.ob.rdy{background:linear-gradient(160deg,#3a2c08,#16254a);box-shadow:inset 0 3px 0 var(--gold)}.ob.rdy .obp i{background:var(--gold)}
+.ob.got{opacity:.55;box-shadow:inset 0 3px 0 var(--g)}.ob.got .obp i{background:var(--g)}
+.ob .cta{width:100%;padding:8px;font-size:18px}.ob u{text-decoration:none;color:var(--g);font-weight:700;font-size:13px}
+.motm{background:linear-gradient(120deg,#3a2c08,#16254a);padding:12px 14px;box-shadow:inset 0 3px 0 var(--gold);text-align:left}
+.mtendbox .motm small{color:var(--gold);font-weight:700}
+.mmw{display:flex;align-items:center;gap:12px;margin-top:6px}
+.mmo{font:800 italic 34px/1 'Barlow Condensed',sans-serif;background:var(--gold);color:#241a02;padding:6px 10px}
+.mmw strong{display:block;font:800 italic 24px/1 'Barlow Condensed',sans-serif;text-transform:uppercase}
+.mmw em{font-style:normal;color:var(--m);font-size:13px}.mmw i{margin-left:auto;font:800 italic 30px 'Barlow Condensed',sans-serif;color:var(--g)}
+@media(max-width:600px){.crw,.cslots{grid-template-columns:1fr}.cfx{grid-template-columns:1fr auto 1fr}.cfx .cact{grid-column:1/-1}.cfx .cact .cta{width:100%}}
+
+/* v7: zezo inbox */
+textarea.fbt{width:100%;min-height:110px;padding:13px 14px;background:#060c1a;border:0;border-bottom:2px solid var(--line);color:var(--t);font-size:16px;font-family:inherit;resize:vertical}
+textarea.fbt:focus{outline:none;border-bottom-color:var(--g);background:#08112a}
+.fbform{background:linear-gradient(160deg,#16254a,#0a1124);padding:22px;box-shadow:inset 0 3px 0 var(--c);max-width:640px}
+.fbn{display:flex;justify-content:space-between;color:var(--m);font-size:12px;margin-top:4px}
+.fbi{background:var(--p1);padding:14px 16px;margin-bottom:8px;display:flex;flex-direction:column;gap:8px;border-left:3px solid var(--c)}
+.fbi.done{opacity:.55;border-left-color:var(--g)}
+.fbh{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.fbh b{font:700 20px 'Barlow Condensed',sans-serif}.fbh small{color:var(--m)}
+.fbt2{font:800 italic 12px 'Barlow Condensed',sans-serif;text-transform:uppercase;padding:2px 10px;background:var(--p2);color:var(--t)}
+.fbt2.bug{background:var(--r);color:#1a0206}.fbt2.club{background:var(--gold);color:#241a02}.fbt2.upd{background:var(--c);color:#03130b}
+.fbi p{white-space:pre-wrap;word-break:break-word}
+.fbb{display:flex;gap:8px}.fbb .cta{padding:6px 18px;font-size:16px}
+nav button .nb{background:var(--r);color:#fff;font-size:11px;font-style:normal;padding:1px 6px;margin-left:6px;border-radius:9px;vertical-align:middle}
 </style>
 </head>
 <body>
@@ -765,7 +828,11 @@ window.UTA = (function () {
       <button class="on" data-tab="store">Store</button>
       <button data-tab="squad">Squad</button>
       <button data-tab="match">Match</button>
+      <button data-tab="cups">Cups</button>
+      <button data-tab="obj">Objectives</button>
+      <button data-tab="zezo" id="navZ">Zezo</button>
       <button data-tab="market">Market</button>
+      <button data-tab="clubs">Clubs</button>
       <button data-tab="events" id="navEv" class="hidden">Admin</button>
     </nav>
     <div class="right">
@@ -835,6 +902,42 @@ window.UTA = (function () {
     <h2 class="sec">Ranks</h2><div class="bar"></div>
     <div class="ladder" id="ladder"></div>
   </main>
+
+  <main id="viewCups" class="hidden">
+    <h2>Cups</h2><div class="bar"></div>
+    <p class="sub">Three players, one league. Every cup match is against another real player, and only Zezo can create and start a cup.</p>
+    <div id="cupAdm" class="evform hidden">
+      <h3>Create a cup</h3>
+      <label>Cup name</label><input id="cuN" maxlength="30" placeholder="Zezo Cup">
+      <div class="evrow"><div><label>How many matches?</label><select id="cuM"><option value="3">3 matches (everyone plays 2)</option><option value="6">6 matches (everyone plays 4)</option><option value="9">9 matches (everyone plays 6)</option></select></div>
+      <div><label>Max squad power (rating + chemistry)</label><select id="cuCap"><option value="130" selected>130 (best, no limit)</option><option value="125">125</option><option value="120">120</option><option value="115">115</option><option value="110">110</option><option value="105">105</option><option value="100">100</option></select></div></div>
+      <label>Reward for 1st place</label><div class="evrow3"><div><label>Coins</label><input id="cuC1" type="number" min="0" value="0"></div><div><label>Pack 1</label><select id="cuP1a" class="gp"></select></div><div><label>Pack 2</label><select id="cuP1b" class="gp"></select></div></div><label>Reward for 2nd place</label><div class="evrow3"><div><label>Coins</label><input id="cuC2" type="number" min="0" value="0"></div><div><label>Pack 1</label><select id="cuP2a" class="gp"></select></div><div><label>Pack 2</label><select id="cuP2b" class="gp"></select></div></div><label>Reward for 3rd place</label><div class="evrow3"><div><label>Coins</label><input id="cuC3" type="number" min="0" value="0"></div><div><label>Pack 1</label><select id="cuP3a" class="gp"></select></div><div><label>Pack 2</label><select id="cuP3b" class="gp"></select></div></div>
+      <button class="cta" id="cuCreate" style="margin-top:18px">Create cup</button>
+    </div>
+    <div id="cupBody"></div>
+  </main>
+  <main id="viewObj" class="hidden">
+    <h2>Objectives</h2><div class="bar"></div>
+    <p class="sub">Complete objectives to earn coins and packs. Matches against the AI don't count.</p>
+    <div class="statrow" id="objSum"></div>
+    <div id="objList"></div>
+  </main>
+
+  <main id="viewZezo" class="hidden">
+    <h2 id="zzT">Message Zezo</h2><div class="bar"></div>
+    <p class="sub" id="zzS">Have an idea, want a club or player added, or found a bug? Tell Zezo here.</p>
+    <div class="fbform" id="zzForm">
+      <label for="zzType">What is it about?</label>
+      <select id="zzType"><option value="upd">Update recommendation</option><option value="club">Club or player request</option><option value="bug">Bug report</option></select>
+      <label for="zzMsg">Your message</label>
+      <textarea id="zzMsg" class="fbt" maxlength="500" placeholder="Tell Zezo what you'd like to see or what went wrong..."></textarea>
+      <div class="fbn"><span>Only Zezo can read this.</span><span id="zzCnt">0 / 500</span></div>
+      <button class="cta" id="zzSend" style="margin-top:16px">Send to Zezo</button>
+    </div>
+    <h2 class="sec" id="zzLT">Your messages</h2><div class="bar"></div>
+    <div id="zzFil" class="hidden" style="max-width:260px;margin-bottom:12px"><select id="zzFs"><option value="">All types</option><option value="upd">Update recommendations</option><option value="club">Club or player requests</option><option value="bug">Bug reports</option></select></div>
+    <div id="zzList"></div>
+  </main>
   <main id="viewMarket" class="hidden">
     <h2>Market</h2><div class="bar"></div>
     <p class="sub">Every player is on sale. AI managers restock and reprice daily, and real players can list too (a fee applies when sold).</p>
@@ -845,6 +948,14 @@ window.UTA = (function () {
       <select id="mkSrc"><option value="all">All sellers</option><option value="ai">AI managers</option><option value="human">Players</option><option value="mine">My listings</option></select>
       <select id="mkSort"><option value="ovr">Rating: high to low</option><option value="pa">Price: low to high</option><option value="pd">Price: high to low</option></select></div>
     <div class="sub" id="mkInfo"></div><div class="mklist" id="mkItems"></div><button class="cta alt" id="mkMore" style="margin-top:14px">Show more</button>
+  </main>
+  <main id="viewClubs" class="hidden">
+    <h2>Clubs</h2><div class="bar"></div>
+    <p class="sub">Every club in the game. Tap a club to see its players, what they last sold for and who is selling them.</p>
+    <div id="clTop"><input id="clQ" placeholder="Search clubs"></div>
+    <div id="clSortBar" class="hidden"><button class="clback" data-back="1">&larr; All clubs</button>
+      <select id="clSort"><option value="ovr">Rating: high to low</option><option value="pa">Price: low to high</option><option value="pd">Price: high to low</option><option value="pos">Position</option></select></div>
+    <div id="clDet"></div><div id="clList" class="clgrid"></div>
   </main>
   <main id="viewEvents" class="hidden">
     <h2>Admin panel</h2><div class="bar"></div>
@@ -909,7 +1020,7 @@ window.UTA = (function () {
   <div class="mtfeed" id="mtFeed"></div>
   <div class="qchat" id="qChat"></div>
 </div>
-<div id="mtEnd" class="hidden"><div class="mtendbox"><small>Full time</small><h3 id="mtRes"></h3><div class="fin" id="mtFin"></div><div id="mtStats"></div><div class="rew" id="mtRew"></div><button class="cta" id="mtAgain">Play again</button><button class="cta alt" id="mtBack">Back to menu</button></div></div></div>
+<div id="mtEnd" class="hidden"><div class="mtendbox"><small>Full time</small><h3 id="mtRes"></h3><div class="fin" id="mtFin"></div><div id="mtStats"></div><div id="mtMotm"></div><div class="rew" id="mtRew"></div><button class="cta" id="mtAgain">Play again</button><button class="cta alt" id="mtBack">Back to menu</button></div></div></div>
 
 <!-- Player Search Popup -->
 <div id="playerPopup" class="playerPopup hidden">
@@ -1978,9 +2089,9 @@ RAW3.forEach(r => PLAYERS.push({ id: PLAYERS.length + 1, name: r[0], club: r[1],
 
 const $ = id => document.getElementById(id);
 const START = 3000;
-let evs = {}, mk = {}, mkShow = 40, mkBusy = false, codes = {}, cpacks = {}, rcBusy = false, WK0 = null;
-const CFG0 = { win: 100, draw: 50, lose: 50, streak: 50, dBase: 200, dStep: 100, wkMax: 14, fee: 5, starter: 2500, bronze: 400, silver: 700, gold: 1000, rare: 2500, elite: 6000 };
-const CFGL = [["win", "Win reward (coins)"], ["draw", "Draw reward"], ["lose", "Loss reward"], ["streak", "3+ win streak bonus"], ["dBase", "Daily reward, day 1"], ["dStep", "Daily reward, extra per streak day"], ["wkMax", "Weekly point cap"], ["fee", "Market sell fee (%)"], ["starter", "Starter pack price"], ["bronze", "Bronze pack price"], ["silver", "Silver pack price"], ["gold", "Gold pack price"], ["rare", "Rare Gold pack price"], ["elite", "Elite pack price"]];
+let fbItems = [], cups = {}, cupBusy = false, evs = {}, mk = {}, mkShow = 40, mkBusy = false, codes = {}, cpacks = {}, rcBusy = false, WK0 = null;
+const CFG0 = { win: 100, draw: 50, lose: 50, streak: 50, dBase: 200, dStep: 100, wkMax: 14, fee: 5, aiBuy: 100, starter: 2500, bronze: 400, silver: 700, gold: 1000, rare: 2500, elite: 6000 };
+const CFGL = [["win", "Win reward (coins)"], ["draw", "Draw reward"], ["lose", "Loss reward"], ["streak", "3+ win streak bonus"], ["dBase", "Daily reward, day 1"], ["dStep", "Daily reward, extra per streak day"], ["wkMax", "Weekly point cap"], ["fee", "Market sell fee (%)"], ["aiBuy", "AI buys player listings at or below (% of market price, 0 = off)"], ["starter", "Starter pack price"], ["bronze", "Bronze pack price"], ["silver", "Silver pack price"], ["gold", "Gold pack price"], ["rare", "Rare Gold pack price"], ["elite", "Elite pack price"]];
 const THK = [["g", "Main accent"], ["c", "Second accent"], ["gold", "Gold / coins"], ["bg", "Background"], ["p1", "Panels"]], THEME_DEF = { g: "#00f58a", c: "#1fd2ff", gold: "#f2cd68", bg: "#050810", p1: "#0b1222" };
 let CFG = Object.assign({ theme: {} }, CFG0);
 let user = null, state = { coins: START, club: [], starter: false }, signup = false, busy = false, unsub = null, loaded = false, sq = null, sqInit = false, selSlot = -1;
@@ -2034,7 +2145,7 @@ async function enter(k, hash){
   // Live sync: coins and club update whenever the database changes
   unsub = onValue(ref(rtdb, "users/" + k), snap => {
     const v = snap.val();
-    if (v) { state = { coins: v.coins, club: v.club || [], starter: !!v.starter, squad: v.squad || null, mmr: v.mmr ?? 500, placed: v.placed || 0, rform: v.rform || "", username: v.username, stats: v.stats || { w: 0, d: 0, l: 0 }, streak: v.streak || 0, aiBeat: v.aiBeat || {}, lastDaily: v.lastDaily || "", dStreak: v.dStreak || 0, wk: v.wk || null, pend: v.pend || [], evBuys: v.evBuys || {}, evClaim: v.evClaim || {}, redeemed: v.redeemed || {} }; loaded = true;
+    if (v) { state = { coins: v.coins, club: v.club || [], starter: !!v.starter, squad: v.squad || null, mmr: v.mmr ?? 500, placed: v.placed || 0, rform: v.rform || "", username: v.username, stats: v.stats || { w: 0, d: 0, l: 0 }, streak: v.streak || 0, aiBeat: v.aiBeat || {}, lastDaily: v.lastDaily || "", dStreak: v.dStreak || 0, wk: v.wk || null, pend: v.pend || [], evBuys: v.evBuys || {}, evClaim: v.evClaim || {}, redeemed: v.redeemed || {}, obj: v.obj || {}, oc: v.oc || {} }; loaded = true;
       if (!presOn) { presOn = true; startPresence(); }
       if (!sqInit) { sqInit = true; const q = v.squad; sq = q && FORMS[q.formation] ? { formation: q.formation, slots: Array.from({ length: 11 }, (_, i) => (q.slots && q.slots[i]) || 0) } : { formation: "4-3-3", slots: Array(11).fill(0) }; } $("who").textContent = v.username; render(); }
   }, () => {});
@@ -2076,8 +2187,9 @@ const PACKS = [
 let lastN = 3, lastFree = false;
 
 function render(){
-  $("coins").textContent = fmt(state.coins); renderDaily(); $("navEv").classList.toggle("hidden", !isAdmin()); renderEvents();
+  $("coins").textContent = fmt(state.coins); renderDaily(); $("navEv").classList.toggle("hidden", !isAdmin()); renderEvents(); try { renderObj(); renderCups(); renderZezo(); } catch (e) {}
   if (!$("viewMarket").classList.contains("hidden")) { mkSellOpts(); renderMarket(); }
+  renderClubs();
   if (sq && !$("viewSquad").classList.contains("hidden")) renderSquad();
   if (!$("viewMatch").classList.contains("hidden")) renderMatch();
   $("starter").classList.toggle("hidden", !loaded || state.starter);
@@ -2280,9 +2392,10 @@ function renderPick(){
 }
 function showTab(t){
   document.querySelectorAll("nav button[data-tab]").forEach(b => b.classList.toggle("on", b.dataset.tab === t));
-  $("viewStore").classList.toggle("hidden", t !== "store"); $("viewSquad").classList.toggle("hidden", t !== "squad"); $("viewMatch").classList.toggle("hidden", t !== "match"); $("viewMarket").classList.toggle("hidden", t !== "market"); $("viewEvents").classList.toggle("hidden", t !== "events" || !isAdmin());
-  if (t === "market") { mkShow = 40; mkSellOpts(); renderMarket(); } if (t === "events") renderEvList();
+  $("viewStore").classList.toggle("hidden", t !== "store"); $("viewSquad").classList.toggle("hidden", t !== "squad"); $("viewMatch").classList.toggle("hidden", t !== "match"); $("viewMarket").classList.toggle("hidden", t !== "market"); $("viewClubs").classList.toggle("hidden", t !== "clubs"); $("viewCups").classList.toggle("hidden", t !== "cups"); $("viewObj").classList.toggle("hidden", t !== "obj"); $("viewZezo").classList.toggle("hidden", t !== "zezo"); $("viewEvents").classList.toggle("hidden", t !== "events" || !isAdmin());
+  if (t === "market") { mkShow = 40; mkSellOpts(); renderMarket(); } if (t === "events") renderEvList(); if (t === "clubs") { clubSel = null; renderClubs(); }
   if (t === "match") renderMatch();
+  if (t === "cups") { fillPackSelects(); renderCups(); } if (t === "obj") renderObj(); if (t === "zezo") renderZezo();
   if (t === "squad") { selSlot = -1; renderSquad(); }
   window.scrollTo(0, 0);
 }
@@ -2323,18 +2436,18 @@ function mmrDelta(my, opp, res, placed){ // Elo: beating a stronger player is wo
   let d = Math.round(K * (sc - e)); if (res === "w") d = Math.max(d, 5); if (res === "l") d = Math.min(d, -5); return d;
 }
 const rankIdx = m => rankInfo(m).i;
-const MODE_NAME = { quick: "Quick play", ranked: "Ranked", friend: "Friend match" };
+const MODE_NAME = { quick: "Quick play", ranked: "Ranked", friend: "Friend match", cup: "Cup match" };
 const AI = [
-  { n: "Rookie Rico", r: 58, bonus: -3, fin: -6, psk: -8, kp: -6, tag: "Just started playing" },
-  { n: "Steady Sam", r: 64, bonus: -2, fin: -4, psk: -2, kp: -3, tag: "Plays it safe" },
-  { n: "Gina Gold", r: 69, bonus: -1, fin: 0, psk: 0, kp: -2, tag: "Balanced all round" },
-  { n: "Pavel Press", r: 73, bonus: 0, fin: 0, psk: 3, kp: 0, tag: "Neat passer" },
-  { n: "Dani Diamond", r: 77, bonus: 1, fin: 3, psk: 0, kp: 2, tag: "Clinical finisher" },
-  { n: "Mateo Maestro", r: 80, bonus: 1.5, fin: 1, psk: 5, kp: 3, tag: "Passes you to death" },
-  { n: "Greta Grand", r: 83, bonus: 2.5, fin: 3, psk: 3, kp: 6, tag: "Rock solid keeper" },
-  { n: "Luca Legend", r: 86, bonus: 3.5, fin: 6, psk: 4, kp: 4, tag: "Deadly in front of goal" },
-  { n: "Kai Champion", r: 88, bonus: 4.5, fin: 6, psk: 6, kp: 6, tag: "Rarely makes mistakes" },
-  { n: "The Architect", r: 90, bonus: 6, fin: 8, psk: 8, kp: 8, tag: "Almost unbeatable" }
+  { n: "Rookie Rico", r: 58, bonus: -2, fin: -4, psk: -6, kp: -4, tag: "Just started playing" },
+  { n: "Steady Sam", r: 64, bonus: -1, fin: -2, psk: -1, kp: -2, tag: "Plays it safe" },
+  { n: "Gina Gold", r: 69, bonus: 0.5, fin: 1, psk: 1, kp: 0, tag: "Balanced all round" },
+  { n: "Pavel Press", r: 73, bonus: 1.5, fin: 2, psk: 4, kp: 2, tag: "Neat passer" },
+  { n: "Dani Diamond", r: 77, bonus: 3, fin: 5, psk: 3, kp: 4, tag: "Clinical finisher" },
+  { n: "Mateo Maestro", r: 80, bonus: 4.5, fin: 4, psk: 8, kp: 6, tag: "Passes you to death" },
+  { n: "Greta Grand", r: 83, bonus: 6, fin: 6, psk: 6, kp: 10, tag: "Rock solid keeper" },
+  { n: "Luca Legend", r: 86, bonus: 8, fin: 10, psk: 8, kp: 8, tag: "Deadly in front of goal" },
+  { n: "Kai Champion", r: 88, bonus: 10, fin: 11, psk: 10, kp: 11, tag: "Rarely makes mistakes" },
+  { n: "The Architect", r: 90, bonus: 13, fin: 14, psk: 13, kp: 14, tag: "Almost unbeatable" }
 ];
 MODE_NAME.ai = "Vs AI";
 const QCHAT = ["Great pass!", "What a save!", "What a goal!", "Unlucky!", "Well played", "Wow!", "Take that!", "Good game"];
@@ -2603,9 +2716,22 @@ async function claimGift(id){
   try { await update(ref(rtdb, "users/" + user.key), { coins: state.coins, pend: state.pend, ["evClaim/" + id]: true }); } catch (x) { fail(x, "save the gift"); }
   toast("Gift claimed!"); if (ps.length) setTimeout(openPend, 400);
 }
+let sales = {}, mkSeen = false; const mkGone = new Set(), aiBusy = new Set();
 function startShared(){
+  mkSeen = false;
   presOff.push(onValue(ref(rtdb, "events"), sn => { evs = sn.val() || {}; render(); }, () => {}));
-  presOff.push(onValue(ref(rtdb, "market"), sn => { mk = sn.val() || {}; if (!$("viewMarket").classList.contains("hidden")) renderMarket(); }, () => {}));
+  presOff.push(onValue(ref(rtdb, isAdmin() ? "feedback" : "feedback/" + user.key), sn => {
+    const v = sn.val() || {}, L = [];
+    if (isAdmin()) Object.entries(v).forEach(([k, o]) => Object.entries(o || {}).forEach(([id, m]) => m && L.push({ ...m, id, k })));
+    else Object.entries(v).forEach(([id, m]) => m && L.push({ ...m, id, k: user.key }));
+    fbItems = L.sort((a, b) => (b.ts || 0) - (a.ts || 0)); renderZezo();
+  }, () => {}));
+  presOff.push(onValue(ref(rtdb, "cups"), sn => { cups = sn.val() || {}; renderCups(); }, () => {}));
+  presOff.push(onValue(ref(rtdb, "market"), sn => { const nm = sn.val() || {};
+    if (mkSeen && user) Object.entries(mk).forEach(([id, l]) => { if (l && l.sk === user.key && !nm[id] && !mkGone.has(id) && P(l.pid)) toast(`${P(l.pid).name} sold for ${fmt(l.price)} coins`); });
+    mk = nm; mkSeen = true; if (!$("viewMarket").classList.contains("hidden")) renderMarket(); renderClubs(); }, () => {}));
+  presOff.push(onValue(ref(rtdb, "sales"), sn => { sales = sn.val() || {}; renderClubs(); }, () => {}));
+  const aiIv = setInterval(aiTick, 8000); presOff.push(() => clearInterval(aiIv));
   presOff.push(onValue(ref(rtdb, "config"), sn => { applyCfg(sn.val()); render(); }, () => {}));
   presOff.push(onValue(ref(rtdb, "cpacks"), sn => { cpacks = sn.val() || {}; fillPackSelects(); render(); if (isAdmin()) renderCp(); }, () => {}));
   if (isAdmin()) presOff.push(onValue(ref(rtdb, "codes"), sn => { codes = sn.val() || {}; renderCodes(); }, () => {}));
@@ -2616,7 +2742,7 @@ function startShared(){
 
 /* ---------- UI helpers: no lost clicks, clear errors, busy buttons ---------- */
 function memo(el){ const d = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML"); Object.defineProperty(el, "innerHTML", { get(){ return d.get.call(this); }, set(v){ if (this._h !== v) { this._h = v; d.set.call(this, v); } }, configurable: true }); }
-["daily", "weekly", "packs", "evStore", "evMatch", "evMarket", "evList", "rcList", "cpList", "rcEv", "mkItems", "mkSel"].forEach(i => { const e = $(i); if (e) memo(e); }); // identical re-renders are skipped, so taps and open dropdowns aren't wiped
+["daily", "weekly", "packs", "evStore", "evMatch", "evMarket", "evList", "rcList", "cpList", "rcEv", "mkItems", "mkSel", "clList", "clDet"].forEach(i => { const e = $(i); if (e) memo(e); }); // identical re-renders are skipped, so taps and open dropdowns aren't wiped
 function fail(x, what){ const c = x && (x.code || x.message) || ""; console.error(what, x); toast(`Couldn't ${what}${c ? " (" + String(c).replace("PERMISSION_DENIED", "permission denied") + ")" : ""}. Check your database rules.`); }
 async function withBtn(btn, fn){ if (!btn || btn._b) return; btn._b = 1; const t = btn.textContent; btn.disabled = true; btn.textContent = "Working..."; try { await fn(); } finally { btn.disabled = false; btn.textContent = t; btn._b = 0; } }
 
@@ -2839,6 +2965,61 @@ $("setClear").onclick = async () => {
 };
 $("setInstall").onclick = async () => { if (!installEv) return; installEv.prompt(); try { await installEv.userChoice; } catch (x) {} installEv = null; $("setInstall").classList.add("hidden"); };
 
+/* clubs */
+let clubSel = null, clubSort = "ovr", clubQ = "";
+const POSO = ["ST", "LW", "RW", "CAM", "CM", "CDM", "CB", "LB", "RB", "GK"];
+const agoT = ts => { const m = Math.max(0, Math.round((Date.now() - ts) / 6e4)); return m < 1 ? "just now" : m < 60 ? m + "m ago" : m < 1440 ? Math.round(m / 60) + "h ago" : Math.round(m / 1440) + "d ago"; };
+function clubMap(){ const m = {}; PLAYERS.forEach(p => (m[p.club] = m[p.club] || []).push(p)); return m; }
+const top11 = l => { const t = l.map(p => p.ovr).sort((a, b) => b - a).slice(0, 11); return t.length ? Math.round(t.reduce((a, b) => a + b, 0) / t.length) : 0; };
+function renderClubs(){
+  if (!loaded || $("viewClubs").classList.contains("hidden")) return;
+  const M = clubMap(), grid = $("clList"), det = $("clDet");
+  $("clTop").classList.toggle("hidden", !!clubSel); $("clSortBar").classList.toggle("hidden", !clubSel);
+  if (!clubSel || !M[clubSel]) {
+    clubSel = null; det.innerHTML = ""; grid.className = "clgrid"; const q = clubQ.trim().toLowerCase();
+    grid.innerHTML = Object.keys(M).filter(c => !q || c.toLowerCase().includes(q)).sort((a, b) => top11(M[b]) - top11(M[a]) || a.localeCompare(b)).map(c => { const l = M[c], best = Math.max(...l.map(p => p.ovr));
+      return `<button class="clc" data-club="${escH(c)}">${UTA.crest(c, "xl")}<b>${escH(c)}</b><small>${l.length} players · best ${best}</small><span class="clr">${top11(l)}</span></button>`; }).join("") || '<div class="empty">No clubs match.</div>';
+    return;
+  }
+  const l = M[clubSel].slice(), cheapest = {};
+  l.forEach(p => { let b = mkAi(p); Object.entries(mk).forEach(([id, h]) => { if (h && h.pid === p.id && h.sk !== user.key && h.price < b.price) b = { id, pid: p.id, price: h.price, seller: h.seller, ai: false }; }); cheapest[p.id] = b; });
+  const so = clubSort; l.sort(so === "pa" ? (a, b) => cheapest[a.id].price - cheapest[b.id].price : so === "pd" ? (a, b) => cheapest[b.id].price - cheapest[a.id].price : so === "pos" ? (a, b) => POSO.indexOf(a.pos) - POSO.indexOf(b.pos) || b.ovr - a.ovr : (a, b) => b.ovr - a.ovr);
+  const val = l.reduce((a, p) => a + mkAi(p).price, 0), own = {}; state.club.forEach(id => own[id] = (own[id] || 0) + 1);
+  det.innerHTML = `<div class="clhead">${UTA.crest(clubSel, "xl")}<h3>${escH(clubSel)}</h3></div>
+    <div class="statrow"><div><b>${l.length}</b><span>Players</span></div><div><b>${top11(l)}</b><span>Top-11 rating</span></div><div><b>${Math.max(...l.map(p => p.ovr))}</b><span>Best</span></div><div><b>${fmt(val)}</b><span>Market value</span></div></div>
+    <div class="mklist">` + l.map(p => { const c = cheapest[p.id], s = sales[p.id];
+      const sold = s ? `Last sold ${fmt(s.price)} · ${s.by === "ai" ? "AI" : "player"} ${escH(s.buyer || "")} · ${agoT(s.ts)}` : "No sales yet";
+      return `<div class="row mk ${tier(p)}"><div class="o">${p.ovr}<small>${p.pos}</small></div><div class="mki"><span class="n">${escH(p.name)}</span><span class="p"><span class="mi">${UTA.flag(p.nation, "s")} ${escH(p.nation)}</span>${own[p.id] ? ` <span class="mi">Owned x${own[p.id]}</span>` : ""}</span><span class="clsale">${sold}</span><span class="p"><b class="sl ${c.ai ? "ai" : "hu"}">${c.ai ? "AI" : "Player"}</b> ${escH(c.seller)}</span></div>
+        <div class="mkp"><span class="pc2"><span class="coin"></span>${fmt(c.price)}</span><button class="cta sm" data-b="${c.id}" ${state.coins < c.price || mkBusy ? "disabled" : ""}>Buy</button></div></div>`; }).join("") + "</div>";
+  grid.className = ""; grid.innerHTML = "";
+}
+$("viewClubs").onclick = e => { const c = e.target.closest("[data-club]"), bk = e.target.closest("[data-back]"), b = e.target.closest("[data-b]");
+  if (c) { clubSel = c.dataset.club; clubSort = $("clSort").value; renderClubs(); window.scrollTo(0, 0); } else if (bk) { clubSel = null; renderClubs(); } else if (b) buyMk(b.dataset.b); };
+$("clQ").oninput = () => { clubQ = $("clQ").value; renderClubs(); };
+$("clSort").onchange = () => { clubSort = $("clSort").value; renderClubs(); };
+
+/* AI managers snap up well-priced player listings */
+const aiDue = {};
+function aiTick(){
+  if (!loaded || !user || !(CFG.aiBuy > 0)) return; const now = Date.now();
+  Object.entries(mk).forEach(([id, l]) => {
+    if (!l || !P(l.pid) || aiBusy.has(id)) return; const fair = mkAi(P(l.pid)).price;
+    if (l.price > fair * CFG.aiBuy / 100) { delete aiDue[id]; return; }
+    if (!aiDue[id]) { const bargain = l.price <= fair * .8; aiDue[id] = now + (15e3 + Math.random() * 75e3) * (bargain ? .5 : 1); return; }
+    if (now >= aiDue[id]) { delete aiDue[id]; aiBuy(id, l); }
+  });
+}
+async function aiBuy(id, l){
+  aiBusy.add(id); const who = AI[mkH(id + ":" + l.pid) % AI.length].n;
+  try {
+    let ok = false; const r = await runTransaction(ref(rtdb, "market/" + id), cur => { ok = !!cur && cur.price === l.price && cur.pid === l.pid; return ok ? null : cur; });
+    if (!ok || !r.committed) return;
+    runTransaction(ref(rtdb, "users/" + l.sk + "/coins"), c => (c || 0) + Math.floor(l.price * (1 - CFG.fee / 100))).catch(() => {});
+    recordSale(l.pid, l.price, "ai", who);
+  } catch (x) { console.error("ai buy", x); } finally { aiBusy.delete(id); }
+}
+function recordSale(pid, price, by, buyer){ set(ref(rtdb, "sales/" + pid), { price, by, buyer, ts: Date.now() }).catch(() => {}); }
+
 /* market */
 const mkDay = () => Math.floor(Date.now() / 864e5);
 const mkH = t => { let h = 2166136261; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
@@ -2880,11 +3061,11 @@ async function buyMk(id){
       if (!ok || !r.committed) return toast("Someone already bought this player.");
       runTransaction(ref(rtdb, "users/" + l.sk + "/coins"), c => (c || 0) + Math.floor(l.price * (1 - CFG.fee / 100))).catch(() => {});
     }
-    state.coins -= l.price; state.club.push(l.pid); render(); await save(); toast(`Signed ${P(l.pid).name} for ${fmt(l.price)} coins`);
-  } catch (x) { fail(x, "complete the trade"); } finally { mkBusy = false; renderMarket(); }
+    state.coins -= l.price; state.club.push(l.pid); render(); await save(); toast(`Signed ${P(l.pid).name} for ${fmt(l.price)} coins`); recordSale(l.pid, l.price, "player", state.username);
+  } catch (x) { fail(x, "complete the trade"); } finally { mkBusy = false; renderMarket(); renderClubs(); }
 }
 async function cancelMk(id){
-  const l = mk[id]; if (!l || l.sk !== user.key || mkBusy) return; mkBusy = true;
+  const l = mk[id]; if (!l || l.sk !== user.key || mkBusy) return; mkBusy = true; mkGone.add(id);
   try { let ok = false; const r = await runTransaction(ref(rtdb, "market/" + id), cur => { ok = !!cur && cur.sk === user.key; return ok ? null : cur; });
     if (ok && r.committed) { state.club.push(l.pid); render(); await save(); toast("Listing cancelled. Player returned."); } else toast("It was already sold.");
   } catch (x) { fail(x, "cancel"); } finally { mkBusy = false; renderMarket(); }
@@ -2924,7 +3105,7 @@ function startPresence(){
   const pref = ref(rtdb, "presence/" + user.key);
   presOff.push(onValue(ref(rtdb, ".info/connected"), sn => { if (sn.val() && user) { onDisconnect(pref).remove(); setStatus(myStatus); } }));
   hb = setInterval(() => setStatus(myStatus), 20000);
-  presOff.push(onValue(ref(rtdb, "presence"), sn => { online = sn.val() || {}; renderFriends(); }));
+  presOff.push(onValue(ref(rtdb, "presence"), sn => { online = sn.val() || {}; renderFriends(); renderCups(); }));
   presOff.push(onValue(ref(rtdb, "invites/" + user.key), sn => onInvites(sn.val() || {})));
   startShared();
 }
@@ -3005,8 +3186,8 @@ $("mmCancel").onclick = async () => {
 };
 
 /* the "versus" screen. The match itself plugs in here. */
-function showVS({ mode, opp, matchId }){
-  setStatus("match"); vsCur = { mode, opp, matchId, tok: ++vsTok };
+function showVS({ mode, opp, matchId, cup }){
+  setStatus("match"); vsCur = { mode, opp, matchId, cup: cup || null, tok: ++vsTok };
   const ri_ = rankInfo(myMmr()), rk = [(state.placed || 0) < PLACEMENTS ? "Unranked" : ri_.name, 0, ri_.col];
   $("vsRow").innerHTML = `<div class="vsp l"><small>You</small><div class="nm2">${state.username}</div><div class="rt">${squadRating()}</div><small>Squad rating</small><small>Chemistry ${squadChem()} / 33</small>${mode === "ranked" ? `<small style="color:${rk[2]};font-weight:700">${rk[0]}</small>` : ""}</div>
     <div class="vsx">VS</div>
@@ -3086,7 +3267,7 @@ function kickoff(m, team) {
 function wasAssist(m, T, s) { return m.last && m.last.team === T && m.last.slot !== s ? m.last.slot : null; }
 function restartAfterGoal(m, O) { m.hook.restart = () => { const c = kickoff(m, O); say(m, `${tn(O)} kick off. ${nm(O, c)} has the ball.`); }; }
 function goal(m, T, O, s, as, how, extra) {
-  m.score[T.idx]++; m.goals.push({ idx: T.idx, name: s.short, min: dispMin(m) });
+  m.score[T.idx]++; m.goals.push({ idx: T.idx, name: s.short, min: dispMin(m), pid: s.p.id, ast: as ? as.p.id : null });
   m.hook.goal(T, s); m.flag = null; m.last = null;
   const a = nm(T, s), by = as ? `, set up by ${nm(T, as)}` : "";
   const t = how === "pen" ? mPick([`GOAL! ${a} sends the keeper the wrong way from the spot!`, `GOAL! ${a} buries the penalty for ${tn(T)}!`])
@@ -3333,12 +3514,25 @@ function cancelMatchFlow(){
   ["vs", "lu", "mt", "mtEnd"].forEach(i => $(i).classList.add("hidden")); setStatus("online");
 }
 
+/* quiet difficulty: the AI tightens up on hot streaks, but only some of the time and never by much */
+function hiddenPush(mode){
+  const st = state.streak || 0, rf = String(state.rform || ""), recent = rf.slice(-5), w = (recent.match(/w/gi) || []).length;
+  let ch = 0, amt = 0;
+  if (st >= 3) { ch = Math.min(.7, .5 + (st - 3) * .06); amt = 2.5 + Math.min(2.5, (st - 3) * .6); }
+  else if (st === 2) { ch = .25; amt = 1.5; }
+  else if (w >= 4) { ch = .3; amt = 2; }
+  if (mode === "ranked" && placedDone() && rankInfo(myMmr()).pct >= 70) { ch = Math.max(ch, .3); amt = Math.max(amt, 2); } // close to ranking up
+  if (mode !== "ranked") { ch *= .6; amt *= .7; }
+  return ch && Math.random() < ch ? amt * (.7 + Math.random() * .6) : 0;
+}
+const placedDone = () => (state.placed || 0) >= PLACEMENTS;
 /* 2) the match */
 function mkLive(v){
   mRand = v.matchId && !v.opp.bot ? mSeeded(mHash(v.matchId)) : Math.random; // same match id = same match for both players
   const mine = mkTeam(true, v.my.name, v.my.form, v.my.players, v.my.rating, v.meHome ? 1 : -1, v.my.chem);
   const op = mkTeam(false, v.op.name, v.op.form, v.op.players, v.op.rating, v.meHome ? -1 : 1, v.op.chem);
   if (v.opp.bot && v.opp.ai != null) { const a = AI[v.opp.ai]; op.eff += a.bonus; op.fin = a.fin; op.psk = a.psk; op.kp = a.kp; }
+  if (v.opp.bot && v.opp.ai != null) op.eff += hiddenPush(v.mode);
   const A = v.meHome ? mine : op, B = v.meHome ? op : mine;
   const ui = { b: { x: 52.5, y: 34 }, ct: { x: 52.5, y: 34 }, car: null, ch: null, team: A, hold: null, shot: null, dead: false, q: [], d0: 10, h: 0, bs: 1, bsAt: 0, popDelay: 0, phase: "kick", celT: 0, cel: null, net: null, parts: [], sc: [0, 0] };
   const CHIPS = [[/sent off/i, "Red card", "red"], [/yellow card/i, "Yellow card", "yel"], [/PENALTY/, "Penalty!", ""], [/offside/i, "Offside", ""], [/hits the (post|crossbar)/, "Off the woodwork!", ""], [/save/i, "Save!", ""], [/Corner to/, "Corner", ""], [/Free kick to/, "Free kick", ""]];
@@ -3464,7 +3658,7 @@ const REWARD = { win: 100, draw: 50, lose: 50 };
 function showEnd(){
   if (!M) return;
   if (!M.paid) { // coins, stats and rank points
-    M.paid = true;
+    M.paid = true; M.motm = motmOf(M);
     const w = M.score[M.mi], l = M.score[1 - M.mi], res = w > l ? "w" : w === l ? "d" : "l", v = M.vs, isAI = !!(v && v.mode === "ai"), ai = isAI ? v.opp.ai : null, notes = [];
     let r = isAI ? 0 : res === "w" ? CFG.win : res === "d" ? CFG.draw : CFG.lose, wkNote = "", wkChanged = false;
     const st = Object.assign({ w: 0, d: 0, l: 0 }, state.stats || {}), beat = Object.assign({}, state.aiBeat || {});
@@ -3487,8 +3681,11 @@ function showEnd(){
       newM = Math.max(0, oldM + rkd); rkd = newM - oldM; placedN = placed + 1; formN = (formN + res.toUpperCase()).slice(-10);
     }
     const oi = rankInfo(oldM), ni = rankInfo(newM);
-    state.coins += r; state.stats = st; state.streak = streak; state.aiBeat = beat; state.mmr = newM; state.placed = placedN; state.rform = formN;
-    update(ref(rtdb, "users/" + user.key), { coins: state.coins, stats: st, streak, aiBeat: beat, mmr: newM, placed: placedN, rform: formN, wk: state.wk || null, updatedAt: Date.now() }).catch(x => fail(x, "save the result"));
+    const ob = Object.assign({ played: 0, won: 0, goals: 0, cs: 0, motm: 0, cup: 0, big: 0, cups: 0 }, state.obj || {});
+    if (!isAI) { ob.played++; if (res === "w") ob.won++; ob.goals += w; if (l === 0) ob.cs++; if (w - l >= 3) ob.big++; if (M.motm && M.motm.idx === M.mi) ob.motm++; if (v && v.cup) ob.cup++; }
+    state.coins += r; state.obj = ob; state.stats = st; state.streak = streak; state.aiBeat = beat; state.mmr = newM; state.placed = placedN; state.rform = formN;
+    update(ref(rtdb, "users/" + user.key), { coins: state.coins, stats: st, streak, aiBeat: beat, mmr: newM, placed: placedN, rform: formN, wk: state.wk || null, obj: ob, updatedAt: Date.now() }).catch(x => fail(x, "save the result"));
+    if (v && v.cup && !isAI) recordCup(v, w, l, M.motm, M.mi);
     render(); const cb = $("coinBox"); cb.classList.remove("flash"); void cb.offsetWidth; cb.classList.add("flash");
     let rk = "";
     if (ranked) {
@@ -3499,6 +3696,8 @@ function showEnd(){
     }
     $("mtRew").innerHTML = (isAI ? `Practice match<small>Vs AI gives no coins or rewards</small>` : `+${r} coins<small>${notes.join(" · ") || (res === "w" ? "Win bonus" : res === "d" ? "Draw" : "Played")}</small>` + (wkNote ? `<div class="rkd ${wkChanged ? "up" : ""}" style="${wkChanged ? "" : "color:var(--m)"}">${wkNote}</div>` : "")) + rk;
   }
+  { const mo = M.motm, mp = mo && P(mo.pid);
+    $("mtMotm").innerHTML = mp ? `<div class="motm"><small>Player of the match</small><div class="mmw"><b class="mmo">${mp.ovr}</b><div><strong>${mEsc(mp.name)}</strong><em>${mEsc(mo.idx === M.mi ? M.mine.name : other(M, M.mine).name)} &middot; ${mp.pos}</em></div><i>${mo.rating.toFixed(1)}</i></div></div>` : ""; }
   $("mtAgain").style.display = M.vs && M.vs.opp.bot ? "" : "none";
   const me = M.mi, a = M.score[me], b = M.score[1 - me], st = M.stats, tp = st[0].poss + st[1].poss || 1, p0 = Math.round(st[me].poss / tp * 100), op = other(M, M.mine);
   $("mtRes").textContent = a > b ? "You win!" : a < b ? "You lose" : "Draw";
@@ -3687,7 +3886,7 @@ function frame(t){
   M.raf = requestAnimationFrame(frame);
 }
 $("luBack").onclick = cancelMatchFlow;
-$("mtBack").onclick = cancelMatchFlow;
+$("mtBack").onclick = () => { const cp = M && M.vs && M.vs.cup; cancelMatchFlow(); if (cp) showTab("cups"); };
 function addFeed(d){ const f = $("mtFeed"); f.append(d); while (f.children.length > 80) f.firstChild.remove(); f.scrollTop = f.scrollHeight; }
 function bubble(txt, mine, name){ const b = $("mtBub"); b.className = ""; b.innerHTML = `<span class="${mine ? "me" : "op"}">${mEsc(name)}</span> ${mEsc(txt)}`; void b.offsetWidth; b.className = "show " + (mine ? "mine" : "theirs"); clearTimeout(b._t); b._t = setTimeout(() => b.className = "", 2400); }
 function chatLine(mine, name, txt){ if (!M) return; const d = document.createElement("div"); d.className = "ln chat " + (mine ? "mine" : "theirs"); d.innerHTML = `<span class="${mine ? "me" : "op"}">${mEsc(name)}</span>: ${mEsc(txt)}`; addFeed(d); bubble(txt, mine, name); }
@@ -3708,31 +3907,32 @@ function renderFriends(){
   const now = Date.now();
   const list = Object.entries(online).filter(([k, v]) => v && k !== user.key && now - v.ts < 70000);
   $("fwait").innerHTML = inv ? `<div class="wait"><span>Invite sent to ${inv.toName}. Waiting for a reply…</span><button class="link" id="invCancel">Cancel</button></div>` : "";
-  $("flist").innerHTML = list.length ? list.map(([k, v]) => `<div class="frow"><div><b>${v.username}</b><small>${v.status === "online" ? "Online" : v.status === "queue" ? "Searching for a match" : "In a match"}</small></div><button class="cta" data-k="${k}" data-n="${v.username}" ${inv || v.status !== "online" ? "disabled" : ""}>Invite</button></div>`).join("")
+  $("flist").innerHTML = inv && inv.cup ? "" : list.length ? list.map(([k, v]) => `<div class="frow"><div><b>${v.username}</b><small>${v.status === "online" ? "Online" : v.status === "queue" ? "Searching for a match" : "In a match"}</small></div><button class="cta" data-k="${k}" data-n="${v.username}" ${inv || v.status !== "online" ? "disabled" : ""}>Invite</button></div>`).join("")
     : '<div class="empty">No other players are online right now. Ask a friend to sign in.</div>';
 }
 function openFriends(){ if (needSquad()) return; $("friends").classList.remove("hidden"); renderFriends(); }
-async function sendInvite(toKey, toName){
+async function sendInvite(toKey, toName, cup){
   if (inv) return;
   const iref = ref(rtdb, "invites/" + toKey + "/" + user.key);
-  try { await set(iref, { from: state.username, fromKey: user.key, rating: squadRating(), ts: Date.now(), status: "pending" }); }
+  try { await set(iref, { from: state.username, fromKey: user.key, rating: squadRating(), ts: Date.now(), status: "pending", cup: cup || null }); }
   catch (e) { return toast("Couldn't send the invite. Check your Realtime Database rules."); }
-  const me = { toKey, toName, iref, ended: false };
+  const me = { toKey, toName, iref, ended: false, cup: cup || null };
   me.timer = setTimeout(() => endInv(`No reply from ${toName}.`), 30000);
   me.unsub = onValue(iref, sn => {
     const v = sn.val(); if (inv !== me || !v) return;
     if (v.status === "accepted") {
       endInv("");
-      set(ref(rtdb, "matches/" + v.matchId), { mode: "friend", p1: user.key, p2: toKey, createdAt: Date.now() }).catch(() => {});
+      set(ref(rtdb, "matches/" + v.matchId), { mode: me.cup ? "cup" : "friend", p1: user.key, p2: toKey, createdAt: Date.now() }).catch(() => {});
       $("friends").classList.add("hidden");
-      showVS({ mode: "friend", matchId: v.matchId, opp: { name: toName, rating: v.rating, k: toKey } });
+      showVS({ mode: me.cup ? "cup" : "friend", cup: me.cup, matchId: v.matchId, opp: { name: toName, rating: v.rating, k: toKey } });
     } else if (v.status === "declined") endInv(`${toName} declined your invite.`);
   });
-  inv = me; renderFriends();
+  inv = me; if (me.cup) $("friends").classList.remove("hidden"); renderFriends();
 }
 function endInv(msg){
   if (!inv) return; const i = inv; inv = null;
   clearTimeout(i.timer); i.unsub && i.unsub(); remove(i.iref).catch(() => {});
+  if (i.cup) $("friends").classList.add("hidden");
   if (msg) toast(msg); renderFriends();
 }
 $("flist").onclick = e => { const b = e.target.closest("button[data-k]"); if (b) sendInvite(b.dataset.k, b.dataset.n); };
@@ -3746,8 +3946,9 @@ function onInvites(all){
   if (curInv && !ps.find(v => v.fromKey === curInv.fromKey)) hideInvite();
   if (!curInv && ps[0] && !mm && $("vs").classList.contains("hidden")) {
     curInv = ps[0];
-    $("invTxt").textContent = `${curInv.from} invited you to a match`;
-    $("invSub").textContent = `Their squad rating is ${curInv.rating ?? "--"}.`;
+    const cu = curInv.cup && cups[curInv.cup.id];
+    $("invTxt").textContent = curInv.cup ? `${curInv.from} invited you to a cup match` : `${curInv.from} invited you to a match`;
+    $("invSub").textContent = (cu ? cu.name + ". " : "") + `Their squad rating is ${curInv.rating ?? "--"}.`;
     $("invite").classList.remove("hidden");
     curInv.timer = setTimeout(hideInvite, 30000);
   }
@@ -3757,13 +3958,257 @@ $("invYes").onclick = async () => {
   const c = curInv; if (!c) return;
   if (needSquad()) return hideInvite();
   hideInvite();
+  if (c.cup) {
+    const cu = cups[c.cup.id], fx = cu && cu.fixtures && cu.fixtures[c.cup.fid], no = m => { update(ref(rtdb, "invites/" + user.key + "/" + c.fromKey), { status: "declined" }).catch(() => {}); toast(m); };
+    if (!fx || fx.res || (fx.a !== user.key && fx.b !== user.key)) return no("That cup match isn't available any more.");
+    if (squadPower() > cu.cap) return no(`Your squad power is ${squadPower()}, this cup allows ${cu.cap}. Change your squad first.`);
+  }
   const matchId = c.fromKey + "_" + user.key + "_" + Date.now();
   try { await update(ref(rtdb, "invites/" + user.key + "/" + c.fromKey), { status: "accepted", matchId, rating: squadRating() }); }
   catch (e) { return toast("Couldn't join. Check your Realtime Database rules."); }
   $("friends").classList.add("hidden");
-  showVS({ mode: "friend", matchId, opp: { name: c.from, rating: c.rating, k: c.fromKey } });
+  showVS({ mode: c.cup ? "cup" : "friend", cup: c.cup || null, matchId, opp: { name: c.from, rating: c.rating, k: c.fromKey } });
 };
 $("invNo").onclick = () => { const c = curInv; hideInvite(); if (c) update(ref(rtdb, "invites/" + user.key + "/" + c.fromKey), { status: "declined" }).catch(() => {}); };
+
+/* ---------- Player of the match ---------- */
+function motmOf(m){ // same match data on both phones = same winner
+  let best = null;
+  [m.A, m.B].forEach(T => {
+    const gf = m.score[T.idx], ga = m.score[1 - T.idx];
+    T.pl.forEach(s => {
+      const id = s.p.id; let sc = 6 + (gf > ga ? .6 : gf < ga ? -.3 : .1) + s.p.ovr / 1000;
+      m.goals.forEach(g => { if (g.idx !== T.idx) return; if (g.pid === id) sc += 1.6; if (g.ast === id) sc += 1; });
+      if (ga === 0) sc += s.pos === "GK" ? 1.4 : ["CB", "LB", "RB"].includes(s.pos) ? .9 : s.pos === "CDM" ? .5 : 0;
+      else if (s.pos === "GK") sc -= ga * .15;
+      if (s.off) sc -= .5;
+      if (!best || sc > best.sc) best = { sc, p: s.p, T };
+    });
+  });
+  return best ? { pid: best.p.id, idx: best.T.idx, rating: Math.max(1, Math.min(10, Math.round(best.sc * 10) / 10)) } : null;
+}
+
+/* ---------- Objectives ---------- */
+const OBJ = [
+  { g: "Matches", id: "pl1", t: "First kick", d: "Play 1 match against a real player", k: "played", n: 1, coins: 200 },
+  { g: "Matches", id: "pl5", t: "Regular", d: "Play 5 matches against real players", k: "played", n: 5, coins: 400, packs: ["bronze"] },
+  { g: "Matches", id: "pl15", t: "Veteran", d: "Play 15 matches against real players", k: "played", n: 15, coins: 800, packs: ["silver"] },
+  { g: "Matches", id: "pl30", t: "Club legend", d: "Play 30 matches against real players", k: "played", n: 30, coins: 1500, packs: ["gold"] },
+  { g: "Wins", id: "w1", t: "Winner", d: "Win 1 match", k: "won", n: 1, coins: 300 },
+  { g: "Wins", id: "w5", t: "On a roll", d: "Win 5 matches", k: "won", n: 5, coins: 500, packs: ["bronze"] },
+  { g: "Wins", id: "w15", t: "Dominant", d: "Win 15 matches", k: "won", n: 15, coins: 1000, packs: ["silver"] },
+  { g: "Wins", id: "w30", t: "Unstoppable", d: "Win 30 matches", k: "won", n: 30, coins: 2000, packs: ["gold"] },
+  { g: "Wins", id: "big1", t: "Thrashing", d: "Win a match by 3 goals or more", k: "big", n: 1, coins: 400 },
+  { g: "Wins", id: "big5", t: "Hammered", d: "Win by 3 goals or more, 5 times", k: "big", n: 5, coins: 1200, packs: ["gold"] },
+  { g: "Goals", id: "g5", t: "Getting going", d: "Score 5 goals", k: "goals", n: 5, coins: 300 },
+  { g: "Goals", id: "g20", t: "Sharp shooter", d: "Score 20 goals", k: "goals", n: 20, coins: 700, packs: ["bronze"] },
+  { g: "Goals", id: "g50", t: "Goal machine", d: "Score 50 goals", k: "goals", n: 50, coins: 1500, packs: ["silver"] },
+  { g: "Goals", id: "g100", t: "Centurion", d: "Score 100 goals", k: "goals", n: 100, coins: 3000, packs: ["rare"] },
+  { g: "Defence", id: "cs1", t: "Shut out", d: "Keep a clean sheet", k: "cs", n: 1, coins: 300 },
+  { g: "Defence", id: "cs5", t: "Wall", d: "Keep 5 clean sheets", k: "cs", n: 5, coins: 800, packs: ["silver"] },
+  { g: "Defence", id: "cs10", t: "Fortress", d: "Keep 10 clean sheets", k: "cs", n: 10, coins: 1500, packs: ["gold"] },
+  { g: "Player of the match", id: "m1", t: "Star man", d: "Have your player chosen as player of the match", k: "motm", n: 1, coins: 300 },
+  { g: "Player of the match", id: "m5", t: "Match winner", d: "Get player of the match 5 times", k: "motm", n: 5, coins: 800, packs: ["silver"] },
+  { g: "Player of the match", id: "m15", t: "Hall of fame", d: "Get player of the match 15 times", k: "motm", n: 15, coins: 2000, packs: ["rare"] },
+  { g: "Cups", id: "c1", t: "Cup debut", d: "Play a cup match", k: "cup", n: 1, coins: 300 },
+  { g: "Cups", id: "c4", t: "Cup regular", d: "Play 4 cup matches", k: "cup", n: 4, coins: 800, packs: ["silver"] },
+  { g: "Cups", id: "cw1", t: "Champion", d: "Finish 1st in a cup and claim it", k: "cups", n: 1, coins: 1500, packs: ["rare"] },
+  { g: "Cups", id: "cw3", t: "Cup king", d: "Win 3 cups", k: "cups", n: 3, coins: 5000, packs: ["elite"] },
+  { g: "Squad", id: "sq1", t: "Full XI", d: "Save a full starting XI", live: "full", n: 1, coins: 300 },
+  { g: "Squad", id: "sq85", t: "Quality squad", d: "Reach a squad rating of 85", live: "rat", n: 85, coins: 800, packs: ["silver"] },
+  { g: "Squad", id: "sq25", t: "Chemistry", d: "Reach squad chemistry of 25", live: "chem", n: 25, coins: 800, packs: ["silver"] }
+];
+function objVal(o){
+  if (o.live) return !squadReady() ? 0 : o.live === "full" ? 1 : o.live === "rat" ? squadRating() : squadChem();
+  return (state.obj || {})[o.k] || 0;
+}
+const packNm = id => { const k = packById(id); return k ? String(k.short).replace("<br>", " ") + " pack" : ""; };
+const rewLine = (coins, packs) => [coins ? fmt(coins) + " coins" : "", ...Object.values(packs || {}).map(packNm)].filter(Boolean).join(" + ") || "None";
+function renderObj(){
+  const el = $("objList"); if (!el || !user || !loaded || $("viewObj").classList.contains("hidden")) return;
+  const oc = state.oc || {}, ob = state.obj || {}; let ready = 0;
+  const groups = []; OBJ.forEach(o => { let g = groups.find(x => x.n === o.g); if (!g) groups.push(g = { n: o.g, l: [] }); g.l.push(o); });
+  el.innerHTML = groups.map(g => `<h3 class="obg">${g.n}</h3><div class="obgrid">` + g.l.map(o => {
+    const v = objVal(o), got = !!oc[o.id], rdy = !got && v >= o.n; if (rdy) ready++;
+    return `<div class="ob ${got ? "got" : rdy ? "rdy" : ""}"><b>${o.t}</b><p>${o.d}</p><div class="obp"><i style="width:${Math.min(100, v / o.n * 100)}%"></i></div><small>${Math.min(v, o.n)} / ${o.n}</small><div class="obr">${rewLine(o.coins, o.packs)}</div>${got ? "<u>Claimed</u>" : `<button class="cta sm" data-o="${o.id}" ${rdy ? "" : "disabled"}>Claim</button>`}</div>`;
+  }).join("") + `</div>`).join("");
+  $("objSum").innerHTML = [["Matches", ob.played || 0], ["Wins", ob.won || 0], ["Goals", ob.goals || 0], ["Clean sheets", ob.cs || 0], ["Player of match", ob.motm || 0], ["Ready to claim", ready]].map(x => `<div><b>${x[1]}</b><span>${x[0]}</span></div>`).join("");
+}
+const objBusy = new Set();
+async function claimObj(id){
+  const o = OBJ.find(x => x.id === id); if (!o || !user || objBusy.has(id) || (state.oc || {})[id] || objVal(o) < o.n) return;
+  objBusy.add(id);
+  const ps = (o.packs || []).filter(p => packById(p));
+  state.oc = Object.assign({}, state.oc, { [id]: true }); state.coins += o.coins || 0; state.pend = (state.pend || []).concat(ps);
+  const cb = $("coinBox"); cb.classList.remove("flash"); void cb.offsetWidth; cb.classList.add("flash"); render();
+  try { await update(ref(rtdb, "users/" + user.key), { coins: state.coins, pend: state.pend, ["oc/" + id]: true, updatedAt: Date.now() }); } catch (x) { fail(x, "save the reward"); }
+  objBusy.delete(id); toast("Objective complete: " + rewLine(o.coins, ps)); if (ps.length) setTimeout(openPend, 400);
+}
+$("objList").onclick = e => { const b = e.target.closest("button[data-o]"); if (b) claimObj(b.dataset.o); };
+
+/* ---------- Cups (only zezo creates and starts them; 3 players, round robin, human vs human) ---------- */
+const squadPower = () => squadReady() ? squadRating() + squadChem() : 0;
+const cupList = () => Object.entries(cups).map(([id, c]) => ({ ...c, id })).sort((a, b) => (b.ts || 0) - (a.ts || 0));
+const fxList = c => Object.entries(c.fixtures || {}).map(([id, f]) => ({ ...f, id })).sort((a, b) => a.id < b.id ? -1 : 1);
+const cupDone = c => { const f = fxList(c); return c.status === "live" && f.length > 0 && f.every(x => x.res); };
+function cupTable(c){
+  const t = {}; Object.entries(c.players || {}).forEach(([k, n]) => t[k] = { k, n, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, pts: 0 });
+  fxList(c).forEach(f => {
+    if (!f.res || !t[f.a] || !t[f.b]) return;
+    const A = t[f.a], B = t[f.b], x = +f.res.ga || 0, y = +f.res.gb || 0;
+    A.p++; B.p++; A.gf += x; A.ga += y; B.gf += y; B.ga += x;
+    if (x > y) { A.w++; A.pts += 3; B.l++; } else if (x < y) { B.w++; B.pts += 3; A.l++; } else { A.d++; B.d++; A.pts++; B.pts++; }
+  });
+  return Object.values(t).sort((a, b) => b.pts - a.pts || (b.gf - b.ga) - (a.gf - a.ga) || b.gf - a.gf || (a.k < b.k ? -1 : 1));
+}
+function renderCups(){
+  const el = $("cupBody"); if (!el) return;
+  $("cupAdm").classList.toggle("hidden", !isAdmin());
+  if (!user || !loaded || $("viewCups").classList.contains("hidden")) return;
+  const L = cupList().slice(0, 6);
+  if (!L.length) { el.innerHTML = `<div class="empty">No cups yet.${isAdmin() ? " Create one above." : " Zezo will start one soon."}</div>`; return; }
+  const me = user.key, now = Date.now(), pw = squadPower();
+  el.innerHTML = L.map(c => {
+    const done = cupDone(c), pl = c.players || {}, joined = !!pl[me], fx = fxList(c), per = c.matches / 3 * 2, adm = isAdmin();
+    const bd = done ? ["Finished", "done"] : c.status === "open" ? ["Open", "open"] : ["Live", "live"];
+    const rw = ["r1", "r2", "r3"].map((k, i) => `<div><small>${["1st place", "2nd place", "3rd place"][i]}</small><b>${rewLine((c.reward || {})[k] && c.reward[k].coins, (c.reward || {})[k] && c.reward[k].packs)}</b></div>`).join("");
+    let body = "";
+    if (c.status === "open") {
+      const names = Object.values(pl);
+      body = `<div class="cslots">${[0, 1, 2].map(i => names[i] ? `<div>${escH(names[i])}</div>` : `<div class="e">Waiting for player</div>`).join("")}</div>
+        <div class="cbtns"><button class="cta" data-join="${c.id}" ${joined || names.length >= 3 ? "disabled" : ""}>${joined ? "Joined" : "Join cup"}</button>${adm ? `<button class="cta" data-start="${c.id}" ${names.length === 3 ? "" : "disabled"}>Start cup</button>` : ""}${joined && !squadReady() ? `<span class="cwarn">Build and save a full squad before your first match.</span>` : ""}${adm && names.length < 3 ? `<small class="sub" style="margin:0">Waiting for ${3 - names.length} more player${3 - names.length > 1 ? "s" : ""} to join.</small>` : ""}</div>`;
+    } else {
+      const tb = cupTable(c);
+      const rows = tb.map((x, i) => `<tr class="${x.k === me ? "me" : ""}"><td>${i + 1}</td><td>${escH(x.n)}</td><td>${x.p}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td>${x.gf - x.ga > 0 ? "+" : ""}${x.gf - x.ga}</td><td>${x.pts}</td></tr>`).join("");
+      const fr = fx.map(f => {
+        const mine = f.a === me || f.b === me, ok = f.a === me ? f.b : f.a, on = online[ok], free = on && now - on.ts < 70000 && on.status === "online";
+        const lab = !on || now - on.ts >= 70000 ? "Opponent offline" : on.status === "online" ? "Play" : on.status === "match" ? "In a match" : "Busy";
+        const mp = f.res && f.res.motm && P(f.res.motm.pid);
+        return `<div class="cfx ${f.res ? "fin" : ""}"><span class="cn r">${escH(f.an)}</span><b class="cs">${f.res ? f.res.ga + " - " + f.res.gb : "vs"}</b><span class="cn">${escH(f.bn)}</span>
+          <div class="cact">${mine && !f.res && !done ? `<button class="cta sm" data-cup="${c.id}" data-fx="${f.id}" ${free ? "" : "disabled"}>${lab}</button>` : ""}</div>${mp ? `<small class="cm">&#9733; Player of the match: ${escH(mp.name)} (${escH(pl[f.res.motm.k] || "")})</small>` : ""}</div>`;
+      }).join("");
+      const myRank = tb.findIndex(x => x.k === me);
+      let fin = "";
+      if (done) {
+        const claimed = c.claimed && c.claimed[me], rr = myRank > -1 && myRank < 3 ? (c.reward || {})["r" + (myRank + 1)] : null;
+        fin = `<div class="cwin">Champion: ${escH(tb[0].n)}</div>` + (myRank > -1 && myRank < 3 ? `<div class="cbtns"><span>You finished ${["1st", "2nd", "3rd"][myRank]}. Reward: ${rewLine(rr && rr.coins, rr && rr.packs)}</span><button class="cta" data-claim="${c.id}" ${claimed ? "disabled" : ""}>${claimed ? "Claimed" : "Claim reward"}</button></div>` : "");
+      }
+      const over = joined && !done && pw > c.cap;
+      body = `<div class="cupw"><table class="cupt"><tr><th>#</th><th>Player</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th></tr>${rows}</table></div>${fin}
+        ${joined && !done ? `<div class="${over ? "cwarn" : "sub"}" style="margin:0">Your squad power: ${pw || "--"} / ${c.cap}${over ? ". Over the limit, change your squad to play." : ""}</div>` : ""}
+        <div class="cfxs">${fr}</div>`;
+    }
+    return `<div class="cup"><div class="cuph"><h3>${escH(c.name)}</h3><span class="cbd ${bd[1]}">${bd[0]}</span>${adm ? `<button class="link" data-cdel="${c.id}" style="margin-left:auto">Delete</button>` : ""}</div>
+      <div class="cchips"><span>${c.matches} matches</span><span>${per} each</span><span>Human opponents only</span><span>Max squad power ${c.cap}</span></div>
+      <div class="crw">${rw}</div>${body}</div>`;
+  }).join("");
+}
+memo($("cupBody")); memo($("objList")); memo($("objSum"));
+$("cupBody").onclick = e => {
+  const j = e.target.closest("[data-join]"), s = e.target.closest("[data-start]"), p = e.target.closest("[data-cup]"), c = e.target.closest("[data-claim]"), d = e.target.closest("[data-cdel]");
+  if (j) joinCup(j.dataset.join); else if (s) startCup(s.dataset.start); else if (p) playFixture(p.dataset.cup, p.dataset.fx); else if (c) claimCup(c.dataset.claim); else if (d) delCup(d.dataset.cdel);
+};
+$("cuCreate").onclick = () => withBtn($("cuCreate"), async () => {
+  if (!isAdmin()) return;
+  if (Object.values(cups).some(c => c.status === "open" || (c.status === "live" && !cupDone(c)))) return toast("Finish or delete the current cup first.");
+  const name = $("cuN").value.trim() || "Cup", reward = {};
+  [1, 2, 3].forEach(i => { reward["r" + i] = { coins: Math.max(0, Math.min(1e7, Math.round(+$("cuC" + i).value) || 0)), packs: [$("cuP" + i + "a").value, $("cuP" + i + "b").value].filter(p => p && packById(p)) }; });
+  try {
+    await set(ref(rtdb, "cups/" + Date.now().toString(36)), { name, matches: +$("cuM").value, cap: +$("cuCap").value, reward, status: "open", players: { [user.key]: state.username }, by: user.key, ts: Date.now() });
+    $("cuN").value = ""; toast("Cup created. Players can join now.");
+  } catch (e) { fail(e, "create the cup"); }
+});
+async function joinCup(id){
+  if (!user || needSquad()) return;
+  try {
+    const r = await runTransaction(ref(rtdb, "cups/" + id), c => { if (!c || c.status !== "open") return c; c.players = c.players || {}; if (c.players[user.key] || Object.keys(c.players).length >= 3) return c; c.players[user.key] = state.username; return c; });
+    toast(r.snapshot.val() && (r.snapshot.val().players || {})[user.key] ? "You joined the cup" : "Couldn't join this cup");
+  } catch (e) { fail(e, "join the cup"); }
+}
+async function startCup(id){
+  if (!isAdmin()) return;
+  const c0 = cups[id]; if (!c0 || Object.keys(c0.players || {}).length !== 3) return toast("A cup needs exactly 3 players.");
+  try {
+    await runTransaction(ref(rtdb, "cups/" + id), c => {
+      if (!c || c.status !== "open") return c;
+      const ks = Object.keys(c.players || {}).sort(); if (ks.length !== 3) return c;
+      const fx = {}; let n = 0;
+      for (let L = 0; L < c.matches / 3; L++) [[0, 1], [0, 2], [1, 2]].forEach(([i, j]) => { const a = L % 2 ? ks[j] : ks[i], b = L % 2 ? ks[i] : ks[j]; fx["f" + String(++n).padStart(2, "0")] = { a, b, an: c.players[a], bn: c.players[b] }; });
+      c.fixtures = fx; c.status = "live"; c.startedAt = Date.now(); return c;
+    });
+    toast("Cup started. Good luck!");
+  } catch (e) { fail(e, "start the cup"); }
+}
+async function delCup(id){ if (isAdmin() && confirm("Delete this cup?")) remove(ref(rtdb, "cups/" + id)).catch(e => fail(e, "delete the cup")); }
+function playFixture(cid, fid){
+  const c = cups[cid], f = c && c.fixtures && c.fixtures[fid]; if (!c || !f || f.res || !user || needSquad()) return;
+  if (squadPower() > c.cap) return toast(`Your squad power is ${squadPower()}. This cup allows up to ${c.cap}. Change your squad first.`);
+  const ok = f.a === user.key ? f.b : f.a, nm2 = f.a === user.key ? f.bn : f.an, on = online[ok];
+  if (!on || Date.now() - on.ts > 70000 || on.status !== "online") return toast(`${nm2} needs to be online and free to play.`);
+  sendInvite(ok, nm2, { id: cid, fid });
+}
+async function recordCup(v, my, op, mo, mi){
+  const c = v.cup, motm = mo ? { pid: mo.pid, k: mo.idx === mi ? user.key : v.opp.k } : null;
+  try {
+    await runTransaction(ref(rtdb, "cups/" + c.id + "/fixtures/" + c.fid), cur => {
+      if (!cur || cur.res) return cur; const a = cur.a === user.key;
+      cur.res = Object.assign({ ga: a ? my : op, gb: a ? op : my, ts: Date.now() }, motm ? { motm } : {}); return cur;
+    });
+  } catch (e) { fail(e, "save the cup result"); }
+}
+async function claimCup(id){
+  const c = cups[id]; if (!c || !user || !cupDone(c) || cupBusy) return;
+  const i = cupTable(c).findIndex(x => x.k === user.key); if (i < 0 || i > 2) return;
+  const r = (c.reward || {})["r" + (i + 1)] || {}; cupBusy = true;
+  try {
+    const t = await runTransaction(ref(rtdb, "cups/" + id + "/claimed/" + user.key), cur => cur ? undefined : true);
+    if (!t.committed) { toast("Already claimed."); return; }
+    const ps = Object.values(r.packs || {}).filter(p => packById(p)), coins = r.coins || 0, ob = Object.assign({}, state.obj || {});
+    if (i === 0) ob.cups = (ob.cups || 0) + 1;
+    state.coins += coins; state.pend = (state.pend || []).concat(ps); state.obj = ob;
+    const cb = $("coinBox"); cb.classList.remove("flash"); void cb.offsetWidth; cb.classList.add("flash"); render();
+    await update(ref(rtdb, "users/" + user.key), { coins: state.coins, pend: state.pend, obj: ob, updatedAt: Date.now() });
+    toast("Cup reward: " + rewLine(coins, ps)); if (ps.length) setTimeout(openPend, 400);
+  } catch (e) { fail(e, "claim the reward"); } finally { cupBusy = false; }
+}
+
+
+/* ---------- Zezo inbox: everyone can send, only zezo reads everything ---------- */
+const FBT = { upd: ["Update idea", "upd"], club: ["Club / player request", "club"], bug: ["Bug report", "bug"] };
+function renderZezo(){
+  if (!$("zzList")) return;
+  const adm = isAdmin(), nw = fbItems.filter(x => x.status !== "done").length;
+  $("navZ").innerHTML = "Zezo" + (adm && nw ? `<i class="nb">${nw}</i>` : "");
+  if (!user || !loaded || $("viewZezo").classList.contains("hidden")) return;
+  $("zzForm").classList.toggle("hidden", adm); $("zzFil").classList.toggle("hidden", !adm);
+  $("zzT").textContent = adm ? "Inbox" : "Message Zezo";
+  $("zzS").textContent = adm ? "Messages from players: update ideas, club and player requests, and bugs." : "Have an idea, want a club or player added, or found a bug? Tell Zezo here.";
+  $("zzLT").textContent = adm ? `Messages (${nw} open)` : "Your messages";
+  const f = adm ? $("zzFs").value : "", L = fbItems.filter(x => !f || x.type === f);
+  $("zzList").innerHTML = L.length ? L.map(m => { const t = FBT[m.type] || FBT.upd;
+    return `<div class="fbi ${m.status === "done" ? "done" : ""}"><div class="fbh"><span class="fbt2 ${t[1]}">${t[0]}</span>${adm ? `<b>${escH(m.from || m.k)}</b>` : ""}<small>${agoT(m.ts || 0)}</small><small>${m.status === "done" ? "Done" : adm ? "Open" : "Sent"}</small></div><p>${escH(m.text || "")}</p>${adm ? `<div class="fbb"><button class="cta sm alt" data-fd="${m.k}|${m.id}">${m.status === "done" ? "Reopen" : "Mark done"}</button><button class="link" data-fx="${m.k}|${m.id}">Delete</button></div>` : ""}</div>`; }).join("")
+    : `<div class="empty">${adm ? "No messages yet." : "You haven't sent anything yet."}</div>`;
+}
+memo($("zzList"));
+$("zzFs").onchange = renderZezo;
+$("zzMsg").oninput = () => { $("zzCnt").textContent = $("zzMsg").value.length + " / 500"; };
+let fbLast = 0;
+$("zzSend").onclick = () => withBtn($("zzSend"), async () => {
+  const text = $("zzMsg").value.trim(); if (!user) return;
+  if (text.length < 5) return toast("Write a little more so Zezo knows what you mean.");
+  if (Date.now() - fbLast < 8000) return toast("Wait a few seconds before sending another.");
+  try {
+    await set(ref(rtdb, "feedback/" + user.key + "/" + Date.now().toString(36)), { from: state.username, type: $("zzType").value, text: text.slice(0, 500), ts: Date.now(), status: "new" });
+    fbLast = Date.now(); $("zzMsg").value = ""; $("zzCnt").textContent = "0 / 500"; toast("Sent to Zezo. Thank you!");
+  } catch (e) { fail(e, "send the message"); }
+});
+$("zzList").onclick = e => {
+  if (!isAdmin()) return;
+  const d = e.target.closest("[data-fd]"), x = e.target.closest("[data-fx]");
+  if (d) { const [k, id] = d.dataset.fd.split("|"), m = fbItems.find(i => i.k === k && i.id === id); update(ref(rtdb, "feedback/" + k + "/" + id), { status: m && m.status === "done" ? "new" : "done" }).catch(e => fail(e, "update the message")); }
+  else if (x) { const [k, id] = x.dataset.fx.split("|"); remove(ref(rtdb, "feedback/" + k + "/" + id)).catch(e => fail(e, "delete the message")); }
+};
+
 document.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => b.dataset.mode === "friend" ? openFriends() : b.dataset.mode === "ai" ? openAI() : findMatch(b.dataset.mode));
 
 $("packs").onclick = e => { const b = e.target.closest("button[data-id]"); if (b) openPack(storePacks().find(k => k.id === b.dataset.id)); };
