@@ -630,6 +630,9 @@ nav button+button::before{content:"";position:absolute;left:-3px;top:30%;bottom:
 #mech .keys kbd{font:700 13px Barlow,sans-serif;color:var(--g);margin-right:6px}
 @media(max-width:600px){#mech h2{font-size:28px}#mech summary{font-size:19px}#mech .mcx{font-size:14px}}
 
+#mtAct .mb.tack{background:#c4263c;color:#fff;flex:1.3}
+#mtAct .mb.tack:disabled{background:var(--p2);color:var(--m);opacity:.5}
+#mtAct .mb.tack.dn{color:#fff;filter:brightness(1.3)}
 /* v9: mechanics guide must always be readable */
 #mech{top:0!important;left:0!important;right:0!important;bottom:0!important;width:100%!important;height:100vh!important;height:100dvh!important;z-index:9999!important;background:#03060d!important;color:#f2f5fb!important;opacity:1!important;visibility:visible!important;display:block}
 #mech.hidden{display:none!important}
@@ -1114,7 +1117,7 @@ window.UTA = (function () {
   <div class="mtpitch"><canvas id="mtCv"></canvas><div id="mtBanner"></div><div id="mtChip"></div><div id="mtBub"></div><div class="mtacthint" id="mtHint"></div><div class="mtacttimer"><i id="mtTimer"></i></div></div>
   <div class="mtact hidden" id="mtAct">
     <div class="mtl">
-      <div class="mtmods"><button id="mtPow" class="mb" title="Hold Power, then Pass or Shoot (Shift)"><b>Power</b><em>hold</em></button><button id="mtAuto" class="mb" title="Let the AI play this move (A)"><b>Auto</b></button></div>
+      <div class="mtmods"><button id="mtPow" class="mb" title="Hold Power, then Pass or Shoot (Shift)"><b>Power</b><em>hold</em></button><button id="mtAuto" class="mb" title="Let the AI play this move (A)"><b>Auto</b></button><button id="mtTack" class="mb tack" title="Tackle (Q) - only when the opponent has the ball"><b>Tackle</b></button></div>
       <div id="joy" aria-label="Aim joystick"><i id="joyK"></i></div>
     </div>
     <div class="mtr">
@@ -1172,6 +1175,7 @@ window.UTA = (function () {
       <li><span class="tag t">Through</span> Ball in behind to a forward. About 14% offside risk in the final third.</li>
       <li><span class="tag c">Chip</span> Chip shot over the keeper. Great close to goal, poor from distance.</li>
       <li><span class="tag d">Dribble</span> Beat the defender: your dribbling vs his defending. Fail and you lose the ball or give away a foul (maybe a card).</li>
+      <li><span class="tag d" style="background:#c4263c">Tackle</span> (left side, or Q) works while the <b>opponent</b> has the ball. Your nearest player goes in: his defending against the attacker dribbling and pace. A miss can give away a foul or a card, and there is a short wait before you can tackle again.</li>
       <li><b>Power</b> (left, hold) makes Pass a driven pass and Shoot a power shot.</li>
       <li><b>Auto</b> (left) lets the AI play this move.</li>
       <li><small>A goalkeeper with the ball can only pass.</small></li></ul></div></details>
@@ -3539,7 +3543,13 @@ function shoot(m, T, O, s, pt, kind, opt) {
      and from long range only strong shooters (shooting stat) ever score. Midfield shots are close to hopeless. */
   const RNG = [[0, 0], [.4, .03], [.5, .12], [.65, .4], [.8, .74], [.9, 1]];
   let rf = 1; if (kind !== "pen" && xa < .9) { for (let i = 1; i < RNG.length; i++) if (xa <= RNG[i][0]) { rf = RNG[i - 1][1] + (RNG[i][1] - RNG[i - 1][1]) * (xa - RNG[i - 1][0]) / (RNG[i][0] - RNG[i - 1][0]); break; } if (kind !== "head" && xa < .8) rf *= mClamp((sho - 62) / 30, .2, 1.05); }
-  const gpf = gp * rf;
+  let gpf = gp * rf;
+  /* inside the penalty box (17m from the goal line, 20m either side of centre) a shot goes in about 70% of the time: stronger shooters / weaker keepers a bit more, headers and corner-aimed shots a bit less */
+  { const gl = T.dir > 0 ? PW - pt.x : pt.x;
+    if (kind !== "pen" && kind !== "free" && gl <= 17 && Math.abs(pt.y - 34) <= 20) {
+      const pb = mClamp(.7 + (sho - gk.p.ovr) / 400 - Math.abs(aim) * .05 - (kind === "head" ? .1 : 0), .5, .88);
+      gpf = Math.min(.98, pb / Math.max(.25, 1 - off));
+    } }
   if (mChance(gpf)) { m.hook.ball({ x: goalX, y: gy }); return goal(m, T, O, s, kind === "open" || kind === "one" || kind === "head" ? wasAssist(m, T, s) : null, sty || kind); }
   m.hook.ball({ x: gk.x, y: gy });
   say(m, mPick([`SAVE by ${g}! ${a}'s shot is kept out.`, `${a} hits it on target but ${g} makes the save!`, `${g} dives and stops ${a}'s effort! What a save!`]));
@@ -3595,6 +3605,7 @@ function userDo(m, T, O, s, pt, ua) {
 function act(m) {
   if (m.flag) { const f = m.flag; m.flag = null; return f(); }
   const T = m.poss, O = other(m, T), s = m.car, pt = m.pt, xa = xaOf(T, pt.x);
+  if (m.tkReq) { m.tkReq = false; if (m.ctl && !m.net && T !== m.mine && s && s.pos !== "GK") return tackle(m, T, O, s, pt); }
   if (m.net) { // human vs human: whoever has the ball decides, and the decision is shared so both phones play the same move
     let ua;
     if (T === m.mine) {
@@ -3620,6 +3631,21 @@ function act(m) {
   const k = ["cross", "dribble", "through", "long", "pass"], w = [wide && xa > .58 && xa < .9 ? .3 : 0, Math.max(.05, .2 + (s.p.dri - 70) / 300 - (xa < .3 ? .1 : 0)), xa > .4 && xa < .82 ? .1 + (s.p.pas - 70) / 300 : 0, xa < .35 ? .2 : .07, .55];
   const c = mWPick(k, w);
   return c === "cross" ? cross(m, T, O, s, pt) : c === "dribble" ? dribble(m, T, O, s, pt) : c === "through" ? through(m, T, O, s, pt) : pass(m, T, O, s, pt, c === "long");
+}
+/* ---- tackle: press Tackle while the AI has the ball. Your nearest outfield player goes in on the ball carrier ---- */
+function tackle(m, T, O, s, pt) {
+  const me = O, d = live(me).filter(x => x.pos !== "GK").reduce((b, x) => { const q = dist(x, pt); return !b || q < b.q ? { x, q } : b; }, null);
+  if (!d) return 1;
+  const D = d.x, near = d.q <= 14, a = nm(T, s), b = nm(me, D);
+  const pr = mClamp(.4 + (D.p.def - (s.p.dri * .6 + s.p.pac * .4)) / 170 + (D.p.phy - s.p.phy) / 500 + edge(m, me, T) / 400 - (near ? 0 : .18), .08, .72);
+  if (mChance(pr)) {
+    takeBall(m, me, D, { x: D.x, y: D.y }); m.last = null;
+    say(m, mPick([`${b} wins the ball off ${a} with a strong tackle! ${tn(me)} have possession.`, `Great tackle by ${b}! ${a} loses it.`, `${b} steps in and takes the ball cleanly from ${a}.`]));
+    return 1;
+  }
+  if (mChance(.3)) return foul(m, T, me, s, D, pt);
+  say(m, mPick([`${b} lunges in but ${a} rides the tackle.`, `${a} skips past ${b} with a quick touch!`, `${b} goes to ground and misses. ${a} keeps the ball.`]));
+  return 1;
 }
 function mStep(m) {
   if (m.done) return 0;
@@ -3885,6 +3911,12 @@ Object.entries(ACT).forEach(([id, name]) => {
   pb.addEventListener("pointerdown", e => { e.preventDefault(); try { pb.setPointerCapture(e.pointerId); } catch (_) {} IN.pow = true; pb.classList.add("dn"); });
   pb.addEventListener("pointerup", off); pb.addEventListener("pointercancel", off); pb.addEventListener("contextmenu", e => e.preventDefault()); }
 $("mtAuto").addEventListener("click", () => { if (M && M.ask) decide({ k: "auto" }); });
+function doTackle(){
+  if (!M || M.done || M.ask || M.wait || M.paused || M.net || !M.poss || M.poss === M.mine || (M.tkAt && performance.now() < M.tkAt)) return;
+  M.tkAt = performance.now() + 2500; M.tkReq = true; clearTimeout(M.tm); loop();
+}
+$("mtTack").addEventListener("pointerdown", e => { e.preventDefault(); doTackle(); });
+setInterval(() => { const b = $("mtTack"); if (b) b.disabled = !(M && !M.done && !M.ask && !M.wait && !M.paused && !M.net && M.poss && M.poss !== M.mine && !(M.tkAt && performance.now() < M.tkAt)); }, 120);
 { const base = $("joy"), knob = $("joyK"); let pid = null;
   const move = e => { const rc = base.getBoundingClientRect(), R = rc.width / 2; let dx = (e.clientX - rc.left - R) / R, dy = (e.clientY - rc.top - R) / R; const m = Math.hypot(dx, dy); if (m > 1) { dx /= m; dy /= m; }
     IN.joy.x = dx; IN.joy.y = dy; IN.joy.on = Math.min(1, m) > .28; knob.style.transform = `translate(${dx * R * .55}px,${dy * R * .55}px)`; };
@@ -3905,6 +3937,7 @@ document.addEventListener("keydown", e => {
   const k = e.key.toLowerCase();
   if (k === "shift") { IN.pow = true; $("mtPow").classList.add("dn"); return; }
   if (k.startsWith("arrow")) { e.preventDefault(); if (k === "arrowleft") IN.kx = -1; else if (k === "arrowright") IN.kx = 1; else if (k === "arrowup") IN.ky = -1; else IN.ky = 1; return; }
+  if (k === "q" && !M.ask) { e.preventDefault(); return doTackle(); }
   if (!M.ask) return;
   if (k === "v") { e.preventDefault(); return fire("pass", .7); } // driven pass
   const m = { " ": "shoot", s: "shoot", p: "pass", t: "thru", c: "chip", d: "drib", x: "cross", l: "lobpass", a: "auto" }[k]; if (!m) return; e.preventDefault();
