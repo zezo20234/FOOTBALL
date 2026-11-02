@@ -3309,7 +3309,7 @@ function startShared(){
     fbItems = L.sort((a, b) => (b.ts || 0) - (a.ts || 0)); renderZezo();
   }, () => {}));
   presOff.push(onValue(ref(rtdb, "cups"), sn => { cups = sn.val() || {}; renderCups(); }, () => {}));
-  presOff.push(onValue(ref(rtdb, "market"), sn => { mk = sn.val() || {}; if (!$("viewMarket").classList.contains("hidden")) renderMarket(); }, () => {}));
+  presOff.push(onValue(ref(rtdb, "market"), sn => { mk = sn.val() || {}; aiSweep(); if (!$("viewMarket").classList.contains("hidden")) renderMarket(); }, () => {}));
   presOff.push(onValue(ref(rtdb, "config"), sn => { applyCfg(sn.val()); render(); }, () => {}));
   presOff.push(onValue(ref(rtdb, "cpacks"), sn => { cpacks = sn.val() || {}; fillPackSelects(); render(); if (isAdmin()) renderCp(); }, () => {}));
   if (isAdmin()) presOff.push(onValue(ref(rtdb, "codes"), sn => { codes = sn.val() || {}; renderCodes(); $("qcList").innerHTML = $("rcList").innerHTML; }, () => {}));
@@ -3577,7 +3577,7 @@ function renderMarket(){
   L = L.filter(x => (!pos || x.p.pos === pos) && (!q || (x.p.name + " " + x.p.club + " " + x.p.nation).toLowerCase().includes(q)));
   L.sort(so === "pa" ? (a, b) => a.price - b.price : so === "pd" ? (a, b) => b.price - a.price : (a, b) => b.p.ovr - a.p.ovr || a.price - b.price);
   const hum = Object.keys(mk).length;
-  $("mkInfo").textContent = `${L.length} players shown · ${PLAYERS.length} stocked by AI managers · ${hum} listed by players · ${CFG.fee}% sell fee`;
+  $("mkInfo").textContent = `${L.length} players shown · ${PLAYERS.length} stocked by AI managers · ${hum} listed by players · ${CFG.fee}% sell fee · AI managers buy fairly priced listings`;
   $("mkItems").innerHTML = L.slice(0, mkShow).map(x => { const p = x.p, mine = !x.ai && x.sk === user.key;
     return `<div class="row mk ${tier(p)}"><div class="o">${p.ovr}<small>${p.pos}</small></div><div class="mki"><span class="n">${escH(p.name)}</span><span class="p">${rowMeta(p)}</span><span class="p"><b class="sl ${x.ai ? "ai" : "hu"}">${x.ai ? "AI" : mine ? "You" : "Player"}</b> ${escH(x.seller)}</span></div>
       <div class="mkp"><span class="pc2"><span class="coin"></span>${fmt(x.price)}</span>${mine ? `<button class="cta sm alt" data-c="${x.id}">Cancel</button>` : `<button class="cta sm" data-b="${x.id}" ${state.coins < x.price || mkBusy ? "disabled" : ""}>Buy</button>`}</div></div>`; }).join("") || '<div class="empty">Nothing matches.</div>';
@@ -3605,6 +3605,31 @@ async function cancelMk(id){
     if (ok && r.committed) { state.club.push(l.pid); render(); await save(); toast("Listing cancelled. Player returned."); } else toast("It was already sold.");
   } catch (x) { fail(x, "cancel"); } finally { mkBusy = false; renderMarket(); }
 }
+/* ---- AI managers buy player listings ----
+   A listing at a fair price sells to an AI manager after a few minutes (cheaper = more likely and faster).
+   It is worked out from the listing id, so it is the same every time. Your own game settles your sales, even ones that
+   happened while you were away. Overpriced listings (about 35% over the normal price or more) never sell to the AI. */
+const aiSold = new Set();
+function aiWill(id, l){
+  const p = P(l.pid); if (!p || !l.ts) return null;
+  const h = mkH(id + ":ai"), r = l.price / Math.max(50, mkBase(p.ovr)), w = Math.min(1, Math.max(0, (1.35 - r) / .5));
+  if ((h % 1000) / 1000 >= w) return null;
+  return { at: l.ts + (60 + ((h >>> 10) % 1140)) * 1000 * Math.min(1.2, Math.max(.5, r)), who: AI[(h >>> 4) % AI.length].n };
+}
+async function aiSweep(){
+  if (!user || !loaded) return;
+  for (const [id, l] of Object.entries(mk)) {
+    if (mkBusy) return;
+    if (!l || l.sk !== user.key || aiSold.has(id)) continue;
+    const d = aiWill(id, l); if (!d || Date.now() < d.at) continue;
+    aiSold.add(id); mkBusy = true;
+    try {
+      let ok = false; const r = await runTransaction(ref(rtdb, "market/" + id), cur => { ok = !!cur && cur.sk === user.key && cur.price === l.price && cur.pid === l.pid; return ok ? null : cur; });
+      if (ok && r.committed) { const g = Math.floor(l.price * (1 - CFG.fee / 100)); state.coins += g; render(); await save(); toast(`${d.who} bought ${P(l.pid).name} for ${fmt(l.price)} coins. You got ${fmt(g)}.`); }
+    } catch (x) {} finally { mkBusy = false; if (!$("viewMarket").classList.contains("hidden")) renderMarket(); }
+  }
+}
+setInterval(aiSweep, 20000);
 $("mkListBtn").onclick = async () => {
   if (!user || mkBusy) return; const pid = +$("mkSel").value, price = Math.round(+$("mkPrice").value);
   if (!pid || !P(pid)) return toast("Pick a player to sell."); if (!(price >= 50 && price <= 1e6)) return toast("Price must be between 50 and 1,000,000.");
