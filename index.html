@@ -1326,10 +1326,6 @@ window.UTA = (function () {
 <div id="toast"></div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
-import { getDatabase, ref, get, set, update, onValue, runTransaction, onDisconnect, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyCQLq6u5K1mF8FExyUp2UHzTp66cAFIYdQ",
   authDomain: "football-63ea4.firebaseapp.com",
@@ -1341,9 +1337,142 @@ const firebaseConfig = {
   appId: "1:280498851355:web:287116d1eccd78cdb8b2be",
   measurementId: "G-50ZTQWRB61"
 };
-const fb = initializeApp(firebaseConfig);
-try { getAnalytics(fb); } catch (e) {}
-const rtdb = getDatabase(fb);
+
+/* Two ways to talk to the database. Normally Firebase. When the page is opened from the ESP32 in the car
+   (plain http://192.168.4.1) there is no internet, so the same calls go to the ESP32's own small database over a WebSocket. */
+const CAR = location.protocol === "http:" && !/^(localhost|127\.)/.test(location.hostname);
+if (CAR && !/^\d+\.\d+\.\d+\.\d+$/.test(location.hostname)) location.replace("http://192.168.4.1/");   // opened by name on the car Wi-Fi: use the one car address
+let OFFLINE = false;   // true when the game runs from this device's own saved copy (no internet)
+const OFF_KEY = "ut_offline_db";
+const snapOf = v => ({ val: () => (v === undefined || v === null ? null : JSON.parse(JSON.stringify(v))), exists: () => v !== undefined && v !== null });
+const clone = v => (v === undefined || v === null ? null : JSON.parse(JSON.stringify(v)));
+const seg = p => String(p || "").split("/").filter(Boolean);
+
+/* The copy of your account, settings and events kept on this phone. Used when there is no internet, and synced back when there is. */
+function offStore(){
+  let s = null; try { s = JSON.parse(localStorage.getItem(OFF_KEY)); } catch (e) {}
+  s = s && s.db ? s : { db: {}, base: {}, dirty: [] };
+  s.base = s.base || {}; s.dirty = s.dirty || [];
+  let t = 0;
+  const flush = () => { clearTimeout(t); try { const d = {}; ["users", "config", "events", "cpacks"].forEach(k => { if (s.db[k] !== undefined) d[k] = s.db[k]; }); localStorage.setItem(OFF_KEY, JSON.stringify({ db: d, base: s.base, dirty: s.dirty })); } catch (e) {} };
+  const save = () => { clearTimeout(t); t = setTimeout(flush, 300); };
+  const getAt = p => { let c = s.db; for (const k of seg(p)) { if (c === null || typeof c !== "object") return null; c = c[k]; if (c === undefined) return null; } return c; };
+  const setAt = (p, v) => {
+    const a = seg(p); v = clone(v);
+    if (!a.length) { s.db = v && typeof v === "object" ? v : {}; return; }
+    const chain = [s.db]; let c = s.db;
+    for (let i = 0; i < a.length - 1; i++) { if (c[a[i]] === null || c[a[i]] === undefined || typeof c[a[i]] !== "object") { if (v === null) return; c[a[i]] = {}; } c = c[a[i]]; chain.push(c); }
+    if (v === null) delete c[a[a.length - 1]]; else c[a[a.length - 1]] = v;
+    for (let i = chain.length - 1; i > 0; i--) { if (!Object.keys(chain[i]).length) delete chain[i - 1][a[i - 1]]; else break; }   // empty nodes don't exist, like in Firebase
+  };
+  return { s, flush, save, getAt, setAt };
+}
+// online: remember the signed-in account and the shared settings on this device
+function mirror(OS, path, v){
+  const a = seg(path), s = OS.s;
+  if (!((a.length === 2 && a[0] === "users") || (a.length === 1 && ["config", "events", "cpacks"].includes(a[0])))) return;
+  if (a[0] === "users") { if (s.dirty.includes(a[1])) return; if (v === null || v === undefined) delete s.base[a[1]]; else s.base[a[1]] = clone(v); }
+  OS.setAt(path, v); OS.save();
+}
+// back online: push what was done offline. If you also played online meanwhile, keep both (coins and players added or sold offline are applied on top).
+async function syncUp(OS, D, rtdb){
+  const s = OS.s, left = [];
+  for (const k of s.dirty.slice()) {
+    const car = OS.getAt("users/" + k); if (!car) continue;
+    try {
+      const r = D.ref(rtdb, "users/" + k), fb = (await D.get(r)).val(), base = s.base[k];
+      let out = clone(car);
+      if (fb && !base) { OS.setAt("users/" + k, fb); s.base[k] = clone(fb); continue; }
+      if (fb && base && (fb.updatedAt || 0) !== (base.updatedAt || 0)) {
+        out.coins = (fb.coins || 0) + ((car.coins || 0) - (base.coins || 0));
+        const club = (fb.club || []).slice(), cnt = arr => { const m = {}; (arr || []).forEach(id => { m[id] = (m[id] || 0) + 1; }); return m; }, cc = cnt(car.club), bc = cnt(base.club);
+        for (const id in cc) for (let i = 0; i < cc[id] - (bc[id] || 0); i++) club.push(+id);
+        for (const id in bc) for (let i = 0; i < bc[id] - (cc[id] || 0); i++) { const j = club.indexOf(+id); if (j >= 0) club.splice(j, 1); }
+        out.club = club; out.updatedAt = (fb.updatedAt || 0) + 1;
+      }
+      await D.set(r, out); OS.setAt("users/" + k, out); s.base[k] = clone(out);
+    } catch (e) { left.push(k); }
+  }
+  s.dirty = left; OS.flush();
+}
+async function reach(){
+  if (!navigator.onLine) return false;
+  try { const c = new AbortController(), t = setTimeout(() => c.abort(), 4000); await fetch(firebaseConfig.databaseURL + "/.json?shallow=true", { cache: "no-store", signal: c.signal }); clearTimeout(t); return true; } catch (e) { return false; }
+}
+function offBanner(){
+  const b = document.createElement("div");
+  b.style.cssText = "position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 6px);z-index:99999;background:#0b1220;color:#f4cf6a;border:1px solid #f4cf6a;border-radius:20px;padding:5px 14px;font:600 12px system-ui,sans-serif;opacity:.95";
+  b.textContent = "Offline mode · saved on this device";
+  document.body.appendChild(b);
+  window.addEventListener("online", () => { b.textContent = "Back online · tap to sync"; b.style.cursor = "pointer"; b.onclick = () => location.reload(); });
+}
+function mkLocal(OS){
+  const subs = new Set();
+  const overlap = (a, b) => { const x = "/" + seg(a).join("/") + "/", y = "/" + seg(b).join("/") + "/"; return x.startsWith(y) || y.startsWith(x); };
+  const fire = p => subs.forEach(o => { if (overlap(o.path, p)) setTimeout(() => o.cb(snapOf(OS.getAt(o.path))), 0); });
+  const touch = p => { const a = seg(p); if (a[0] === "users" && a[1] && !OS.s.dirty.includes(a[1])) OS.s.dirty.push(a[1]); OS.save(); fire(p); };
+  const write = (p, v) => { OS.setAt(p, v === undefined ? null : v); touch(p); };
+  return {
+    rtdb: {}, ref: (_, path) => ({ path: path || "" }),
+    get: async r => snapOf(OS.getAt(r.path)),
+    set: async (r, v) => write(r.path, v),
+    update: async (r, v) => { for (const k in v) OS.setAt(r.path + "/" + k, v[k] === undefined ? null : v[k]); touch(r.path); },
+    remove: async r => write(r.path, null),
+    onDisconnect: () => ({ remove: () => Promise.resolve() }),
+    onValue: (r, cb) => {
+      if (r.path === ".info/connected") { setTimeout(() => cb(snapOf(true))); return () => {}; }
+      const o = { path: r.path, cb }; subs.add(o); setTimeout(() => cb(snapOf(OS.getAt(r.path)))); return () => subs.delete(o);
+    },
+    runTransaction: async (r, fn) => {
+      const cur = OS.getAt(r.path), nv = fn(clone(cur));
+      if (nv === undefined) return { committed: false, snapshot: snapOf(cur) };
+      write(r.path, nv); return { committed: true, snapshot: snapOf(nv) };
+    }
+  };
+}
+async function mkDb(){
+  const G = "https://www.gstatic.com/firebasejs/10.12.2/";
+  const OS = offStore();
+  addEventListener("pagehide", OS.flush); addEventListener("visibilitychange", () => { if (document.hidden) OS.flush(); });
+  if (!CAR) {
+    if (!(await reach())) { OFFLINE = true; offBanner(); return mkLocal(OS); }   // no internet: play from the copy on this phone
+    const A = await import(G + "firebase-app.js"), D = await import(G + "firebase-database.js"), fb = A.initializeApp(firebaseConfig), rtdb = D.getDatabase(fb);
+    import(G + "firebase-analytics.js").then(m => m.getAnalytics(fb)).catch(() => {});
+    await Promise.race([syncUp(OS, D, rtdb), new Promise(ok => setTimeout(ok, 8000))]);   // send what was done offline
+    const ref = (d, p) => { const r = D.ref(d, p); r.__p = p || ""; return r; };
+    return { rtdb, ref, get: D.get, set: D.set, update: D.update, runTransaction: D.runTransaction, onDisconnect: D.onDisconnect, remove: D.remove,
+      onValue: (r, cb, ecb) => { const f = sn => { try { mirror(OS, r.__p, sn.val()); } catch (e) {} cb(sn); }; return ecb ? D.onValue(r, f, ecb) : D.onValue(r, f); } };
+  }
+  let ws, ready, nid = 0; const pend = {}, subs = {}, snap = v => ({ val: () => v === undefined ? null : v, exists: () => v != null });
+  const open = () => { ready = new Promise(ok => { ws = new WebSocket("ws://" + location.host + "/db");
+    ws.onopen = () => { ok(); Object.keys(subs).forEach(i => ws.send(JSON.stringify({ op: "sub", id: +i, path: subs[i].path }))); };
+    ws.onmessage = e => { const m = JSON.parse(e.data); if (m.re && pend[m.re]) { pend[m.re](m); delete pend[m.re]; } else if (m.ev && subs[m.ev]) subs[m.ev].cb(snap(m.v)); };
+    ws.onclose = () => setTimeout(open, 1500); }); };
+  open();
+  const call = async o => { await ready; return new Promise(r => { o.id = ++nid; pend[o.id] = r; ws.send(JSON.stringify(o)); }); };
+  const get = async r => snap((await call({ op: "get", path: r.path })).v);
+  return {
+    rtdb: {}, ref: (_, path) => ({ path: path || "" }), get,
+    set: async (r, v) => { await call({ op: "set", path: r.path, v: v === undefined ? null : v }); },
+    update: async (r, v) => { await call({ op: "upd", path: r.path, v }); },
+    remove: async r => { await call({ op: "set", path: r.path, v: null }); },
+    onDisconnect: r => ({ remove: () => call({ op: "dc", path: r.path }) }),
+    onValue: (r, cb) => {
+      if (r.path === ".info/connected") { setTimeout(() => cb(snap(true))); return () => {}; }
+      const id = ++nid; subs[id] = { path: r.path, cb }; ready.then(() => ws.send(JSON.stringify({ op: "sub", id, path: r.path })));
+      return () => { delete subs[id]; ready.then(() => ws.send(JSON.stringify({ op: "unsub", id }))); };
+    },
+    runTransaction: async (r, fn) => {
+      for (let i = 0; i < 8; i++) {
+        const cur = await call({ op: "get", path: r.path }), nv = fn(cur.v === undefined ? null : cur.v);
+        if (nv === undefined) return { committed: false, snapshot: snap(cur.v) };
+        if ((await call({ op: "cas", path: r.path, v: nv, h: cur.h })).ok) return { committed: true, snapshot: snap(nv) };
+      }
+      return { committed: false, snapshot: snap(null) };
+    }
+  };
+}
+const { rtdb, ref, get, set, update, onValue, runTransaction, onDisconnect, remove } = await mkDb();
 
 /* name,club,nation,pos,ovr,pace,shooting,passing,dribbling,defending,physical */
 const RAW = [
@@ -2556,7 +2685,26 @@ function findPl(txt){
 const key = n => n.toLowerCase();
 const hex = a => [...new Uint8Array(a)].map(x => x.toString(16).padStart(2,"0")).join("");
 const rnd = () => hex(crypto.getRandomValues(new Uint8Array(16)));
-async function sha(t){ return hex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t))); }
+/* SHA-256 without crypto.subtle (Safari only allows that on https; the car page is plain http). Same result, so accounts stay compatible. */
+const SHA_K = [], SHA_H = [];
+for (let n = 2, c = 0; c < 64; n++) { let p = true; for (let d = 2; d * d <= n; d++) if (n % d === 0) { p = false; break; } if (p) { if (c < 8) SHA_H.push(Math.floor((Math.sqrt(n) % 1) * 4294967296)); SHA_K.push(Math.floor((Math.cbrt(n) % 1) * 4294967296)); c++; } }
+function sha256js(msg){
+  const l = msg.length, n = ((l + 9 + 63) >> 6) << 6, b = new Uint8Array(n); b.set(msg); b[l] = 0x80;
+  const dv = new DataView(b.buffer); dv.setUint32(n - 8, Math.floor(l * 8 / 4294967296)); dv.setUint32(n - 4, (l * 8) >>> 0);
+  const h = SHA_H.slice(), w = new Uint32Array(64), rr = (x, k) => (x >>> k) | (x << (32 - k));
+  for (let i = 0; i < n; i += 64) {
+    for (let t = 0; t < 16; t++) w[t] = dv.getUint32(i + t * 4);
+    for (let t = 16; t < 64; t++) { const x = w[t - 15], y = w[t - 2]; w[t] = (w[t - 16] + (rr(x, 7) ^ rr(x, 18) ^ (x >>> 3)) + w[t - 7] + (rr(y, 17) ^ rr(y, 19) ^ (y >>> 10))) | 0; }
+    let [a, bb, c, d, e, f, g, hh] = h;
+    for (let t = 0; t < 64; t++) {
+      const t1 = (hh + (rr(e, 6) ^ rr(e, 11) ^ rr(e, 25)) + ((e & f) ^ (~e & g)) + SHA_K[t] + w[t]) | 0, t2 = ((rr(a, 2) ^ rr(a, 13) ^ rr(a, 22)) + ((a & bb) ^ (a & c) ^ (bb & c))) | 0;
+      hh = g; g = f; f = e; e = (d + t1) | 0; d = c; c = bb; bb = a; a = (t1 + t2) | 0;
+    }
+    h[0] = (h[0] + a) | 0; h[1] = (h[1] + bb) | 0; h[2] = (h[2] + c) | 0; h[3] = (h[3] + d) | 0; h[4] = (h[4] + e) | 0; h[5] = (h[5] + f) | 0; h[6] = (h[6] + g) | 0; h[7] = (h[7] + hh) | 0;
+  }
+  const o = new Uint8Array(32), ov = new DataView(o.buffer); h.forEach((x, i) => ov.setUint32(i * 4, x >>> 0)); return o;
+}
+async function sha(t){ const u = new TextEncoder().encode(t); return hex(crypto.subtle ? new Uint8Array(await crypto.subtle.digest("SHA-256", u)) : sha256js(u)); }
 
 function setMode(s){
   signup = s;
@@ -2573,11 +2721,11 @@ $("authBtn").onclick = async () => {
   const name = $("u").value.trim(), pw = $("p").value, err = $("authErr"); err.textContent = "";
   if (!/^[A-Za-z0-9_.-]{3,20}$/.test(name)) return err.textContent = "Username must be 3–20 letters, numbers, _ . or -";
   if (pw.length < 4) return err.textContent = "Password must be at least 4 characters.";
-  if (!crypto.subtle) return err.textContent = "Open this page over https or http://localhost to sign in.";
   $("authBtn").disabled = true;
   try {
     const k = key(name), r = ref(rtdb, "users/" + k), snap = await get(r);
     if (signup) {
+      if (OFFLINE) throw "Create your account while online first. After that the game works offline.";
       if (snap.exists()) throw "That username is taken.";
       const salt = rnd(), hash = await sha(salt + pw);
       await set(r, { username: name, salt, hash, coins: START, club: [], starter: false, mmr: 500, placed: 0, rform: "", createdAt: Date.now() });
@@ -3631,7 +3779,7 @@ async function aiSweep(){
 }
 setInterval(aiSweep, 20000);
 $("mkListBtn").onclick = async () => {
-  if (!user || mkBusy) return; const pid = +$("mkSel").value, price = Math.round(+$("mkPrice").value);
+  if (!user || mkBusy) return; if (CAR || OFFLINE) return toast("Selling on the market only works on your home Wi-Fi."); const pid = +$("mkSel").value, price = Math.round(+$("mkPrice").value);
   if (!pid || !P(pid)) return toast("Pick a player to sell."); if (!(price >= 50 && price <= 1e6)) return toast("Price must be between 50 and 1,000,000.");
   const owned = state.club.filter(x => x === pid).length, inSq = slotsOf().filter(x => x === pid).length;
   if (owned <= inSq) return toast("He's in your saved squad. Swap him out first.");
