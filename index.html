@@ -774,6 +774,14 @@ nav button+button::before{content:"";position:absolute;left:-3px;top:30%;bottom:
 #mtRepSkip{position:absolute;right:10px;bottom:12px;z-index:6;background:rgba(3,6,13,.8);color:#fff;border:1px solid rgba(255,255,255,.35);padding:8px 16px;font:700 14px/1.2 Barlow,sans-serif}
 #mtRepSkip:hover{background:rgba(0,245,138,.25)}
 .mtpitch.rep canvas{filter:saturate(.9) contrast(1.06)}
+
+/* v9: smooth phone tab bar (own layer, no page jitter) */
+body::before{transform:translateZ(0);-webkit-transform:translateZ(0)}
+@media(max-width:800px){
+  nav{position:fixed!important;left:0;right:0;bottom:0;top:auto;width:100%;z-index:40;scroll-behavior:auto;touch-action:pan-x;overscroll-behavior:contain;
+    transform:translate3d(0,0,0);-webkit-transform:translate3d(0,0,0);-webkit-backface-visibility:hidden;backface-visibility:hidden;will-change:transform}
+  nav button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+}
 </style>
 </head>
 <body>
@@ -3097,7 +3105,15 @@ function showTab(t){
   window.scrollTo(0, 0);
 }
 document.querySelectorAll("nav button[data-tab]").forEach(b => b.onclick = () => showTab(b.dataset.tab));
-const navFocus = () => { const b = document.querySelector("nav button.on"); if (b && b.scrollIntoView) b.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" }); };
+/* phone tab bar lives outside the sticky header, so it can't jitter or vanish while the page scrolls */
+(() => {
+  const nav = document.querySelector("#app > header nav"), app = $("app"), mq = matchMedia("(max-width:800px)"); if (!nav) return;
+  const ph = document.createComment("nav"); nav.before(ph);
+  const place = () => { if (mq.matches) app.appendChild(nav); else ph.after(nav); };
+  place(); if (mq.addEventListener) mq.addEventListener("change", place); else mq.addListener(place);
+})();
+/* centre the active tab by scrolling the bar only (scrollIntoView also scrolled the whole page) */
+const navFocus = () => { const n = document.querySelector("nav"), b = n && n.querySelector("button.on"); if (!b) return; const x = b.getBoundingClientRect().left - n.getBoundingClientRect().left + n.scrollLeft - (n.clientWidth - b.offsetWidth) / 2; n.scrollTo({ left: Math.max(0, x), behavior: "smooth" }); };
 document.querySelectorAll("nav button[data-tab]").forEach(b => b.addEventListener("click", () => setTimeout(navFocus, 30)));
 $("pitch").onclick = e => {
   const x = e.target.closest(".sp"); if (!x) return;
