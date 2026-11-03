@@ -575,7 +575,7 @@ input[type=color]{padding:2px;height:46px}
 .ob small{color:var(--m);font-size:12px}.ob .obr{color:var(--gold);font-size:13px;font-weight:600}
 .ob.rdy{background:linear-gradient(160deg,#3a2c08,#16254a);box-shadow:inset 0 3px 0 var(--gold)}.ob.rdy .obp i{background:var(--gold)}
 .ob.got{opacity:.55;box-shadow:inset 0 3px 0 var(--g)}.ob.got .obp i{background:var(--g)}
-.ob .cta{width:100%;padding:8px;font-size:18px}.ob u{text-decoration:none;color:var(--g);font-weight:700;font-size:13px}
+.ob .cta{width:100%;padding:8px;font-size:18px}.ob.mo{box-shadow:inset 0 3px 0 var(--c)}.ob.mo.rdy{box-shadow:inset 0 3px 0 var(--gold)}.ob.mo.got{box-shadow:inset 0 3px 0 var(--g)}.obmh{margin:28px 0 4px}.obmh span{color:var(--m);font-size:13px}.obsub{margin:22px 0 10px;font:800 italic 20px/1 'Barlow Condensed',sans-serif;text-transform:uppercase;color:var(--c)}.ob u{text-decoration:none;color:var(--g);font-weight:700;font-size:13px}
 .motm{background:linear-gradient(120deg,#3a2c08,#16254a);padding:12px 14px;box-shadow:inset 0 3px 0 var(--gold);text-align:left}
 .mtendbox .motm small{color:var(--gold);font-weight:700}
 .mmw{display:flex;align-items:center;gap:12px;margin-top:6px}
@@ -2660,14 +2660,215 @@ const RAW3 = [
 ["James Rodriguez","Real Madrid","Colombia","CAM",98,83,81,103,104,62,86],
 ["Robert Lewandowski","Barcelona","Poland","ST",110,112,111,91,115,60,93],
 ["Franz Beckenbauer","Bayern Munich","Germany","CB",99,75,57,69,79,106,100],
-["Roberto Baggio","Juventus","Italy","ST",132,138,134,108,132,91,121]
+["Roberto Baggio","Juventus","Italy","ST",132,138,134,108,132,91,121],
+["Gianluigi Buffon","Juventus","Italy","GK",88,45,15,70,42,18,86],
+["Paolo Maldini","AC Milan","Italy","CB",90,72,40,68,72,92,86],
+["Franck Ribery","Bayern Munich","France","LW",86,88,78,82,88,42,68],
+["Arjen Robben","Bayern Munich","Netherlands","RW",87,92,86,78,86,38,70],
+["Bastian Schweinsteiger","Bayern Munich","Germany","CDM",85,68,68,84,78,82,84],
+["Robert Lewandowski","Bayern Munich","Poland","ST",90,82,92,78,84,42,84],
+["Jerome Boateng","Bayern Munich","Germany","CB",85,76,42,68,68,86,84],
+["David Alaba","Bayern Munich","Austria","CB",86,78,58,76,78,86,78],
+["Sadio Mane","Bayern Munich","Senegal","LW",86,88,82,76,84,48,76],
+["Eric Maxim Choupo-Moting","Bayern Munich","Cameroon","ST",79,82,78,68,76,40,78],
+["Mathys Tel","Bayern Munich","France","ST",76,84,72,62,72,34,66],
+["Sven Ulreich","Bayern Munich","Germany","GK",75,44,12,62,36,14,74],
+["Yann Sommer","Bayern Munich","Switzerland","GK",80,46,14,66,40,16,78],
+["Noussair Mazraoui","Bayern Munich","Morocco","RB",80,82,62,72,76,78,74],
+["Bouna Sarr","Bayern Munich","Senegal","RB",74,80,56,64,68,74,70],
+["Marcel Sabitzer","Bayern Munich","Austria","CM",79,72,70,78,76,76,76],
+["Paul Wanner","Bayern Munich","Germany","RW",68,78,60,58,66,40,54],
+["Arijon Ibrahimovic","Bayern Munich","Germany","CM",62,64,52,56,58,54,52],
+["Tommy Roth","Bayern Munich","Germany","GK",58,40,10,48,32,12,56],
+["Tarek Buchmann","Bayern Munich","Germany","CB",60,58,26,44,46,64,62],
+["Luka Hernandez","Bayern Munich","Germany","LB",59,62,44,50,52,58,56],
+["Dinny Herink","Bayern Munich","Germany","GK",56,38,10,46,30,12,54],
+["Lucas Weigl","Bayern Munich","Germany","CDM",57,54,44,52,54,58,56],
+["Maurice Kratt","Bayern Munich","Germany","CM",55,52,42,50,52,52,52],
+["Elias Harger","Bayern Munich","Germany","ST",54,60,46,40,44,24,42],
+["Niklas Tschanner","Bayern Munich","Germany","CB",53,50,24,38,40,56,54],
+["Leonard Heiss","Bayern Munich","Germany","RB",52,54,38,42,44,50,48],
+["Valentin Jonker","Bayern Munich","Germany","LW",51,56,40,36,42,32,40],
+["Kilian Kintzel","Bayern Munich","Germany","CAM",50,52,44,48,50,36,42],
+["Marcelo Brozovic","Inter Milan","Croatia","CDM",84,68,66,82,76,82,80],
+["Alessandro Bastoni","Inter Milan","Italy","CB",84,78,38,68,70,86,80],
+["Stefan de Vrij","Inter Milan","Netherlands","CB",83,72,38,64,66,86,82],
+["Denzel Dumfries","Inter Milan","Netherlands","RB",82,86,68,72,74,78,80],
+["Joao Cancelo","Inter Milan","Portugal","LB",84,88,66,78,82,78,74],
+["Samir Handanovic","Inter Milan","Slovenia","GK",82,46,14,68,40,16,82],
+["Andre Onana","Inter Milan","Cameroon","GK",81,48,14,66,42,16,80],
+["Danilo D'Ambrosio","Inter Milan","Italy","CB",76,70,36,58,60,78,76],
+["Matteo Darmian","Inter Milan","Italy","RB",75,76,56,64,66,76,74],
+["Matteo Politano","Inter Milan","Italy","RW",78,84,70,70,76,46,64],
+["Roberto Gagliardini","Inter Milan","Italy","CDM",75,66,58,72,70,76,76],
+["Cristiano Biraghi","Inter Milan","Italy","LB",77,78,58,66,68,74,70],
+["Filip Stankovic","Inter Milan","Serbia","GK",68,42,12,56,36,14,68],
+["Alessandro Bellini","Inter Milan","Italy","GK",62,40,10,48,32,12,60],
+["Davide Frattesi","Inter Milan","Italy","CM",76,74,66,74,74,72,72],
+["Carlos Augusto","Inter Milan","Brazil","LB",75,78,56,64,68,72,70],
+["Yann Bisseck","Inter Milan","Germany","CB",73,68,34,54,56,76,74],
+["Valentin Carboni","Inter Milan","Argentina","RW",68,78,58,56,64,36,52],
+["Tommaso Berni","Inter Milan","Italy","GK",65,38,10,50,30,12,58],
+["Giovanni Fabbian","Inter Milan","Italy","CM",64,62,52,58,60,58,56],
+["Giuseppe Sibilli","Inter Milan","Italy","LW",63,72,54,52,58,34,50],
+["Martin Satriano","Inter Milan","Uruguay","ST",68,78,62,54,62,30,58],
+["Sebastiano Esposito","Inter Milan","Italy","ST",66,76,60,52,60,28,54],
+["Stefano Pinamonti","Inter Milan","Italy","CAM",65,70,58,58,64,42,52],
+["Federico Di Marco","Inter Milan","Italy","LB",64,68,48,54,56,64,58],
+["Andrea Pinamonti","Inter Milan","Italy","ST",63,74,58,50,56,26,52],
+["Lorenzo Pirola","Inter Milan","Italy","CB",62,64,28,44,46,66,64],
+["Daniele D'Errico","Inter Milan","Italy","RB",61,66,46,48,50,58,56],
+["Filippo Melegoni","Inter Milan","Italy","CM",60,58,48,52,54,54,54],
+["Matteo Lovato","Inter Milan","Italy","CB",59,56,26,42,44,62,60],
+["Nicolò Cambiaghi","Inter Milan","Italy","LW",58,66,48,46,52,32,48],
+["Riccardo Sottil","Inter Milan","Italy","RW",57,68,46,44,50,30,46],
+["Giacomo Boniperti","Inter Milan","Italy","CAM",56,54,50,48,52,42,44],
+["Leonardo Bonucci","Juventus","Italy","CB",82,68,40,64,66,86,82],
+["Juan Cuadrado","Juventus","Colombia","RB",78,82,68,72,76,74,72],
+["Leandro Paredes","Juventus","Argentina","CDM",80,68,66,82,76,82,76],
+["Arek Milik","Juventus","Poland","ST",78,74,80,68,74,38,76],
+["Nicolo Zaniolo","Juventus","Italy","CAM",78,82,72,74,78,52,68],
+["Kenan Yildiz","Juventus","Turkey","ST",72,78,66,58,66,32,62],
+["Matias Soulé","Juventus","Argentina","RW",68,80,58,56,64,36,54],
+["Hans Nicolussi Caviglia","Juventus","Italy","CM",65,62,52,58,60,56,56],
+["Nicolò Savona","Juventus","Italy","CB",62,60,26,42,44,64,62],
+["Alessandro Di Pardo","Juventus","Italy","CM",61,58,48,52,54,52,52],
+["Tommaso Barbieri","Juventus","Italy","RB",60,62,44,48,50,58,56],
+["Gabriele Mulazzi","Juventus","Italy","LB",59,60,42,46,48,56,54],
+["Matteo Giovane","Juventus","Italy","CB",58,54,24,40,42,58,56],
+["Christian Cagliero","Juventus","Italy","GK",57,38,10,46,30,12,54],
+["Davide Zaccagnini","Juventus","Italy","ST",56,58,46,40,44,22,42],
+["Filippo Ranocchia","Juventus","Italy","CM",55,52,42,48,50,48,48],
+["Alessandro Vittorio","Juventus","Italy","RW",54,56,40,38,42,28,40],
+["Marco Pio","Juventus","Italy","CAM",53,50,44,46,48,38,38],
+["Lorenzo Lollo","Juventus","Italy","CDM",52,48,38,44,46,52,50],
+["Luca D'Andrea","Juventus","Italy","CB",51,46,22,36,38,50,48],
+["Riccardo Turra","Juventus","Italy","GK",50,36,8,40,28,10,46],
+["Mauro Tassotti","AC Milan","Italy","RB",80,72,58,68,70,82,76],
+["Clarence Seedorf","AC Milan","Netherlands","CM",83,76,74,82,82,76,78],
+["Andrea Pirlo","AC Milan","Italy","CDM",85,62,74,90,86,72,70],
+["Seedorf","AC Milan","Netherlands","CM",81,74,72,80,80,74,76],
+["Gattuso","AC Milan","Italy","CDM",80,66,60,74,72,82,80],
+["Pirlo","AC Milan","Italy","CM",84,60,72,88,84,70,68],
+["Costacurta","AC Milan","Italy","CB",79,64,32,56,58,84,76],
+["Baresi","AC Milan","Italy","CB",81,66,34,60,62,86,78],
+["Maldini","AC Milan","Italy","CB",82,68,36,62,64,86,80],
+["Filippo Inzaghi","AC Milan","Italy","ST",83,82,88,70,78,40,76],
+["Andriy Shevchenko","AC Milan","Ukraine","ST",86,86,90,74,82,42,80],
+["Rui Costa","AC Milan","Portugal","CAM",82,76,78,86,84,56,68],
+["Jaap Stam","AC Milan","Netherlands","CB",83,74,40,62,64,88,86],
+["Dida","AC Milan","Brazil","GK",84,48,16,72,44,18,84],
+["Inzaghi","AC Milan","Italy","ST",82,80,86,68,76,38,74],
+["Shevchenko","AC Milan","Ukraine","ST",85,84,88,72,80,40,78],
+["Ronaldo","AC Milan","Brazil","ST",88,84,92,78,86,44,82],
+["Nesta","AC Milan","Italy","CB",83,70,36,62,64,86,80],
+["Stam","AC Milan","Netherlands","CB",82,72,38,60,62,86,84],
+["Abbiati","AC Milan","Italy","GK",80,46,14,66,40,16,78],
+["Kaladze","AC Milan","Georgia","CB",77,70,36,56,58,80,76],
+["Jankulovski","AC Milan","Czech Republic","LB",78,74,58,68,70,76,72],
+["Favalli","AC Milan","Italy","LB",75,72,54,64,66,74,70],
+["Oddo","AC Milan","Italy","RB",76,74,56,66,68,76,72],
+["Simic","AC Milan","Serbia","CB",74,68,34,54,56,78,74],
+["Ambrosini","AC Milan","Italy","CDM",77,66,56,72,68,76,76],
+["Emerson","AC Milan","Brazil","LB",75,76,54,64,66,72,70],
+["Zaccardo","AC Milan","Italy","RB",74,74,54,62,64,74,70],
+["Bonera","AC Milan","Italy","CB",73,66,32,52,54,76,74],
+["Yepes","AC Milan","Colombia","CB",74,68,34,54,56,78,76],
+["Kalac","AC Milan","Australia","GK",76,44,12,62,36,14,74],
+["Ballo-Toure","AC Milan","Italy","CB",64,60,26,44,46,64,62],
+["Bartesaghi","AC Milan","Italy","CB",62,58,24,42,44,62,60],
+["Sia","AC Milan","Italy","CB",60,56,22,40,42,60,58],
+["Nava","AC Milan","Italy","RB",58,60,44,46,48,54,52],
+["Lacerda","AC Milan","Brazil","LB",57,58,42,44,46,52,50],
+["Labanca","AC Milan","Italy","CM",56,54,40,42,44,46,46],
+["Cameri","AC Milan","Italy","CAM",55,56,44,48,50,36,42],
+["Meli","AC Milan","Italy","ST",54,58,42,38,40,24,38],
+["Forzieri","AC Milan","Italy","GK",53,36,8,40,28,10,48],
+["Zanetti","Inter Milan","Argentina","RB",82,74,58,76,76,84,82],
+["Javier Zanetti","Inter Milan","Argentina","RB",81,72,56,74,74,82,80],
+["Walter Samuel","Inter Milan","Argentina","CB",83,72,44,62,64,88,86],
+["Lucio","Inter Milan","Brazil","CB",84,76,46,64,66,88,88],
+["Marco Materazzi","Inter Milan","Italy","CB",80,68,42,58,60,84,84],
+["Ivan Cordoba","Inter Milan","Colombia","CB",81,74,40,60,62,86,84],
+["Chivu","Inter Milan","Romania","LB",78,74,52,68,68,78,74],
+["Maicon","Inter Milan","Brazil","RB",82,84,68,74,76,80,78],
+["Santon","Inter Milan","Italy","CB",75,68,34,54,56,78,76],
+["Samuel","Inter Milan","Argentina","CB",79,70,42,60,62,84,82],
+["Burdisso","Inter Milan","Argentina","CB",77,68,38,56,58,80,78],
+["Cordoba","Inter Milan","Colombia","CB",76,70,36,54,56,78,76],
+["Toldo","Inter Milan","Italy","GK",80,46,14,66,40,16,78],
+["Orlandoni","Inter Milan","Italy","GK",72,42,12,58,36,14,70],
+["Castellazzi","Inter Milan","Italy","GK",70,40,12,56,34,14,68],
+["Onana","Inter Milan","Cameroon","GK",80,48,14,66,42,16,80],
+["Radu","Inter Milan","Romania","GK",68,40,12,52,34,14,66],
+["Di Gennaro","Inter Milan","Italy","GK",65,38,10,48,32,12,62],
+["Stankovic","Inter Milan","Serbia","CDM",78,66,58,74,70,78,78],
+["Cambiasso","Inter Milan","Argentina","CDM",76,64,56,72,68,76,76],
+["Nagatomo","Inter Milan","Japan","LB",74,76,52,64,66,74,70],
+["Jonathan","Inter Milan","Brazil","LB",73,78,54,62,68,72,68],
+["D'Ambrosio","Inter Milan","Italy","RB",74,74,54,62,64,74,70],
+["Ranocchia","Inter Milan","Italy","CB",75,68,34,56,58,78,76],
+["Andreolli","Inter Milan","Italy","CB",73,66,32,54,56,76,74],
+["Campagnaro","Inter Milan","Argentina","CB",72,68,34,52,54,74,72],
+["Basta","Inter Milan","Serbia","RB",71,72,52,60,62,72,70],
+["Medel","Inter Milan","Chile","CDM",76,66,56,72,68,78,76],
+["Kondogbia","Inter Milan","France","CDM",75,68,54,70,66,76,74],
+["Guarin","Inter Milan","Argentina","CM",76,72,68,76,74,72,74],
+["Kovacic","Inter Milan","Croatia","CM",77,74,64,78,76,74,72],
+["Hernanes","Inter Milan","Brazil","CM",78,70,68,78,76,76,76],
+["Shaqiri","Inter Milan","Switzerland","RW",75,82,70,70,76,46,66],
+["Icardi","Inter Milan","Argentina","ST",84,80,86,70,78,38,78],
+["Palacio","Inter Milan","Argentina","RW",76,82,70,68,76,44,68],
+["Perisic","Inter Milan","Croatia","LW",82,86,76,74,80,50,72],
+["Ljajic","Inter Milan","Serbia","CAM",74,76,68,76,78,54,62],
+["Obi","Inter Milan","Nigeria","CM",72,72,62,70,72,68,68],
+["Mazzarri","Inter Milan","Italy","CDM",65,58,48,62,60,68,64],
+["Mancini","Inter Milan","Italy","CM",68,62,54,66,64,64,66],
+["Milito","Inter Milan","Argentina","ST",82,78,84,72,80,40,76],
+["Eto'o","Inter Milan","Cameroon","ST",86,90,86,74,84,44,80],
+["Snajder","Inter Milan","Netherlands","CM",80,74,72,84,82,76,78],
+["Materazzi","Inter Milan","Italy","CB",76,66,40,56,58,82,82],
+["Zlatan Ibrahimovic","AC Milan","Sweden","ST",86,80,88,76,84,40,82],
+["Thiago Silva","AC Milan","Brazil","CB",85,70,40,68,70,88,82],
+["Lionel Messi","Paris Saint-Germain","Argentina","RW",93,88,88,92,94,35,66],
+["Neymar Jr","Paris Saint-Germain","Brazil","LW",90,92,86,84,92,40,70],
+["Kylian Mbappe","Paris Saint-Germain","France","ST",91,95,89,78,90,38,74],
+["Presnel Kimpembe","Paris Saint-Germain","France","CB",85,82,42,68,70,86,82],
+["Marco Verratti","Paris Saint-Germain","Italy","CDM",84,66,64,86,82,82,74],
+["Georginio Wijnaldum","Paris Saint-Germain","Netherlands","CM",82,78,72,80,78,76,80],
+["Lucas Hernandez","Paris Saint-Germain","France","LB",82,90,70,74,78,76,74],
+["Keylor Navas","Paris Saint-Germain","Spain","RB",78,78,62,72,72,80,76],
+["Sergio Rico","Paris Saint-Germain","Spain","GK",76,44,12,62,36,14,74],
+["Pablo Sarabia","Paris Saint-Germain","Spain","CAM",82,76,76,84,82,54,64],
+["Danilo Pereira","Paris Saint-Germain","Brazil","RB",80,80,62,72,72,78,76],
+["Juan Bernat","Paris Saint-Germain","Spain","LB",76,74,54,68,68,74,70],
+["Milan Skriniar","Paris Saint-Germain","Slovakia","CB",82,74,36,62,64,86,84],
+["Kang-in Lee","Paris Saint-Germain","South Korea","CAM",78,82,72,78,82,50,64],
+["Thilo Kehrer","Paris Saint-Germain","Germany","CB",77,70,38,58,60,80,78],
+["Layvin Kurzawa","Paris Saint-Germain","France","LB",76,80,60,68,70,74,70],
+["Alexandre Letellier","Paris Saint-Germain","France","GK",62,40,10,48,32,12,60],
+["El Chadaille Bitshiabu","Paris Saint-Germain","France","CB",65,70,32,50,54,68,66],
+["Lucas Beraldo","Paris Saint-Germain","Brazil","CB",72,74,36,56,58,76,72],
+["Maycol Cabrera","Paris Saint-Germain","Ecuador","CM",58,64,46,52,56,50,52],
+["Nathan Bitumazala","Paris Saint-Germain","France","CB",56,60,26,44,46,62,60],
+["Hugo Ekitike","Paris Saint-Germain","France","ST",77,84,76,68,74,36,70],
+["Eduardo Camavinga","Real Madrid","France","CDM",82,82,64,78,80,80,82],
+["Aurelien Tchouameni","Real Madrid","France","CDM",84,76,66,82,80,86,84],
+["Dani Carvajal","Real Madrid","Spain","RB",82,78,64,74,74,82,80],
+["Eder Militao","Real Madrid","Brazil","CB",84,80,46,66,68,86,84],
+["Nacho Fernandez","Real Madrid","Spain","CB",81,76,42,64,66,84,82],
+["Federico Valverde","Real Madrid","Uruguay","CM",86,88,74,82,84,76,84],
+["Brahim Diaz","Real Madrid","Spain","CAM",79,82,72,76,80,52,64],
+["Rodrygo Goes","Real Madrid","Brazil","RW",84,88,78,78,84,48,70],
+["Andriy Lunin","Real Madrid","Ukraine","GK",78,46,14,66,40,16,78],
+["Endrick","Real Madrid","Brazil","ST",77,84,72,64,70,34,68]
 ];
 RAW3.forEach(r => PLAYERS.push({ id: PLAYERS.length + 1, name: r[0], club: r[1], nation: r[2], pos: r[3], ovr: r[4], pac: r[5], sho: r[6], pas: r[7], dri: r[8], def: r[9], phy: r[10] }));
 
 const $ = id => document.getElementById(id);
 const START = 3000;
 let qSeen = {}, fbItems = [], cups = {}, cupBusy = false, evs = {}, mk = {}, mkShow = 40, mkBusy = false, codes = {}, cpacks = {}, rcBusy = false, WK0 = null;
-const CFG0 = { win: 100, draw: 50, lose: 50, streak: 50, dBase: 200, dStep: 100, wkMax: 14, fee: 5, starter: 2500, bronze: 400, silver: 700, gold: 1000, rare: 2500, elite: 6000, legend: 15000 };
+const CFG0 = { win: 60, draw: 30, lose: 20, streak: 30, dBase: 150, dStep: 50, wkMax: 14, fee: 10, starter: 2500, bronze: 500, silver: 900, gold: 1500, rare: 4000, elite: 10000, legend: 28000 };
 const CFGL = [["win", "Win reward (coins)"], ["draw", "Draw reward"], ["lose", "Loss reward"], ["streak", "3+ win streak bonus"], ["dBase", "Daily reward, day 1"], ["dStep", "Daily reward, extra per streak day"], ["wkMax", "Weekly point cap"], ["fee", "Market sell fee (%)"], ["starter", "Starter pack price"], ["bronze", "Bronze pack price"], ["silver", "Silver pack price"], ["gold", "Gold pack price"], ["rare", "Rare Gold pack price"], ["elite", "Elite pack price"], ["legend", "Legend pack price"]];
 const THK = [["g", "Main accent"], ["c", "Second accent"], ["gold", "Gold / coins"], ["bg", "Background"], ["p1", "Panels"]], THEME_DEF = { g: "#00f58a", c: "#1fd2ff", gold: "#f2cd68", bg: "#050810", p1: "#0b1222" };
 let CFG = Object.assign({ theme: {} }, CFG0);
@@ -2756,7 +2957,7 @@ async function enter(k, hash){
   // Live sync: coins and club update whenever the database changes
   unsub = onValue(ref(rtdb, "users/" + k), snap => {
     const v = snap.val();
-    if (v) { state = { coins: v.coins, club: v.club || [], starter: !!v.starter, squad: v.squad || null, mmr: v.mmr ?? 500, placed: v.placed || 0, rform: v.rform || "", username: v.username, stats: v.stats || { w: 0, d: 0, l: 0 }, streak: v.streak || 0, aiBeat: v.aiBeat || {}, lastDaily: v.lastDaily || "", dStreak: v.dStreak || 0, wk: v.wk || null, pend: v.pend || [], evBuys: v.evBuys || {}, evClaim: v.evClaim || {}, redeemed: v.redeemed || {}, obj: v.obj || {}, oc: v.oc || {} }; loaded = true;
+    if (v) { state = { coins: v.coins, club: v.club || [], starter: !!v.starter, squad: v.squad || null, mmr: v.mmr ?? 500, placed: v.placed || 0, rform: v.rform || "", username: v.username, stats: v.stats || { w: 0, d: 0, l: 0 }, streak: v.streak || 0, aiBeat: v.aiBeat || {}, lastDaily: v.lastDaily || "", dStreak: v.dStreak || 0, wk: v.wk || null, pend: v.pend || [], evBuys: v.evBuys || {}, evClaim: v.evClaim || {}, redeemed: v.redeemed || {}, obj: v.obj || {}, oc: v.oc || {}, mo: v.mo || null }; loaded = true;
       if (!presOn) { presOn = true; startPresence(); }
       if (!sqInit) { sqInit = true; const q = v.squad; sq = q && FORMS[q.formation] ? { formation: q.formation, slots: Array.from({ length: 11 }, (_, i) => (q.slots && q.slots[i]) || 0) } : { formation: "4-3-3", slots: Array(11).fill(0) }; } $("who").textContent = v.username; render(); }
   }, () => {});
@@ -2789,12 +2990,12 @@ const fmt = n => n.toLocaleString("en-US");
 const tier = p => p.ovr >= 100 ? "x" : p.ovr >= 90 ? "e" : p.ovr >= 88 ? "r" : p.ovr >= 75 ? "g" : p.ovr >= 65 ? "s" : "b";
 const STARTER = { id: "starter", name: "Starter Pack", price: 2500, count: 11, min: 45, max: 64, decay: 1, once: true, positions: ["GK","LB","CB","CB","RB","CM","CM","CM","LW","ST","RW"] };
 const PACKS = [
-  { id: "bronze", name: "Bronze Pack", short: "Bronze", art: "b", price: 400, min: 45, max: 64, decay: 1, desc: "3 bronze players rated 45–64." },
-  { id: "silver", name: "Silver Pack", short: "Silver", art: "s", price: 700, min: 65, max: 74, decay: 1, desc: "3 silver players rated 65–74." },
-  { id: "gold", name: "Gold Pack", short: "Gold", art: "g", price: 1000, min: 75, max: 89, decay: .78, desc: "3 gold players rated 75+. Stars can drop." },
-  { id: "rare", name: "Rare Gold Pack", short: "Rare<br>Gold", art: "r", price: 2500, min: 84, max: 99, decay: .8, desc: "3 players rated 84 or higher." },
-  { id: "elite", name: "Elite Pack", short: "Elite", art: "e", price: 6000, min: 88, max: 115, decay: .88, desc: "3 players rated 88+. A real shot at 100+." },
-  { id: "legend", name: "Legend Pack", short: "Legend", art: "x", price: 15000, min: 100, max: 140, decay: .93, desc: "3 players rated 100+. Squad rating 130 starts here." }
+  { id: "bronze", name: "Bronze Pack", short: "Bronze", art: "b", price: 500, min: 45, max: 64, decay: 1, desc: "3 bronze players rated 45–64." },
+  { id: "silver", name: "Silver Pack", short: "Silver", art: "s", price: 900, min: 65, max: 74, decay: 1, desc: "3 silver players rated 65–74." },
+  { id: "gold", name: "Gold Pack", short: "Gold", art: "g", price: 1500, min: 75, max: 89, decay: .78, desc: "3 gold players rated 75+. Stars can drop." },
+  { id: "rare", name: "Rare Gold Pack", short: "Rare<br>Gold", art: "r", price: 4000, min: 84, max: 99, decay: .8, desc: "3 players rated 84 or higher." },
+  { id: "elite", name: "Elite Pack", short: "Elite", art: "e", price: 10000, min: 88, max: 115, decay: .88, desc: "3 players rated 88+. A real shot at 100+." },
+  { id: "legend", name: "Legend Pack", short: "Legend", art: "x", price: 28000, min: 100, max: 140, decay: .93, desc: "3 players rated 100+. Squad rating 130 starts here." }
 ];
 let lastN = 3, lastFree = false;
 
@@ -3217,20 +3418,20 @@ function renderDaily(){
 $("daily").onclick = async e => {
   if (e.target.id !== "claimD" || !user) return;
   const d = dailyInfo(); if (!d.ok) return;
-  state.coins += d.rw; state.lastDaily = todayStr(); state.dStreak = d.nd; render();
-  try { await update(ref(rtdb, "users/" + user.key), { coins: state.coins, lastDaily: state.lastDaily, dStreak: d.nd }); } catch (x) { fail(x, "save the reward"); }
+  state.coins += d.rw; state.lastDaily = todayStr(); state.dStreak = d.nd; { const mo = curMo(); mo.dl++; state.mo = mo; } render();
+  try { await update(ref(rtdb, "users/" + user.key), { coins: state.coins, lastDaily: state.lastDaily, dStreak: d.nd, mo: state.mo }); } catch (x) { fail(x, "save the reward"); }
   toast(`+${fmt(d.rw)} coins. Day ${d.nd} streak!`);
 };
 
 /* ---------- Weekly rewards: +1 point per win (not vs AI), max 14 a week, week starts Friday ---------- */
 const WK = [
-  { pts: 2,  coins: 200,  packs: [] },
-  { pts: 4,  coins: 400,  packs: [] },
-  { pts: 6,  coins: 600,  packs: ["bronze"] },
-  { pts: 8,  coins: 800,  packs: ["silver"] },
-  { pts: 10, coins: 1200, packs: ["gold"] },
-  { pts: 12, coins: 2000, packs: ["rare"] },
-  { pts: 14, coins: 5000, packs: ["elite", "rare"] }
+  { pts: 2,  coins: 150,  packs: [] },
+  { pts: 4,  coins: 300,  packs: [] },
+  { pts: 6,  coins: 400,  packs: ["bronze"] },
+  { pts: 8,  coins: 500,  packs: ["silver"] },
+  { pts: 10, coins: 800,  packs: ["gold"] },
+  { pts: 12, coins: 1200, packs: ["rare"] },
+  { pts: 14, coins: 3000, packs: ["elite"] }
 ];
 function weekBack(){ return (new Date().getUTCDay() + 2) % 7; } // days since the last Friday (UTC)
 function weekKey(){ const d = new Date(), t = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()); return new Date(t - weekBack() * 864e5).toISOString().slice(0, 10); }
@@ -4766,10 +4967,14 @@ function showEnd(){
       newM = Math.max(0, oldM + rkd); rkd = newM - oldM; placedN = placed + 1; formN = (formN + res.toUpperCase()).slice(-10);
     }
     const oi = rankInfo(oldM), ni = rankInfo(newM);
-    const ob = Object.assign({ played: 0, won: 0, goals: 0, cs: 0, motm: 0, cup: 0, big: 0, cups: 0 }, state.obj || {});
+    const ob = Object.assign({ played: 0, won: 0, goals: 0, cs: 0, motm: 0, cup: 0, big: 0, cups: 0, bs: 0 }, state.obj || {});
     if (!isAI) { ob.played++; if (res === "w") ob.won++; ob.goals += w; if (l === 0) ob.cs++; if (w - l >= 3) ob.big++; if (M.motm && M.motm.idx === M.mi) ob.motm++; if (v && v.cup) ob.cup++; }
+    { const mo = curMo();   // this month's progress (resets on the 1st, UTC)
+      if (!isAI) { mo.played++; if (res === "w") mo.won++; mo.goals += w; if (l === 0) mo.cs++; if (w - l >= 3) mo.big++; if (M.motm && M.motm.idx === M.mi) mo.motm++; if (v && v.cup) mo.cup++; mo.bs = Math.max(mo.bs || 0, streak); ob.bs = Math.max(ob.bs || 0, streak); }
+      else if (res === "w" && ai != null && ai >= 3) mo.ai++;
+      state.mo = mo; }
     state.coins += r; state.obj = ob; state.stats = st; state.streak = streak; state.aiBeat = beat; state.mmr = newM; state.placed = placedN; state.rform = formN;
-    update(ref(rtdb, "users/" + user.key), { coins: state.coins, stats: st, streak, aiBeat: beat, mmr: newM, placed: placedN, rform: formN, wk: state.wk || null, obj: ob, updatedAt: Date.now() }).catch(x => fail(x, "save the result"));
+    update(ref(rtdb, "users/" + user.key), { coins: state.coins, stats: st, streak, aiBeat: beat, mmr: newM, placed: placedN, rform: formN, wk: state.wk || null, obj: ob, mo: state.mo, updatedAt: Date.now() }).catch(x => fail(x, "save the result"));
     if (v && v.cup && !isAI) recordCup(v, w, l, M.motm, M.mi);
     render(); const cb = $("coinBox"); cb.classList.remove("flash"); void cb.offsetWidth; cb.classList.add("flash");
     let rk = "";
@@ -5193,10 +5398,90 @@ const OBJ = [
   { g: "Squad", id: "sq100", t: "Centurion squad", d: "Reach a squad rating of 100", live: "rat", n: 100, coins: 2000, packs: ["rare"] },
   { g: "Squad", id: "sq115", t: "Super squad", d: "Reach a squad rating of 115", live: "rat", n: 115, coins: 5000, packs: ["elite"] },
   { g: "Squad", id: "sq130", t: "Perfect squad", d: "Reach a squad rating of 130", live: "rat", n: 130, coins: 15000, packs: ["legend"] },
-  { g: "Squad", id: "sq25", t: "Chemistry", d: "Reach squad chemistry of 25", live: "chem", n: 25, coins: 800, packs: ["silver"] }
+  { g: "Squad", id: "sq25", t: "Chemistry", d: "Reach squad chemistry of 25", live: "chem", n: 25, coins: 800, packs: ["silver"] },
+  { g: "Matches", id: "pl60", t: "Season ticket", d: "Play 60 matches against real players", k: "played", n: 60, coins: 2000, packs: ["gold"] },
+  { g: "Matches", id: "pl100", t: "Hundred club", d: "Play 100 matches against real players", k: "played", n: 100, coins: 3500, packs: ["rare"] },
+  { g: "Matches", id: "pl250", t: "Lifer", d: "Play 250 matches against real players", k: "played", n: 250, coins: 8000, packs: ["elite"] },
+  { g: "Matches", id: "pl500", t: "Never leaves", d: "Play 500 matches against real players", k: "played", n: 500, coins: 20000, packs: ["elite", "rare"] },
+  { g: "Wins", id: "w60", t: "Serial winner", d: "Win 60 matches", k: "won", n: 60, coins: 3000, packs: ["rare"] },
+  { g: "Wins", id: "w100", t: "Century of wins", d: "Win 100 matches", k: "won", n: 100, coins: 5000, packs: ["elite"] },
+  { g: "Wins", id: "w200", t: "Dynasty", d: "Win 200 matches", k: "won", n: 200, coins: 10000, packs: ["elite", "rare"] },
+  { g: "Wins", id: "w400", t: "Untouchable", d: "Win 400 matches", k: "won", n: 400, coins: 25000, packs: ["legend"] },
+  { g: "Wins", id: "big15", t: "Demolition", d: "Win by 3 goals or more, 15 times", k: "big", n: 15, coins: 2500, packs: ["rare"] },
+  { g: "Wins", id: "big40", t: "Wrecking ball", d: "Win by 3 goals or more, 40 times", k: "big", n: 40, coins: 7000, packs: ["elite"] },
+  { g: "Streaks", id: "bs3", t: "Warming up", d: "Win 3 matches in a row", k: "bs", n: 3, coins: 500 },
+  { g: "Streaks", id: "bs5", t: "Hot streak", d: "Win 5 matches in a row", k: "bs", n: 5, coins: 1500, packs: ["silver"] },
+  { g: "Streaks", id: "bs8", t: "On fire", d: "Win 8 matches in a row", k: "bs", n: 8, coins: 4000, packs: ["rare"] },
+  { g: "Streaks", id: "bs12", t: "Unstoppable run", d: "Win 12 matches in a row", k: "bs", n: 12, coins: 10000, packs: ["elite"] },
+  { g: "Streaks", id: "bs20", t: "Invincible", d: "Win 20 matches in a row", k: "bs", n: 20, coins: 30000, packs: ["legend"] },
+  { g: "Goals", id: "g250", t: "Goal hunter", d: "Score 250 goals", k: "goals", n: 250, coins: 4000, packs: ["rare"] },
+  { g: "Goals", id: "g500", t: "Golden boot", d: "Score 500 goals", k: "goals", n: 500, coins: 8000, packs: ["elite"] },
+  { g: "Goals", id: "g1000", t: "Goal legend", d: "Score 1000 goals", k: "goals", n: 1000, coins: 20000, packs: ["legend"] },
+  { g: "Defence", id: "cs25", t: "Iron curtain", d: "Keep 25 clean sheets", k: "cs", n: 25, coins: 3000, packs: ["rare"] },
+  { g: "Defence", id: "cs50", t: "Brick wall", d: "Keep 50 clean sheets", k: "cs", n: 50, coins: 8000, packs: ["elite"] },
+  { g: "Player of the match", id: "m30", t: "Fan favourite", d: "Get player of the match 30 times", k: "motm", n: 30, coins: 3500, packs: ["rare"] },
+  { g: "Player of the match", id: "m60", t: "Icon", d: "Get player of the match 60 times", k: "motm", n: 60, coins: 8000, packs: ["elite"] },
+  { g: "Cups", id: "c10", t: "Cup veteran", d: "Play 10 cup matches", k: "cup", n: 10, coins: 2500, packs: ["gold"] },
+  { g: "Cups", id: "c20", t: "Cup addict", d: "Play 20 cup matches", k: "cup", n: 20, coins: 5000, packs: ["rare"] },
+  { g: "Cups", id: "cw5", t: "Cup dynasty", d: "Win 5 cups", k: "cups", n: 5, coins: 9000, packs: ["elite", "rare"] },
+  { g: "Cups", id: "cw10", t: "Cup emperor", d: "Win 10 cups", k: "cups", n: 10, coins: 20000, packs: ["legend"] },
+  { g: "Squad", id: "sq120", t: "Elite squad", d: "Reach a squad rating of 120", live: "rat", n: 120, coins: 8000, packs: ["elite"] },
+  { g: "Squad", id: "ch30", t: "Great chemistry", d: "Reach squad chemistry of 30", live: "chem", n: 30, coins: 3000, packs: ["rare"] },
+  { g: "Squad", id: "ch33", t: "Perfect chemistry", d: "Reach full squad chemistry of 33", live: "chem", n: 33, coins: 8000, packs: ["elite"] }
 ];
+
+/* ---------- Monthly challenges: progress resets on the 1st of every month (UTC). Big targets, big rewards. ---------- */
+const MO0 = { played: 0, won: 0, goals: 0, cs: 0, motm: 0, big: 0, cup: 0, cw: 0, bs: 0, ai: 0, dl: 0 };
+const monthKey = () => new Date().toISOString().slice(0, 7);
+function curMo(){ const k = monthKey(), m = state.mo; return m && m.k === k ? Object.assign({}, MO0, m, { c: Object.assign({}, m.c || {}) }) : Object.assign({}, MO0, { k, c: {} }); }
+function monthLeft(){ const d = new Date(), ms = Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1) - d.getTime(), h = Math.floor(ms / 36e5); return h >= 24 ? Math.floor(h / 24) + "d " + (h % 24) + "h" : h + "h " + Math.floor(ms % 36e5 / 6e4) + "m"; }
+const OBJM = [
+  { g: "Matches", id: "mp20", t: "Warm-up month", d: "Play 20 matches this month", k: "played", n: 20, coins: 600, packs: ["gold"] },
+  { g: "Matches", id: "mp60", t: "Busy month", d: "Play 60 matches this month", k: "played", n: 60, coins: 1500, packs: ["rare"] },
+  { g: "Matches", id: "mp120", t: "Full-time pro", d: "Play 120 matches this month", k: "played", n: 120, coins: 3000, packs: ["elite"] },
+  { g: "Matches", id: "mp200", t: "No days off", d: "Play 200 matches this month", k: "played", n: 200, coins: 6000, packs: ["elite"] },
+  { g: "Wins", id: "mw10", t: "Winning month", d: "Win 10 matches this month", k: "won", n: 10, coins: 600, packs: ["gold"] },
+  { g: "Wins", id: "mw30", t: "Table topper", d: "Win 30 matches this month", k: "won", n: 30, coins: 1800, packs: ["rare"] },
+  { g: "Wins", id: "mw60", t: "Dominant month", d: "Win 60 matches this month", k: "won", n: 60, coins: 3600, packs: ["elite"] },
+  { g: "Wins", id: "mw100", t: "Perfect month", d: "Win 100 matches this month", k: "won", n: 100, coins: 7200, packs: ["legend"] },
+  { g: "Goals", id: "mg40", t: "Goal rush", d: "Score 40 goals this month", k: "goals", n: 40, coins: 600, packs: ["silver"] },
+  { g: "Goals", id: "mg120", t: "Goal storm", d: "Score 120 goals this month", k: "goals", n: 120, coins: 1800, packs: ["rare"] },
+  { g: "Goals", id: "mg250", t: "Goal avalanche", d: "Score 250 goals this month", k: "goals", n: 250, coins: 4200, packs: ["elite"] },
+  { g: "Defence", id: "mc6", t: "Tight at the back", d: "Keep 6 clean sheets this month", k: "cs", n: 6, coins: 900, packs: ["gold"] },
+  { g: "Defence", id: "mc15", t: "Locked down", d: "Keep 15 clean sheets this month", k: "cs", n: 15, coins: 2400, packs: ["rare"] },
+  { g: "Defence", id: "mc30", t: "Shutout machine", d: "Keep 30 clean sheets this month", k: "cs", n: 30, coins: 4800, packs: ["elite"] },
+  { g: "Stars", id: "mm8", t: "Man of the match", d: "Get player of the match 8 times this month", k: "motm", n: 8, coins: 900, packs: ["gold"] },
+  { g: "Stars", id: "mm20", t: "Shining light", d: "Get player of the match 20 times this month", k: "motm", n: 20, coins: 2700, packs: ["rare"] },
+  { g: "Stars", id: "mm40", t: "Superstar", d: "Get player of the match 40 times this month", k: "motm", n: 40, coins: 5400, packs: ["elite"] },
+  { g: "Style", id: "mb5", t: "Ruthless", d: "Win by 3 goals or more, 5 times this month", k: "big", n: 5, coins: 900, packs: ["gold"] },
+  { g: "Style", id: "mb12", t: "No mercy", d: "Win by 3 goals or more, 12 times this month", k: "big", n: 12, coins: 2700, packs: ["rare"] },
+  { g: "Style", id: "mb25", t: "Annihilation", d: "Win by 3 goals or more, 25 times this month", k: "big", n: 25, coins: 5400, packs: ["elite"] },
+  { g: "Style", id: "ms4", t: "Run of four", d: "Win 4 matches in a row this month", k: "bs", n: 4, coins: 900, packs: ["gold"] },
+  { g: "Style", id: "ms7", t: "Run of seven", d: "Win 7 matches in a row this month", k: "bs", n: 7, coins: 3000, packs: ["rare"] },
+  { g: "Style", id: "ms10", t: "Perfect run", d: "Win 10 matches in a row this month", k: "bs", n: 10, coins: 7200, packs: ["elite"] },
+  { g: "Habits", id: "md10", t: "Regular visitor", d: "Claim the daily reward on 10 different days this month", k: "dl", n: 10, coins: 600, packs: ["silver"] },
+  { g: "Habits", id: "md20", t: "Loyal fan", d: "Claim the daily reward on 20 different days this month", k: "dl", n: 20, coins: 1800, packs: ["rare"] },
+  { g: "Habits", id: "md28", t: "Never miss a day", d: "Claim the daily reward on 28 different days this month", k: "dl", n: 28, coins: 4800, packs: ["elite"] },
+  { g: "Habits", id: "ma10", t: "Practice makes perfect", d: `Beat ${RANKS[3][0]} AI or higher 10 times this month`, k: "ai", n: 10, coins: 600, packs: ["silver"] },
+  { g: "Habits", id: "ma30", t: "AI slayer", d: `Beat ${RANKS[3][0]} AI or higher 30 times this month`, k: "ai", n: 30, coins: 1800, packs: ["rare"] },
+  { g: "Habits", id: "mcu4", t: "Cup month", d: "Play 4 cup matches this month", k: "cup", n: 4, coins: 900, packs: ["silver"] },
+  { g: "Habits", id: "mcw1", t: "Cup winner of the month", d: "Win a cup this month", k: "cw", n: 1, coins: 3000, packs: ["elite"] },
+  { g: "Grand prize", id: "mmaster", t: "Monthly master", d: "Claim 15 other monthly challenges this month", live: "mclaim", n: 15, coins: 20000, packs: ["legend", "elite"] }
+];
+const monthVal = (o, mo) => o.live === "mclaim" ? Object.keys(mo.c).filter(k => k !== o.id).length : mo[o.k] || 0;
+async function claimMonth(id){
+  const o = OBJM.find(x => x.id === id); if (!o || !user || objBusy.has("m" + id)) return;
+  const mo = curMo(); if (mo.c[id] || monthVal(o, mo) < o.n) return;
+  objBusy.add("m" + id);
+  const ps = (o.packs || []).filter(p => packById(p));
+  mo.c[id] = true; state.mo = mo; state.coins += o.coins || 0; state.pend = (state.pend || []).concat(ps);
+  const cb = $("coinBox"); cb.classList.remove("flash"); void cb.offsetWidth; cb.classList.add("flash"); render();
+  try { await update(ref(rtdb, "users/" + user.key), { coins: state.coins, pend: state.pend, mo, updatedAt: Date.now() }); } catch (x) { fail(x, "save the reward"); }
+  objBusy.delete("m" + id); toast("Monthly challenge complete: " + rewLine(o.coins, ps)); if (ps.length) setTimeout(openPend, 400);
+}
 function objVal(o){
   if (o.live) return !squadReady() ? 0 : o.live === "full" ? 1 : o.live === "rat" ? squadRating() : squadChem();
+  if (o.k === "bs") return Math.max((state.obj || {}).bs || 0, state.streak || 0);
   return (state.obj || {})[o.k] || 0;
 }
 const packNm = id => { const k = packById(id); return k ? String(k.short).replace("<br>", " ") + " pack" : ""; };
@@ -5204,12 +5489,20 @@ const rewLine = (coins, packs) => [coins ? fmt(coins) + " coins" : "", ...Object
 function renderObj(){
   const el = $("objList"); if (!el || !user || !loaded || $("viewObj").classList.contains("hidden")) return;
   const oc = state.oc || {}, ob = state.obj || {}; let ready = 0;
+  const mo = curMo(); let monthHtml = "";
+  { const mg = []; OBJM.forEach(o => { let g = mg.find(x => x.n === o.g); if (!g) mg.push(g = { n: o.g, l: [] }); g.l.push(o); });
+    const done = Object.keys(mo.c).length;
+    monthHtml = `<div class="obmh"><div><h3 class="obg" style="margin:0">Monthly challenges</h3><span>Progress resets on the 1st. ${monthLeft()} left this month. ${done} / ${OBJM.length} claimed.</span></div></div>`
+      + mg.map(g => `<h4 class="obsub">${g.n}</h4><div class="obgrid">` + g.l.map(o => {
+        const v = monthVal(o, mo), got = !!mo.c[o.id], rdy = !got && v >= o.n; if (rdy) ready++;
+        return `<div class="ob mo ${got ? "got" : rdy ? "rdy" : ""}"><b>${o.t}</b><p>${o.d}</p><div class="obp"><i style="width:${Math.min(100, v / o.n * 100)}%"></i></div><small>${Math.min(v, o.n)} / ${o.n}</small><div class="obr">${rewLine(o.coins, o.packs)}</div>${got ? "<u>Claimed</u>" : `<button class="cta sm" data-m="${o.id}" ${rdy ? "" : "disabled"}>Claim</button>`}</div>`;
+      }).join("") + `</div>`).join("") + `<h3 class="obg">All-time objectives</h3>`; }
   const groups = []; OBJ.forEach(o => { let g = groups.find(x => x.n === o.g); if (!g) groups.push(g = { n: o.g, l: [] }); g.l.push(o); });
-  el.innerHTML = groups.map(g => `<h3 class="obg">${g.n}</h3><div class="obgrid">` + g.l.map(o => {
+  el.innerHTML = monthHtml + groups.map(g => `<h4 class="obsub">${g.n}</h4><div class="obgrid">` + g.l.map(o => {
     const v = objVal(o), got = !!oc[o.id], rdy = !got && v >= o.n; if (rdy) ready++;
     return `<div class="ob ${got ? "got" : rdy ? "rdy" : ""}"><b>${o.t}</b><p>${o.d}</p><div class="obp"><i style="width:${Math.min(100, v / o.n * 100)}%"></i></div><small>${Math.min(v, o.n)} / ${o.n}</small><div class="obr">${rewLine(o.coins, o.packs)}</div>${got ? "<u>Claimed</u>" : `<button class="cta sm" data-o="${o.id}" ${rdy ? "" : "disabled"}>Claim</button>`}</div>`;
   }).join("") + `</div>`).join("");
-  $("objSum").innerHTML = [["Matches", ob.played || 0], ["Wins", ob.won || 0], ["Goals", ob.goals || 0], ["Clean sheets", ob.cs || 0], ["Player of match", ob.motm || 0], ["Ready to claim", ready]].map(x => `<div><b>${x[1]}</b><span>${x[0]}</span></div>`).join("");
+  $("objSum").innerHTML = [["Matches", ob.played || 0], ["Wins", ob.won || 0], ["Goals", ob.goals || 0], ["Clean sheets", ob.cs || 0], ["Player of match", ob.motm || 0], ["Wins this month", mo.won || 0], ["Ready to claim", ready]].map(x => `<div><b>${x[1]}</b><span>${x[0]}</span></div>`).join("");
 }
 const objBusy = new Set();
 async function claimObj(id){
@@ -5221,7 +5514,7 @@ async function claimObj(id){
   try { await update(ref(rtdb, "users/" + user.key), { coins: state.coins, pend: state.pend, ["oc/" + id]: true, updatedAt: Date.now() }); } catch (x) { fail(x, "save the reward"); }
   objBusy.delete(id); toast("Objective complete: " + rewLine(o.coins, ps)); if (ps.length) setTimeout(openPend, 400);
 }
-$("objList").onclick = e => { const b = e.target.closest("button[data-o]"); if (b) claimObj(b.dataset.o); };
+$("objList").onclick = e => { const b = e.target.closest("button[data-o]"), m = e.target.closest("button[data-m]"); if (b) claimObj(b.dataset.o); else if (m) claimMonth(m.dataset.m); };
 
 /* ---------- Cups (only zezo creates and starts them; 3 players, round robin, human vs human) ---------- */
 const squadPower = () => squadReady() ? squadRating() + squadChem() : 0;
@@ -5342,9 +5635,10 @@ async function claimCup(id){
     if (!t.committed) { toast("Already claimed."); return; }
     const ps = Object.values(r.packs || {}).filter(p => packById(p)), coins = r.coins || 0, ob = Object.assign({}, state.obj || {});
     if (i === 0) ob.cups = (ob.cups || 0) + 1;
+    { const mo = curMo(); if (i === 0) mo.cw++; state.mo = mo; }
     state.coins += coins; state.pend = (state.pend || []).concat(ps); state.obj = ob;
     const cb = $("coinBox"); cb.classList.remove("flash"); void cb.offsetWidth; cb.classList.add("flash"); render();
-    await update(ref(rtdb, "users/" + user.key), { coins: state.coins, pend: state.pend, obj: ob, updatedAt: Date.now() });
+    await update(ref(rtdb, "users/" + user.key), { coins: state.coins, pend: state.pend, obj: ob, mo: state.mo, updatedAt: Date.now() });
     toast("Cup reward: " + rewLine(coins, ps)); if (ps.length) setTimeout(openPend, 400);
   } catch (e) { fail(e, "claim the reward"); } finally { cupBusy = false; }
 }
