@@ -5725,16 +5725,16 @@ document.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => b.datase
 
 /* ---------- Account reset + free Ronaldo 100 ---------- */
 const RONALDO = () => PLAYERS.find(p => p.name === "Cristiano Ronaldo" && p.ovr === 100);
-const RS_WAIT = 7 * 864e5;
-function rsOffer(){ if (user && loaded && !state.rg && !CAR && !OFFLINE) { $("rsText").textContent = "Reset your account and get Cristiano Ronaldo (100) for free. Your coins go back to " + fmt(START) + "; your club, squad, stats and rank are wiped and Ronaldo joins your club. Claimed objectives, rewards and codes stay claimed, so nothing can be claimed twice. This offer shows every time you open the game until you take it."; $("rsModal").classList.remove("hidden"); } }
+const RS_WAIT = 7 * 864e5, RS_COINS = 5000;
+function rsOffer(){ if (user && loaded && !state.rg && !CAR && !OFFLINE) { $("rsText").textContent = "Reset your account and get Cristiano Ronaldo (100) for free. All your coins, players, squad, objectives, rewards and stats are wiped, like a brand new account. You start with " + fmt(RS_COINS) + " coins and Ronaldo joins your club. This offer shows every time you open the game until you take it."; $("rsModal").classList.remove("hidden"); } }
 async function doReset(){
   if (!user || !loaded || busy) return;
   if (CAR || OFFLINE) return toast("Resetting only works online on your home Wi-Fi.");
   const first = !state.rg;
   if (!first && Date.now() - (state.rt || 0) < RS_WAIT) return toast("You can reset again in " + Math.ceil((RS_WAIT - (Date.now() - state.rt)) / 864e5) + " day(s).");
-  if (!confirm("Really reset your account? Coins, club, squad, stats and rank will be wiped." + (first ? " Cristiano Ronaldo (100) will be added to your club." : ""))) return;
+  if (!confirm("Really reset your account? EVERYTHING is wiped: coins, all players, squad, objectives, rewards and stats. You start again with " + fmt(RS_COINS) + " coins." + (first ? " Cristiano Ronaldo (100) will be added to your club." : ""))) return;
   const r = RONALDO(), club = first && r ? [r.id] : [], now = Date.now();
-  const upd = { coins: START, club, starter: false, squad: null, mmr: 500, placed: 0, rform: "", stats: { w: 0, d: 0, l: 0 }, streak: 0, aiBeat: {}, sl: null, rg: true, rt: now, updatedAt: now };
+  const upd = { coins: RS_COINS, club, starter: false, squad: null, mmr: 500, placed: 0, rform: "", stats: { w: 0, d: 0, l: 0 }, streak: 0, aiBeat: {}, lastDaily: "", dStreak: 0, wk: null, pend: [], evBuys: null, evClaim: null, redeemed: null, obj: null, oc: null, mo: null, sl: null, rg: true, rt: now, updatedAt: now };
   try { await update(ref(rtdb, "users/" + user.key), upd); sqInit = false; $("rsModal").classList.add("hidden"); toast(first ? "Account reset. Cristiano Ronaldo (100) joined your club!" : "Account reset."); }
   catch (x) { fail(x, "reset your account"); }
 }
