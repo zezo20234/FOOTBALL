@@ -1045,6 +1045,7 @@ window.UTA = (function () {
         <button class="cta sm alt" id="setRefresh">Refresh</button>
         <button class="cta sm alt" id="setClear">Clear cache &amp; reload</button>
         <button class="cta sm hidden" id="setInstall">Install app</button>
+        <button class="cta sm alt" id="setReset">Reset account</button>
         <small id="setHint">Your login and club are kept.</small>
       </div>
       <div class="user"><span id="who"></span><button id="out">Sign out</button></div>
@@ -1275,6 +1276,14 @@ window.UTA = (function () {
   </div>
 </div>
 
+<div id="rsModal" class="hidden" style="position:fixed;inset:0;z-index:300;background:rgba(3,6,13,.88);display:grid;place-items:center;padding:20px">
+  <div style="max-width:420px;width:100%;background:linear-gradient(145deg,#14213f,#0a1122 70%);padding:28px 26px;box-shadow:inset 0 3px 0 var(--gold);text-align:center">
+    <h2 style="font-size:34px;color:var(--gold)">Fresh start offer</h2>
+    <p id="rsText" style="color:var(--m);margin:12px 0 20px;line-height:1.5"></p>
+    <button class="cta" id="rsDo" style="width:100%">Reset &amp; claim Ronaldo 100</button>
+    <button class="cta alt" id="rsLater" style="width:100%;margin-top:10px;padding:10px;font-size:18px">Not now</button>
+  </div>
+</div>
 <!-- Loading Screen -->
 <div id="loadingScreen" class="loadingScreen hidden">
   <div class="spinner"></div>
@@ -2868,8 +2877,8 @@ RAW3.forEach(r => PLAYERS.push({ id: PLAYERS.length + 1, name: r[0], club: r[1],
 const $ = id => document.getElementById(id);
 const START = 3000;
 let qSeen = {}, fbItems = [], cups = {}, cupBusy = false, evs = {}, mk = {}, mkShow = 40, mkBusy = false, codes = {}, cpacks = {}, rcBusy = false, WK0 = null;
-const CFG0 = { win: 60, draw: 30, lose: 20, streak: 30, dBase: 150, dStep: 50, wkMax: 14, fee: 10, starter: 2500, bronze: 500, silver: 900, gold: 1500, rare: 4000, elite: 10000, legend: 28000 };
-const CFGL = [["win", "Win reward (coins)"], ["draw", "Draw reward"], ["lose", "Loss reward"], ["streak", "3+ win streak bonus"], ["dBase", "Daily reward, day 1"], ["dStep", "Daily reward, extra per streak day"], ["wkMax", "Weekly point cap"], ["fee", "Market sell fee (%)"], ["starter", "Starter pack price"], ["bronze", "Bronze pack price"], ["silver", "Silver pack price"], ["gold", "Gold pack price"], ["rare", "Rare Gold pack price"], ["elite", "Elite pack price"], ["legend", "Legend pack price"]];
+const CFG0 = { win: 60, draw: 30, lose: 20, streak: 30, dBase: 150, dStep: 50, wkMax: 14, fee: 10, sellDay: 5, aiBuy: 12, wealthK: 150000, starter: 2500, bronze: 500, silver: 900, gold: 1500, rare: 4000, elite: 10000, legend: 28000 };
+const CFGL = [["win", "Win reward (coins)"], ["draw", "Draw reward"], ["lose", "Loss reward"], ["streak", "3+ win streak bonus"], ["dBase", "Daily reward, day 1"], ["dStep", "Daily reward, extra per streak day"], ["wkMax", "Weekly point cap"], ["fee", "Market sell fee (%)"], ["sellDay", "Max market listings per player per day"], ["aiBuy", "AI managers only buy listings up to this % of value"], ["wealthK", "Coins that add +100% to pack and AI prices (max +200%)"], ["starter", "Starter pack price"], ["bronze", "Bronze pack price"], ["silver", "Silver pack price"], ["gold", "Gold pack price"], ["rare", "Rare Gold pack price"], ["elite", "Elite pack price"], ["legend", "Legend pack price"]];
 const THK = [["g", "Main accent"], ["c", "Second accent"], ["gold", "Gold / coins"], ["bg", "Background"], ["p1", "Panels"]], THEME_DEF = { g: "#00f58a", c: "#1fd2ff", gold: "#f2cd68", bg: "#050810", p1: "#0b1222" };
 let CFG = Object.assign({ theme: {} }, CFG0);
 let user = null, state = { coins: START, club: [], starter: false }, signup = false, busy = false, unsub = null, loaded = false, sq = null, sqInit = false, selSlot = -1;
@@ -2957,7 +2966,7 @@ async function enter(k, hash){
   // Live sync: coins and club update whenever the database changes
   unsub = onValue(ref(rtdb, "users/" + k), snap => {
     const v = snap.val();
-    if (v) { state = { coins: v.coins, club: v.club || [], starter: !!v.starter, squad: v.squad || null, mmr: v.mmr ?? 500, placed: v.placed || 0, rform: v.rform || "", username: v.username, stats: v.stats || { w: 0, d: 0, l: 0 }, streak: v.streak || 0, aiBeat: v.aiBeat || {}, lastDaily: v.lastDaily || "", dStreak: v.dStreak || 0, wk: v.wk || null, pend: v.pend || [], evBuys: v.evBuys || {}, evClaim: v.evClaim || {}, redeemed: v.redeemed || {}, obj: v.obj || {}, oc: v.oc || {}, mo: v.mo || null }; loaded = true;
+    if (v) { state = { coins: v.coins, club: v.club || [], starter: !!v.starter, squad: v.squad || null, mmr: v.mmr ?? 500, placed: v.placed || 0, rform: v.rform || "", username: v.username, stats: v.stats || { w: 0, d: 0, l: 0 }, streak: v.streak || 0, aiBeat: v.aiBeat || {}, lastDaily: v.lastDaily || "", dStreak: v.dStreak || 0, wk: v.wk || null, pend: v.pend || [], evBuys: v.evBuys || {}, evClaim: v.evClaim || {}, redeemed: v.redeemed || {}, obj: v.obj || {}, oc: v.oc || {}, mo: v.mo || null, sl: v.sl || null, rg: !!v.rg, rt: v.rt || 0 }; loaded = true;
       if (!presOn) { presOn = true; startPresence(); }
       if (!sqInit) { sqInit = true; const q = v.squad; sq = q && FORMS[q.formation] ? { formation: q.formation, slots: Array.from({ length: 11 }, (_, i) => (q.slots && q.slots[i]) || 0) } : { formation: "4-3-3", slots: Array(11).fill(0) }; } $("who").textContent = v.username; render(); }
   }, () => {});
@@ -2981,7 +2990,7 @@ $("out").onclick = () => {
 
 async function save(){
   if (!user) return;
-  try { await update(ref(rtdb, "users/" + user.key), { coins: state.coins, club: state.club, starter: !!state.starter, pend: state.pend || [], updatedAt: Date.now() }); }
+  try { await update(ref(rtdb, "users/" + user.key), { coins: state.coins, club: state.club, starter: !!state.starter, pend: state.pend || [], sl: state.sl || null, updatedAt: Date.now() }); }
   catch (e) { fail(e, "save"); }
 }
 
@@ -2998,6 +3007,9 @@ const PACKS = [
   { id: "legend", name: "Legend Pack", short: "Legend", art: "x", price: 28000, min: 100, max: 140, decay: .93, desc: "3 players rated 100+. Squad rating 130 starts here." }
 ];
 let lastN = 3, lastFree = false;
+/* Economy: the richer you are, the more packs and AI-manager players cost (up to 3x). Starter pack is never scaled. */
+const wealthMult = () => 1 + Math.min(2, Math.max(0, state.coins || 0) / Math.max(1000, CFG.wealthK || 150000));
+const effPrice = k => Math.max(1, Math.round(k.price * wealthMult() / 10) * 10);
 
 function render(){
   $("coins").textContent = fmt(state.coins); renderDaily(); $("navEv").classList.toggle("hidden", !isAdmin()); renderEvents(); try { renderObj(); renderCups(); renderZezo(); } catch (e) {}
@@ -3009,8 +3021,8 @@ function render(){
   $("warn").textContent = state.coins < STARTER.price ? "Not enough coins for the starter pack." : "";
   $("packs").innerHTML = storePacks().map(k => `<div class="tile"><div class="packart sm p${k.art}"><b>${k.short}</b><span>3 PLAYERS</span></div>
     <div><h3>${k.name}</h3><p>${k.desc || ""}</p></div>
-    <div class="price"><span class="coin"></span>${fmt(k.price)}</div>
-    <button class="cta" data-id="${k.id}" ${busy || state.coins < k.price ? "disabled" : ""}>Buy &amp; open</button></div>`).join("");
+    <div class="price"><span class="coin"></span>${fmt(effPrice(k))}</div>${wealthMult() > 1.02 ? `<small style="color:var(--m);display:block;margin:-4px 0 8px">Base ${fmt(k.price)} +${Math.round((wealthMult() - 1) * 100)}% for your wealth</small>` : ""}
+    <button class="cta" data-id="${k.id}" ${busy || state.coins < effPrice(k) ? "disabled" : ""}>Buy &amp; open</button></div>`).join("");
   $("cnt").textContent = state.club.length ? `${state.club.length} players` : "";
   const c = $("club");
   if (!state.club.length) { c.innerHTML = '<div class="empty">Your club is empty. Open a pack to sign your first players.</div>'; return; }
@@ -3925,9 +3937,11 @@ const mkDay = () => Math.floor(Date.now() / 864e5);
 const mkH = t => { let h = 2166136261; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
 const mkBase = o => Math.min(900000, Math.round(o <= 93 ? 100 * Math.exp((o - 45) * .11) : 100 * Math.exp(48 * .11) * Math.exp((o - 93) * .07)));
 function mkAi(p){ // AI managers list every player, price and seller change daily
-  const h = mkH(p.id + ":" + mkDay()); let pr = mkBase(p.ovr) * (.85 + (h % 31) / 100); pr = pr < 1000 ? Math.round(pr / 10) * 10 : Math.round(pr / 50) * 50;
+  const h = mkH(p.id + ":" + mkDay()); let pr = mkBase(p.ovr) * (.85 + (h % 31) / 100) * wealthMult(); pr = pr < 1000 ? Math.round(pr / 10) * 10 : Math.round(pr / 50) * 50;
   return { id: "ai_" + p.id, pid: p.id, price: Math.max(50, pr), seller: AI[h % AI.length].n, ai: true, p };
 }
+const sellToday = () => { const d = todayStr(); return state.sl && state.sl.d === d ? state.sl.n : 0; };
+const sellLeft = () => Math.max(0, (CFG.sellDay || 0) - sellToday());
 function mkSellOpts(){
   const sel = $("mkSel"), cur = sel.value, c = {}; state.club.forEach(id => c[id] = (c[id] || 0) + 1);
   sel.innerHTML = Object.keys(c).map(Number).map(P).sort((a, b) => b.ovr - a.ovr).map(p => `<option value="${p.id}">${p.ovr} ${p.pos} · ${escH(p.name)}${c[p.id] > 1 ? " x" + c[p.id] : ""}</option>`).join("") || "<option value=''>No players in your club</option>";
@@ -3942,7 +3956,7 @@ function renderMarket(){
   L = L.filter(x => (!pos || x.p.pos === pos) && (!q || (x.p.name + " " + x.p.club + " " + x.p.nation).toLowerCase().includes(q)));
   L.sort(so === "pa" ? (a, b) => a.price - b.price : so === "pd" ? (a, b) => b.price - a.price : (a, b) => b.p.ovr - a.p.ovr || a.price - b.price);
   const hum = Object.keys(mk).length;
-  $("mkInfo").textContent = `${L.length} players shown · ${PLAYERS.length} stocked by AI managers · ${hum} listed by players · ${CFG.fee}% sell fee · AI managers buy fairly priced listings`;
+  $("mkInfo").textContent = `${L.length} players shown · ${PLAYERS.length} stocked by AI managers · ${hum} listed by players · ${CFG.fee}% sell fee · AI managers only buy listings under ${CFG.aiBuy}% of value  ${sellLeft()} of ${CFG.sellDay} listings left today`;
   $("mkItems").innerHTML = L.slice(0, mkShow).map(x => { const p = x.p, mine = !x.ai && x.sk === user.key;
     return `<div class="row mk ${tier(p)}"><div class="o">${p.ovr}<small>${p.pos}</small></div><div class="mki"><span class="n">${escH(p.name)}</span><span class="p">${rowMeta(p)}</span><span class="p"><b class="sl ${x.ai ? "ai" : "hu"}">${x.ai ? "AI" : mine ? "You" : "Player"}</b> ${escH(x.seller)}</span></div>
       <div class="mkp"><span class="pc2"><span class="coin"></span>${fmt(x.price)}</span>${mine ? `<button class="cta sm alt" data-c="${x.id}">Cancel</button>` : `<button class="cta sm" data-b="${x.id}" ${state.coins < x.price || mkBusy ? "disabled" : ""}>Buy</button>`}</div></div>`; }).join("") || '<div class="empty">Nothing matches.</div>';
@@ -3977,8 +3991,8 @@ async function cancelMk(id){
 const aiSold = new Set();
 function aiWill(id, l){
   const p = P(l.pid); if (!p || !l.ts) return null;
-  const h = mkH(id + ":ai"), r = l.price / Math.max(50, mkBase(p.ovr)), w = Math.min(1, Math.max(0, (1.35 - r) / .5));
-  if ((h % 1000) / 1000 >= w) return null;
+  const h = mkH(id + ":ai"), r = l.price / Math.max(50, mkBase(p.ovr));
+  if (r > Math.max(0, CFG.aiBuy || 0) / 100) return null; // AI managers are lowballers: they only take listings priced far under a player's value
   return { at: l.ts + (60 + ((h >>> 10) % 1140)) * 1000 * Math.min(1.2, Math.max(.5, r)), who: AI[(h >>> 4) % AI.length].n };
 }
 async function aiSweep(){
@@ -3998,11 +4012,12 @@ setInterval(aiSweep, 20000);
 $("mkListBtn").onclick = async () => {
   if (!user || mkBusy) return; if (CAR || OFFLINE) return toast("Selling on the market only works on your home Wi-Fi."); const pid = +$("mkSel").value, price = Math.round(+$("mkPrice").value);
   if (!pid || !P(pid)) return toast("Pick a player to sell."); if (!(price >= 50 && price <= 1e6)) return toast("Price must be between 50 and 1,000,000.");
+  if (sellLeft() <= 0) return toast(`Daily limit reached: ${CFG.sellDay} listings a day. Come back tomorrow.`);
   const owned = state.club.filter(x => x === pid).length, inSq = slotsOf().filter(x => x === pid).length;
   if (owned <= inSq) return toast("He's in your saved squad. Swap him out first.");
   mkBusy = true;
   try { await set(ref(rtdb, "market/" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5)), { pid, price, seller: state.username, sk: user.key, ts: Date.now() });
-    state.club.splice(state.club.indexOf(pid), 1); render(); await save(); toast(`${P(pid).name} listed for ${fmt(price)}`);
+    state.club.splice(state.club.indexOf(pid), 1); state.sl = { d: todayStr(), n: sellToday() + 1 }; render(); await save(); toast(`${P(pid).name} listed for ${fmt(price)}`);
   } catch (x) { fail(x, "list"); } finally { mkBusy = false; renderMarket(); }
 };
 ["evCreate", "rcCreate", "qcCreate", "cpCreate", "mkListBtn", "rcBtn"].forEach(id => { const b = $(id), f = b.onclick; b.onclick = () => withBtn(b, f); });
@@ -4340,7 +4355,7 @@ function dribble(m, T, O, s, pt) {
 }
 /* Shot styles and where they work (glx = metres from the goal line). 1 = ideal range, 0 = neutral, negative = bad idea.
    Chip: close in, over a keeper who has come out. Finesse (normal): the box edge and a bit beyond. Power: far-mid, where you need pace on it. */
-const SH_FIT = { chip: [[0, .9], [8, 1], [16, .55], [24, 0], [34, -.7], [50, -1]], finesse: [[0, .2], [8, .45], [14, .9], [20, 1], [26, .6], [34, 0], [50, -.5]], power: [[0, -.15], [8, 0], [16, .15], [24, .7], [32, 1], [40, .8], [55, .3]] };
+const SH_FIT = { chip: [[0, 1], [8, 1], [14, .6], [20, .1], [26, -.4], [34, -.8], [50, -1]], finesse: [[0, .7], [8, .85], [14, 1], [20, 1], [26, .7], [34, .1], [50, -.5]], power: [[0, -.15], [8, 0], [16, .15], [24, .7], [32, 1], [40, .8], [55, .3]] };
 const ramp = (pts, x) => { if (x <= pts[0][0]) return pts[0][1]; for (let i = 1; i < pts.length; i++) if (x <= pts[i][0]) return pts[i - 1][1] + (pts[i][1] - pts[i - 1][1]) * (x - pts[i - 1][0]) / (pts[i][0] - pts[i - 1][0]); return pts[pts.length - 1][1]; };
 const shotFit = (sty, glx) => ramp(SH_FIT[sty] || SH_FIT.finesse, glx);
 const shotBlend = (s, sty) => sty === "power" ? s.p.sho * .62 + s.p.phy * .28 + s.p.ovr * .1 : sty === "chip" ? s.p.sho * .45 + s.p.dri * .45 + s.p.ovr * .1 : s.p.sho * .62 + s.p.dri * .28 + s.p.ovr * .1;
@@ -4400,13 +4415,16 @@ function shoot(m, T, O, s, pt, kind, opt) {
   const RNG = [[0, 0], [.4, .03], [.5, .12], [.65, .4], [.8, .74], [.9, 1]];
   let rf = 1; if (kind !== "pen" && xa < .9) { for (let i = 1; i < RNG.length; i++) if (xa <= RNG[i][0]) { rf = RNG[i - 1][1] + (RNG[i][1] - RNG[i - 1][1]) * (xa - RNG[i - 1][0]) / (RNG[i][0] - RNG[i - 1][0]); break; } if (kind !== "head" && xa < .8) rf *= mClamp((sho - 62) / 30, .2, 1.05); }
   let gpf = gp * rf * (sty && glx > 26 ? mClamp(.8 + fit * .3, .3, 1.1) : 1);
-  /* close range (FC Mobile style, easy scoring): about 82% for an average match-up inside the box, 55% just outside, shooting stat against the keeper's OVR.
-     The shot style moves that by up to about 7 points for the right style and costs up to about 8 for the wrong one. */
+  /* close range: a normal, fair chance, not a free goal. Ideal style at the ideal spot with an average match-up is about 50% inside the box,
+     about 35% on the edge of it. The shooter's own stats (shot style blend vs the keeper's OVR) move it by up to about 15 points either way.
+     Right style for the range: finesse from short and medium range, chip only from really close, power from further out. Wrong style costs up to about 20 points. */
   if (zone) {
-    const fx = ((T.fin || 0) - (O.kp || 0)) / 100 + e / 500, d = (sho - gk.p.ovr) / 150, hd = kind === "head" ? .1 : 0, am = Math.abs(aim) * .04, sf = sty ? (fit - .9) * .2 : 0;
-    const pb = glx <= 17 ? mClamp(.82 + d + fx - hd - am + sf, .5, .97) : mClamp(.55 + d + fx - hd - am + sf, .25, .88);
-    gpf = Math.min(.98, pb / Math.max(.25, 1 - off));
+    const fx = mClamp(((T.fin || 0) - (O.kp || 0)) / 100 + e / 500, -.1, .1), d = mClamp((sho - gk.p.ovr) / 150, -.15, .15), hd = kind === "head" ? .06 : 0, am = Math.abs(aim) * .03;
+    const sf = sty ? (fit - .5) * .25 : 0, pwr = sty === "power" ? (pw - .5) * .12 - (pw > .92 ? .1 : 0) : 0, chp = sty === "chip" ? mClamp((dri - 75) / 400, -.06, .08) - Math.max(0, gk.p.ovr - 90) / 600 : 0;
+    const pb = glx <= 17 ? mClamp(.40 + d + fx - hd - am + sf + pwr + chp, .12, .78) : mClamp(.24 + d + fx - hd - am + sf + pwr + chp, .06, .6);
+    gpf = Math.min(.95, pb / Math.max(.25, 1 - off));
   }
+  if (sty === "chip" && glx > 20) gpf *= mClamp(1 - (glx - 20) / 12, .1, 1); // chips are for short range only
   if (mChance(gpf)) { m.hook.ball({ x: goalX, y: gy }); return goal(m, T, O, s, kind === "open" || kind === "one" || kind === "head" ? wasAssist(m, T, s) : null, sty || kind); }
   m.hook.ball({ x: gk.x, y: gy });
   say(m, mPick([`SAVE by ${g}! ${a}'s shot is kept out.`, `${a} hits it on target but ${g} makes the save!`, `${g} dives and stops ${a}'s effort! What a save!`]));
@@ -5468,6 +5486,29 @@ const OBJM = [
   { g: "Habits", id: "mcw1", t: "Cup winner of the month", d: "Win a cup this month", k: "cw", n: 1, coins: 3000, packs: ["elite"] },
   { g: "Grand prize", id: "mmaster", t: "Monthly master", d: "Claim 15 other monthly challenges this month", live: "mclaim", n: 15, coins: 20000, packs: ["legend", "elite"] }
 ];
+/* ---- Big objectives (added): long grinds, rewards stay modest next to the effort ---- */
+(function(){
+  const A = (g, k, d, rows) => rows.forEach(([n, t, coins, packs]) => OBJ.push({ g, id: k + "x" + n, t, d: d.replace("{n}", n.toLocaleString("en-US")), k, n, coins, packs }));
+  A("Matches", "played", "Play {n} matches against real players", [[40,"Dedicated",1800,["gold"]],[75,"Seventy-five",2500,["gold","silver"]],[150,"Marathon",5000,["rare"]],[350,"Ironman",12000,["elite"]],[750,"Eternal",30000,["elite","rare"]],[1000,"One thousand",50000,["legend"]],[1500,"Living in the stadium",80000,["legend","elite"]],[2500,"Football is life",150000,["legend","legend"]]]);
+  A("Wins", "won", "Win {n} matches", [[40,"Habit of winning",2000,["gold"]],[80,"Trophy cabinet",3500,["rare"]],[150,"Title contender",7000,["elite"]],[300,"Dominator",15000,["elite","rare"]],[600,"Empire",40000,["legend"]],[1000,"Thousand wins",80000,["legend","elite"]],[2000,"Beyond legend",200000,["legend","legend"]]]);
+  A("Wins", "big", "Win by 3 goals or more, {n} times", [[80,"Steamroller",12000,["elite"]],[150,"Mass destruction",25000,["elite","rare"]],[300,"No mercy",60000,["legend"]]]);
+  A("Goals", "goals", "Score {n} goals", [[150,"Hot boots",2500,["gold"]],[750,"Goal factory",6000,["rare"]],[1500,"Net bursting",12000,["elite"]],[2500,"Goal god",40000,["legend"]],[5000,"Forever scoring",90000,["legend","elite"]],[10000,"Ten thousand",200000,["legend","legend"]]]);
+  A("Defence", "cs", "Keep {n} clean sheets", [[15,"Tight at the back",2000,["gold"]],[75,"Vault",12000,["elite"]],[100,"Locked door",20000,["elite","rare"]],[250,"Sealed",50000,["legend"]],[500,"Nothing gets past",120000,["legend","elite"]]]);
+  A("Player of the match", "motm", "Get player of the match {n} times", [[10,"Rising star",1500,["silver"]],[45,"Showstopper",5000,["rare"]],[90,"Hall of legends",10000,["elite"]],[120,"Matchwinner supreme",18000,["elite","rare"]],[250,"Eternal MVP",40000,["legend"]],[500,"Mr. Everything",100000,["legend","elite"]]]);
+  A("Cups", "cup", "Play {n} cup matches", [[40,"Cup lifer",12000,["elite"]],[100,"Cup machine",35000,["legend"]]]);
+  A("Cups", "cups", "Win {n} cups", [[15,"Cup overlord",30000,["elite","rare"]],[25,"Cup deity",60000,["legend","elite"]]]);
+  A("Streaks", "bs", "Win {n} matches in a row", [[15,"Relentless",18000,["elite","rare"]],[25,"Untouchable streak",40000,["legend"]],[30,"Perfect month",60000,["legend","elite"]],[50,"Mythical run",150000,["legend","legend"]]]);
+  OBJ.push({ g: "Squad", id: "sq135", t: "Dream squad", d: "Reach a squad rating of 135", live: "rat", n: 135, coins: 40000, packs: ["legend"] });
+  OBJ.push({ g: "Squad", id: "sq145", t: "Impossible squad", d: "Reach a squad rating of 145", live: "rat", n: 145, coins: 100000, packs: ["legend", "elite"] });
+  const B = (g, k, d, rows) => rows.forEach(([n, t, coins, packs]) => OBJM.push({ g, id: "m" + k + n, t, d: d.replace("{n}", n), k, n, coins, packs }));
+  B("Matches", "played", "Play {n} matches this month", [[300,"Month-long grind",12000,["legend"]],[500,"Stadium resident",30000,["legend","elite"]]]);
+  B("Wins", "won", "Win {n} matches this month", [[100,"Hundred-win month",8000,["elite","rare"]],[150,"Monster month",15000,["legend"]],[250,"Perfect month",40000,["legend","elite"]]]);
+  B("Habits", "ai", "Beat " + RANKS[3][0] + " AI or higher {n} times this month", [[60,"AI hunter",4000,["elite"]],[100,"AI nightmare",9000,["elite","rare"]],[200,"AI exterminator",20000,["legend"]]]);
+  B("Habits", "cup", "Play {n} cup matches this month", [[10,"Cup grinder",2500,["gold"]],[20,"Cup devotee",6000,["rare"]]]);
+  B("Habits", "cw", "Win {n} cups this month", [[2,"Double cup winner",8000,["elite","rare"]]]);
+  B("Goals", "goals", "Score {n} goals this month", [[50,"Monthly sniper",2500,["gold"]],[150,"Goal rain",8000,["elite"]],[300,"Goal storm",20000,["legend"]]]);
+  B("Defence", "cs", "Keep {n} clean sheets this month", [[10,"Monthly wall",3000,["rare"]],[30,"Monthly fortress",12000,["elite"]]]);
+})();
 const monthVal = (o, mo) => o.live === "mclaim" ? Object.keys(mo.c).filter(k => k !== o.id).length : mo[o.k] || 0;
 async function claimMonth(id){
   const o = OBJM.find(x => x.id === id); if (!o || !user || objBusy.has("m" + id)) return;
@@ -5682,7 +5723,26 @@ $("zzList").onclick = e => {
 
 document.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => b.dataset.mode === "friend" ? openFriends() : b.dataset.mode === "ai" ? openAI() : findMatch(b.dataset.mode));
 
-$("packs").onclick = e => { const b = e.target.closest("button[data-id]"); if (b) openPack(storePacks().find(k => k.id === b.dataset.id)); };
+/* ---------- Account reset + free Ronaldo 100 ---------- */
+const RONALDO = () => PLAYERS.find(p => p.name === "Cristiano Ronaldo" && p.ovr === 100);
+const RS_WAIT = 7 * 864e5;
+function rsOffer(){ if (user && loaded && !state.rg && !CAR && !OFFLINE) { $("rsText").textContent = "Reset your account and get Cristiano Ronaldo (100) for free. Your coins go back to " + fmt(START) + "; your club, squad, stats and rank are wiped and Ronaldo joins your club. Claimed objectives, rewards and codes stay claimed, so nothing can be claimed twice. This offer shows every time you open the game until you take it."; $("rsModal").classList.remove("hidden"); } }
+async function doReset(){
+  if (!user || !loaded || busy) return;
+  if (CAR || OFFLINE) return toast("Resetting only works online on your home Wi-Fi.");
+  const first = !state.rg;
+  if (!first && Date.now() - (state.rt || 0) < RS_WAIT) return toast("You can reset again in " + Math.ceil((RS_WAIT - (Date.now() - state.rt)) / 864e5) + " day(s).");
+  if (!confirm("Really reset your account? Coins, club, squad, stats and rank will be wiped." + (first ? " Cristiano Ronaldo (100) will be added to your club." : ""))) return;
+  const r = RONALDO(), club = first && r ? [r.id] : [], now = Date.now();
+  const upd = { coins: START, club, starter: false, squad: null, mmr: 500, placed: 0, rform: "", stats: { w: 0, d: 0, l: 0 }, streak: 0, aiBeat: {}, sl: null, rg: true, rt: now, updatedAt: now };
+  try { await update(ref(rtdb, "users/" + user.key), upd); sqInit = false; $("rsModal").classList.add("hidden"); toast(first ? "Account reset. Cristiano Ronaldo (100) joined your club!" : "Account reset."); }
+  catch (x) { fail(x, "reset your account"); }
+}
+$("rsDo").onclick = doReset; $("rsLater").onclick = () => $("rsModal").classList.add("hidden");
+$("setReset").onclick = doReset;
+let rsShown = false;
+setInterval(() => { if (!user) rsShown = false; else if (!rsShown && loaded && !state.rg) { rsShown = true; rsOffer(); } }, 1500);
+$("packs").onclick = e => { const b = e.target.closest("button[data-id]"); if (b) { const k = storePacks().find(k => k.id === b.dataset.id); if (k) openPack({ ...k, price: effPrice(k) }); } };
 $("buyStarter").onclick = () => openPack(STARTER);
 $("close").onclick = () => { $("open").classList.add("hidden"); busy = false; render(); toast(lastN + " players added to your club"); const more = lastFree && (state.pend || []).length; lastFree = false; if (more) setTimeout(openPend, 350); };
 </script>
