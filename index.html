@@ -3705,7 +3705,7 @@ function startShared(){
 /* ---------- UI helpers: no lost clicks, clear errors, busy buttons ---------- */
 function memo(el){ const d = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML"); Object.defineProperty(el, "innerHTML", { get(){ return d.get.call(this); }, set(v){ if (this._h !== v) { this._h = v; d.set.call(this, v); } }, configurable: true }); }
 ["daily", "weekly", "packs", "evStore", "evMatch", "evMarket", "evList", "rcList", "cpList", "rcEv", "mkItems", "mkSel"].forEach(i => { const e = $(i); if (e) memo(e); }); // identical re-renders are skipped, so taps and open dropdowns aren't wiped
-function fail(x, what){ const c = x && (x.code || x.message) || ""; console.error(what, x); toast(`Couldn't ${what}${c ? " (" + String(c).replace("PERMISSION_DENIED", "permission denied") + ")" : ""}. Check your database rules.`); }
+function fail(x, what){ const c = x && (x.code || x.message) || ""; console.error(what, x); const perm = /permission/i.test(String(c)); toast(`Couldn't ${what}${c ? " (" + String(c).replace("PERMISSION_DENIED", "permission denied") + ")" : ""}.` + (perm ? " Check your database rules." : "")); }
 async function withBtn(btn, fn){ if (!btn || btn._b) return; btn._b = 1; const t = btn.textContent; btn.disabled = true; btn.textContent = "Working..."; try { await fn(); } finally { btn.disabled = false; btn.textContent = t; btn._b = 0; } }
 
 /* ---------- Admin panel: config, theme, codes, custom packs ---------- */
@@ -3879,8 +3879,17 @@ async function redeem(){
     let ok = false, now = 0; await runTransaction(ref(rtdb, "codes/" + c + "/used"), u => { u = u || 0; ok = !v.max || u < v.max; now = ok ? u + 1 : u; return now; });
     if (!ok) { remove(ref(rtdb, "codes/" + c)).catch(() => {}); return toast("That code has been fully used."); }
     const ps = Object.values(v.packs || []).filter(p => packById(p)), pls = Object.values(v.players || []).filter(i => P(i));
-    state.coins += v.coins || 0; state.club.push(...pls); state.pend = (state.pend || []).concat(ps); state.redeemed = Object.assign({}, state.redeemed, { [c]: mine + 1 }); render();
-    await update(ref(rtdb, "users/" + user.key), { coins: state.coins, club: state.club, pend: state.pend, ["redeemed/" + c]: mine + 1 });
+    const bk = { coins: state.coins, club: state.club.slice(), pend: (state.pend || []).slice(), redeemed: state.redeemed };
+    try {
+      const nc = bk.coins + (v.coins || 0), nclub = bk.club.concat(pls), npend = bk.pend.concat(ps);
+      await update(ref(rtdb, "users/" + user.key), { coins: nc, club: nclub, pend: npend, ["redeemed/" + c]: mine + 1, updatedAt: Date.now() });
+      state.coins = nc; state.club = nclub; state.pend = npend; state.redeemed = Object.assign({}, bk.redeemed, { [c]: mine + 1 });
+    } catch (x) {
+      // saving failed: give the use back so the code isn't burned for nothing
+      runTransaction(ref(rtdb, "codes/" + c + "/used"), u => Math.max(0, (u || 1) - 1)).catch(() => {});
+      throw x;
+    }
+    try { render(); } catch (e) { console.error(e); }
     if (v.max && now >= v.max) remove(ref(rtdb, "codes/" + c)).catch(() => {}); // last use: the code deletes itself
     $("rcIn").value = ""; toast("Code redeemed!" + (v.coins ? " +" + fmt(v.coins) + " UT Coins" : "") + (pls.length ? ". " + pls.map(i => P(i).name).join(", ") + " joined your club" : "")); if (ps.length) setTimeout(openPend, 500);
   } catch (x) { fail(x, "redeem"); } finally { rcBusy = false; }
