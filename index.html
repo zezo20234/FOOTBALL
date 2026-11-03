@@ -3696,7 +3696,7 @@ function startShared(){
   presOff.push(onValue(ref(rtdb, "market"), sn => { mk = sn.val() || {}; aiSweep(); if (!$("viewMarket").classList.contains("hidden")) renderMarket(); }, () => {}));
   presOff.push(onValue(ref(rtdb, "config"), sn => { applyCfg(sn.val()); render(); }, () => {}));
   presOff.push(onValue(ref(rtdb, "cpacks"), sn => { cpacks = sn.val() || {}; fillPackSelects(); render(); if (isAdmin()) renderCp(); }, () => {}));
-  if (isAdmin()) presOff.push(onValue(ref(rtdb, "codes"), sn => { codes = sn.val() || {}; Object.entries(codes).forEach(([k, c]) => { if (c && c.max && (c.used || 0) >= c.max) remove(ref(rtdb, "codes/" + k)).catch(() => {}); }); renderCodes(); $("qcList").innerHTML = $("rcList").innerHTML; }, () => {}));
+  if (isAdmin()) presOff.push(onValue(ref(rtdb, "codes"), sn => { codes = sn.val() || {}; Object.entries(codes).forEach(([k, c]) => { if (!rcBusy && c && c.max && (c.used || 0) >= c.max) remove(ref(rtdb, "codes/" + k)).catch(() => {}); }); renderCodes(); $("qcList").innerHTML = $("rcList").innerHTML; }, () => {}));
   const iv = setInterval(renderEvents, 30000); presOff.push(() => clearInterval(iv));
 }
 
