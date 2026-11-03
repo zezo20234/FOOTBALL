@@ -1,9 +1,9 @@
 # UT car server (ESP32)
 
 **What it does**
-- In the car the ESP32 makes its own Wi-Fi (`UT-Car`). Everyone joins it and opens `http://192.168.4.1`. It serves the game and keeps coins, clubs, matches and invites on the board, so you can all play together with no internet.
-- At home, power it up near your router. For the first 25 seconds it joins your home Wi-Fi, **pushes the car's changes to Firebase**, then **pulls everyone's accounts** so the car starts from your latest coins and clubs. Pressing the BOOT button does the same any time.
-- If someone also played online between the pull and the push, it keeps both: coins = online coins + coins won or spent in the car, and players gained or sold in the car are added to or taken from the online club. Other things (stats, squad) take the car's version.
+- In the car the ESP32 makes its own Wi-Fi (`UT-Car`). Everyone joins it and opens `http://192.168.4.1`. It serves the game and keeps UT Coins, clubs, matches and invites on the board, so you can all play together with no internet.
+- At home, power it up near your router. For the first 25 seconds it joins your home Wi-Fi, **pushes the car's changes to Firebase**, then **pulls everyone's accounts** so the car starts from your latest UT Coins and clubs. Pressing the BOOT button does the same any time.
+- If someone also played online between the pull and the push, it keeps both: UT Coins = online UT Coins + UT Coins won or spent in the car, and players gained or sold in the car are added to or taken from the online club. Other things (stats, squad) take the car's version.
 
 **Set up**
 1. Arduino IDE: install the ESP32 board package, then libraries `ESP Async WebServer`, `Async TCP` (ESP32Async) and `ArduinoJson` (v7).

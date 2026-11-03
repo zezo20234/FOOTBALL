@@ -53,7 +53,14 @@ nav small{font-size:10px;font-style:normal;background:var(--p2);color:var(--m);p
 .user{font-size:14px;color:var(--m)}
 .user button{background:none;border:0;color:var(--m);text-decoration:underline;margin-left:8px;font-size:14px}
 .coins{display:flex;align-items:center;gap:9px;background:linear-gradient(90deg,#1b2a52,#0e1830);padding:8px 26px;font-size:27px;color:var(--gold);clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%)}
-.coin{width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3bb,var(--gold) 50%,var(--gold2));box-shadow:0 0 10px rgba(242,205,104,.6)}
+.coin{position:relative;flex:none;display:inline-grid;place-items:center;vertical-align:middle;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 32% 26%,#fffde8 0,#ffe48a 20%,var(--gold) 52%,var(--gold2) 100%);border:2px solid #c9972b;box-shadow:inset 0 0 0 2px rgba(255,246,196,.6),inset 0 -3px 5px rgba(120,80,0,.5),0 0 10px rgba(242,205,104,.55),0 2px 4px rgba(0,0,0,.45)}
+.coin::after{content:"UT";font:800 italic 9px/1 'Barlow Condensed',Arial,sans-serif;letter-spacing:-.2px;color:#6b4a06;text-shadow:0 1px 0 rgba(255,255,255,.6)}
+.coins{position:relative;overflow:hidden;box-shadow:inset 0 -2px 0 var(--gold2)}
+.coins::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,236,160,.22) 50%,transparent 65%);transform:translateX(-120%);animation:coinShine 4.5s ease-in-out infinite}
+@keyframes coinShine{0%,70%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+.coins .coin{width:26px;height:26px}.coins .coin::after{font-size:11px}
+.coins .cl{font:700 11px 'Barlow Condensed',sans-serif;font-style:normal;letter-spacing:2px;color:var(--m);align-self:flex-end;margin:0 0 6px 2px}
+@media(max-width:600px){.coins .cl{display:none}}
 .coins.flash{animation:flash .6s}
 @keyframes flash{50%{color:var(--r)}}
 
@@ -1049,7 +1056,7 @@ window.UTA = (function () {
         <small id="setHint">Your login and club are kept.</small>
       </div>
       <div class="user"><span id="who"></span><button id="out">Sign out</button></div>
-      <div class="coins" id="coinBox" aria-live="polite"><span class="coin"></span><span id="coins">5,000</span></div>
+      <div class="coins" id="coinBox" aria-live="polite"><span class="coin"></span><span id="coins">5,000</span><span class="cl">UT COINS</span></div>
     </div>
   </header>
   <main id="viewStore">
@@ -1121,14 +1128,14 @@ window.UTA = (function () {
       <label>Cup name</label><input id="cuN" maxlength="30" placeholder="Zezo Cup">
       <div class="evrow"><div><label>How many matches?</label><select id="cuM"><option value="3">3 matches (everyone plays 2)</option><option value="6">6 matches (everyone plays 4)</option><option value="9">9 matches (everyone plays 6)</option></select></div>
       <div><label>Max squad power (rating + chemistry)</label><select id="cuCap"><option value="170" selected>170 (best, no limit)</option><option value="160">160</option><option value="150">150</option><option value="140">140</option><option value="130">130</option><option value="120">120</option><option value="110">110</option><option value="100">100</option></select></div></div>
-      <label>Reward for 1st place</label><div class="evrow3"><div><label>Coins</label><input id="cuC1" type="number" min="0" value="0"></div><div><label>Pack 1</label><select id="cuP1a" class="gp"></select></div><div><label>Pack 2</label><select id="cuP1b" class="gp"></select></div></div><label>Reward for 2nd place</label><div class="evrow3"><div><label>Coins</label><input id="cuC2" type="number" min="0" value="0"></div><div><label>Pack 1</label><select id="cuP2a" class="gp"></select></div><div><label>Pack 2</label><select id="cuP2b" class="gp"></select></div></div><label>Reward for 3rd place</label><div class="evrow3"><div><label>Coins</label><input id="cuC3" type="number" min="0" value="0"></div><div><label>Pack 1</label><select id="cuP3a" class="gp"></select></div><div><label>Pack 2</label><select id="cuP3b" class="gp"></select></div></div>
+      <label>Reward for 1st place</label><div class="evrow3"><div><label>UT Coins</label><input id="cuC1" type="number" min="0" value="0"></div><div><label>Pack 1</label><select id="cuP1a" class="gp"></select></div><div><label>Pack 2</label><select id="cuP1b" class="gp"></select></div></div><label>Reward for 2nd place</label><div class="evrow3"><div><label>UT Coins</label><input id="cuC2" type="number" min="0" value="0"></div><div><label>Pack 1</label><select id="cuP2a" class="gp"></select></div><div><label>Pack 2</label><select id="cuP2b" class="gp"></select></div></div><label>Reward for 3rd place</label><div class="evrow3"><div><label>UT Coins</label><input id="cuC3" type="number" min="0" value="0"></div><div><label>Pack 1</label><select id="cuP3a" class="gp"></select></div><div><label>Pack 2</label><select id="cuP3b" class="gp"></select></div></div>
       <button class="cta" id="cuCreate" style="margin-top:18px">Create cup</button>
     </div>
     <div id="cupBody"></div>
   </main>
   <main id="viewObj" class="hidden">
     <h2>Objectives</h2><div class="bar"></div>
-    <p class="sub">Complete objectives to earn coins and packs. Matches against the AI don't count.</p>
+    <p class="sub">Complete objectives to earn UT Coins and packs. Matches against the AI don't count.</p>
     <div class="statrow" id="objSum"></div>
     <div id="objList"></div>
   </main>
@@ -1157,7 +1164,7 @@ window.UTA = (function () {
     <h2>Market</h2><div class="bar"></div>
     <p class="sub">Every player is on sale. AI managers restock and reprice daily, and real players can list too (a fee applies when sold).</p>
     <div id="evMarket"></div>
-    <div class="mkbox"><b class="mkh">Sell a player</b><div class="mksell"><select id="mkSel"></select><input id="mkPrice" type="number" min="50" placeholder="Price in coins"><button class="cta sm" id="mkListBtn">List</button></div></div>
+    <div class="mkbox"><b class="mkh">Sell a player</b><div class="mksell"><select id="mkSel"></select><input id="mkPrice" type="number" min="50" placeholder="Price in UT Coins"><button class="cta sm" id="mkListBtn">List</button></div></div>
     <div class="mkfil"><input id="mkQ" placeholder="Search name, club or nation">
       <select id="mkPos"><option value="">All positions</option><option>ST</option><option>LW</option><option>RW</option><option>CAM</option><option>CM</option><option>CDM</option><option>CB</option><option>LB</option><option>RB</option><option>GK</option></select>
       <select id="mkSrc"><option value="all">All sellers</option><option value="ai">AI managers</option><option value="human">Players</option><option value="mine">My listings</option></select>
@@ -1178,12 +1185,12 @@ window.UTA = (function () {
       <label>Show it on</label><div class="evck"><label><input type="checkbox" id="evWs" checked> Store</label><label><input type="checkbox" id="evWm"> Match</label><label><input type="checkbox" id="evWk"> Market</label></div>
       <label><input type="checkbox" id="evTh" style="width:auto"> Change the app theme while this event is live</label><div class="evrow5" id="evThC"></div>
       <div id="evPacks"></div>
-      <div class="evpk"><b>Free gift (optional, once per player)</b><div class="evrow3"><div><label>Coins</label><input id="evGc" type="number" min="0" value="0"></div><div><label>Free pack 1</label><select id="evGp1" class="gp"></select></div><div><label>Free pack 2</label><select id="evGp2" class="gp"></select></div></div></div>
+      <div class="evpk"><b>Free gift (optional, once per player)</b><div class="evrow3"><div><label>UT Coins</label><input id="evGc" type="number" min="0" value="0"></div><div><label>Free pack 1</label><select id="evGp1" class="gp"></select></div><div><label>Free pack 2</label><select id="evGp2" class="gp"></select></div></div></div>
       <label>Also make a redeem code with this gift (optional)</label><input id="evCode" maxlength="24" placeholder="BALLON26"><button class="cta" id="evCreate" style="margin-top:18px">Create event</button>
     </div>
     <h2 class="sec">Your events</h2><div class="bar"></div><div id="evList"></div></div>
     <div id="adm-co" class="adm hidden"><div class="evform">
-      <div class="evrow"><div><label>Code (empty = random)</label><input id="rcCode" maxlength="24" placeholder="WELCOME"></div><div><label>Coins</label><input id="rcCoins" type="number" min="0" value="0"></div></div>
+      <div class="evrow"><div><label>Code (empty = random)</label><input id="rcCode" maxlength="24" placeholder="WELCOME"></div><div><label>UT Coins</label><input id="rcCoins" type="number" min="0" value="0"></div></div>
       <div class="evrow3"><div><label>Pack 1</label><select id="rc1" class="gp"></select></div><div><label>Pack 2</label><select id="rc2" class="gp"></select></div><div><label>Pack 3</label><select id="rc3" class="gp"></select></div></div>
       <label>Players (names separated by commas, optional)</label><input id="rcPl" placeholder="Rodri, Vinícius Jr">
       <div class="evrow4"><div><label>Total uses (0 = unlimited)</label><input id="rcMax" type="number" min="0" value="0"></div><div><label>Uses per player (0 = unlimited)</label><input id="rcPer" type="number" min="0" value="1"></div><div><label>Expires (optional)</label><input id="rcExp" type="datetime-local"></div><div><label>Only while event is live</label><select id="rcEv"></select></div></div>
@@ -1204,7 +1211,7 @@ window.UTA = (function () {
       <h2 class="sec">Quick codes</h2><div class="bar"></div>
       <p class="sub">Make a redeem code any time. No event needed.</p>
       <div class="evform">
-        <div class="evrow"><div><label>Code (empty = random)</label><input id="qcCode" maxlength="24" placeholder="WELCOME"></div><div><label>Coins</label><input id="qcCoins" type="number" min="0" value="0"></div></div>
+        <div class="evrow"><div><label>Code (empty = random)</label><input id="qcCode" maxlength="24" placeholder="WELCOME"></div><div><label>UT Coins</label><input id="qcCoins" type="number" min="0" value="0"></div></div>
         <div class="evrow3"><div><label>Pack 1</label><select id="qc1" class="gp"></select></div><div><label>Pack 2</label><select id="qc2" class="gp"></select></div><div><label>Pack 3</label><select id="qc3" class="gp"></select></div></div>
         <label>Players (names separated by commas, optional)</label><input id="qcPl" placeholder="Rodri, Vinícius Jr">
         <div class="evrow"><div><label>Total uses (0 = unlimited)</label><input id="qcMax" type="number" min="0" value="0"></div><div><label>Uses per player (0 = unlimited)</label><input id="qcPer" type="number" min="0" value="1"></div></div>
@@ -2878,8 +2885,8 @@ const $ = id => document.getElementById(id);
 const START = 3000;
 let qSeen = {}, fbItems = [], cups = {}, cupBusy = false, evs = {}, mk = {}, mkShow = 40, mkBusy = false, codes = {}, cpacks = {}, rcBusy = false, WK0 = null;
 const CFG0 = { win: 60, draw: 30, lose: 20, streak: 30, dBase: 150, dStep: 50, wkMax: 14, fee: 10, sellDay: 5, aiBuy: 12, wealthK: 150000, starter: 2500, bronze: 500, silver: 900, gold: 1500, rare: 4000, elite: 10000, legend: 28000 };
-const CFGL = [["win", "Win reward (coins)"], ["draw", "Draw reward"], ["lose", "Loss reward"], ["streak", "3+ win streak bonus"], ["dBase", "Daily reward, day 1"], ["dStep", "Daily reward, extra per streak day"], ["wkMax", "Weekly point cap"], ["fee", "Market sell fee (%)"], ["sellDay", "Max market listings per player per day"], ["aiBuy", "AI managers only buy listings up to this % of value"], ["wealthK", "Coins that add +100% to pack and AI prices (max +200%)"], ["starter", "Starter pack price"], ["bronze", "Bronze pack price"], ["silver", "Silver pack price"], ["gold", "Gold pack price"], ["rare", "Rare Gold pack price"], ["elite", "Elite pack price"], ["legend", "Legend pack price"]];
-const THK = [["g", "Main accent"], ["c", "Second accent"], ["gold", "Gold / coins"], ["bg", "Background"], ["p1", "Panels"]], THEME_DEF = { g: "#00f58a", c: "#1fd2ff", gold: "#f2cd68", bg: "#050810", p1: "#0b1222" };
+const CFGL = [["win", "Win reward (coins)"], ["draw", "Draw reward"], ["lose", "Loss reward"], ["streak", "3+ win streak bonus"], ["dBase", "Daily reward, day 1"], ["dStep", "Daily reward, extra per streak day"], ["wkMax", "Weekly point cap"], ["fee", "Market sell fee (%)"], ["sellDay", "Max market listings per player per day"], ["aiBuy", "AI managers only buy listings up to this % of value"], ["wealthK", "UT Coins that add +100% to pack and AI prices (max +200%)"], ["starter", "Starter pack price"], ["bronze", "Bronze pack price"], ["silver", "Silver pack price"], ["gold", "Gold pack price"], ["rare", "Rare Gold pack price"], ["elite", "Elite pack price"], ["legend", "Legend pack price"]];
+const THK = [["g", "Main accent"], ["c", "Second accent"], ["gold", "Gold / UT Coins"], ["bg", "Background"], ["p1", "Panels"]], THEME_DEF = { g: "#00f58a", c: "#1fd2ff", gold: "#f2cd68", bg: "#050810", p1: "#0b1222" };
 let CFG = Object.assign({ theme: {} }, CFG0);
 let user = null, state = { coins: START, club: [], starter: false }, signup = false, busy = false, unsub = null, loaded = false, sq = null, sqInit = false, selSlot = -1;
 const P = id => PLAYERS[id - 1];
@@ -3018,7 +3025,7 @@ function render(){
   if (!$("viewMatch").classList.contains("hidden")) renderMatch();
   $("starter").classList.toggle("hidden", !loaded || state.starter);
   $("stPrice").textContent = fmt(STARTER.price); $("buyStarter").disabled = busy || state.coins < STARTER.price;
-  $("warn").textContent = state.coins < STARTER.price ? "Not enough coins for the starter pack." : "";
+  $("warn").textContent = state.coins < STARTER.price ? "Not enough UT Coins for the starter pack." : "";
   $("packs").innerHTML = storePacks().map(k => `<div class="tile"><div class="packart sm p${k.art}"><b>${k.short}</b><span>3 PLAYERS</span></div>
     <div><h3>${k.name}</h3><p>${k.desc || ""}</p></div>
     <div class="price"><span class="coin"></span>${fmt(effPrice(k))}</div>${wealthMult() > 1.02 ? `<small style="color:var(--m);display:block;margin:-4px 0 8px">Base ${fmt(k.price)} +${Math.round((wealthMult() - 1) * 100)}% for your wealth</small>` : ""}
@@ -3432,7 +3439,7 @@ $("daily").onclick = async e => {
   const d = dailyInfo(); if (!d.ok) return;
   state.coins += d.rw; state.lastDaily = todayStr(); state.dStreak = d.nd; { const mo = curMo(); mo.dl++; state.mo = mo; } render();
   try { await update(ref(rtdb, "users/" + user.key), { coins: state.coins, lastDaily: state.lastDaily, dStreak: d.nd, mo: state.mo }); } catch (x) { fail(x, "save the reward"); }
-  toast(`+${fmt(d.rw)} coins. Day ${d.nd} streak!`);
+  toast(`+${fmt(d.rw)} UT Coins. Day ${d.nd} streak!`);
 };
 
 /* ---------- Weekly rewards: +1 point per win (not vs AI), max 14 a week, week starts Friday ---------- */
@@ -3460,7 +3467,7 @@ function renderWeekly(){
     const got = w.claimed["l" + i], ready = !got && w.pts >= l.pts, top = i === WK.length - 1;
     const packs = l.packs.map(p => `<span>${pn(p).replace("<br>", " ")} Pack</span>`).join("");
     return `<div class="wkc${top ? " top" : ""}${got ? " got" : ready ? " rdy" : ""}"><small>Level ${i + 1} · ${l.pts} pts</small>
-      <div class="wkr"><span class="coin"></span>${fmt(l.coins)}</div><div class="wkp">${packs || "<span class='no'>Coins only</span>"}</div>
+      <div class="wkr"><span class="coin"></span>${fmt(l.coins)}</div><div class="wkp">${packs || "<span class='no'>UT Coins only</span>"}</div>
       ${got ? "<u>Claimed</u>" : ready ? `<button class="cta sm" data-l="${i}">Claim</button>` : `<em>${l.pts - w.pts} more win${l.pts - w.pts > 1 ? "s" : ""}</em>`}</div>`;
   }).join("");
   el.innerHTML = `<div class="wkhead"><div><b>Weekly rewards</b><span>Win any match except Vs AI to earn 1 point. Max ${CFG.wkMax} a week. New week starts Friday, resets in ${weekLeft()}.</span></div><div class="wkpts"><b>${w.pts}</b>/${CFG.wkMax}</div></div>
@@ -3480,7 +3487,7 @@ async function claimWeek(i){
   const cb = $("coinBox"); cb.classList.remove("flash"); void cb.offsetWidth; cb.classList.add("flash");
   render();
   try { await update(ref(rtdb, "users/" + user.key), { coins: state.coins, wk: w, pend: state.pend, updatedAt: Date.now() }); } catch (x) { fail(x, "save the reward"); }
-  toast(`+${fmt(l.coins)} coins${l.packs.length ? " and " + l.packs.length + " pack" + (l.packs.length > 1 ? "s" : "") : ""}!`);
+  toast(`+${fmt(l.coins)} UT Coins${l.packs.length ? " and " + l.packs.length + " pack" + (l.packs.length > 1 ? "s" : "") : ""}!`);
   if (l.packs.length) setTimeout(openPend, 400);
 }
 function openPend(){
@@ -3496,7 +3503,7 @@ const escH = t => String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;"
 const evActive = e => { const n = Date.now(); return !!e && (e.start || 0) <= n && n < e.end; };
 function evLeft(e){ const ms = Math.max(0, e.end - Date.now()), m = Math.floor(ms / 6e4), d = Math.floor(m / 1440), h = Math.floor(m % 1440 / 60); return d ? d + "d " + h + "h" : h ? h + "h " + (m % 60) + "m" : m + "m"; }
 function evBanner(e){
-  const gift = e.gift ? ((state.evClaim || {})[e.id] ? `<div class="evg off">Gift claimed</div>` : `<div class="evg"><span>Free gift: ${e.gift.coins ? "+" + fmt(e.gift.coins) + " coins" : ""} ${(e.gift.packs || []).map(p => ((packById(p) || {}).short || p).replace("<br>", " ") + " pack").join(", ")}</span><button class="cta sm" data-g="${e.id}">Claim</button></div>`) : "";
+  const gift = e.gift ? ((state.evClaim || {})[e.id] ? `<div class="evg off">Gift claimed</div>` : `<div class="evg"><span>Free gift: ${e.gift.coins ? "+" + fmt(e.gift.coins) + " UT Coins" : ""} ${(e.gift.packs || []).map(p => ((packById(p) || {}).short || p).replace("<br>", " ") + " pack").join(", ")}</span><button class="cta sm" data-g="${e.id}">Claim</button></div>`) : "";
   const packs = (e.packs || []).map((k, i) => { const n = (state.evBuys || {})[e.id + "_" + i] || 0, cap = k.limit && n >= k.limit;
     return `<div class="tile"><div class="packart sm p${k.art || "g"}"><b>${escH(e.icon || "🏆")}</b><span>${k.count} PLAYER${k.count > 1 ? "S" : ""}</span></div><div><h3>${escH(k.name)}</h3><p>${k.pool ? "Featured: " + k.pool.length + " special players" : "Rated " + k.min + "–" + k.max}${k.limit ? " · " + n + "/" + k.limit + " bought" : ""}</p></div>
       <div class="price"><span class="coin"></span>${fmt(k.price)}</div><button class="cta" data-ev="${e.id}" data-i="${i}" ${busy || cap || state.coins < k.price ? "disabled" : ""}>${cap ? "Limit reached" : "Buy &amp; open"}</button></div>`; }).join("");
@@ -3665,7 +3672,7 @@ function buyEv(id, i){
   const e = evs[id], k = e && e.packs && e.packs[i]; if (!k || busy || !user) return;
   if (!evActive(e)) return toast("This event has ended.");
   const key = id + "_" + i, n = (state.evBuys || {})[key] || 0;
-  if (k.limit && n >= k.limit) return toast("You've hit the limit for this pack."); if (state.coins < k.price) return toast("Not enough coins.");
+  if (k.limit && n >= k.limit) return toast("You've hit the limit for this pack."); if (state.coins < k.price) return toast("Not enough UT Coins.");
   state.evBuys = Object.assign({}, state.evBuys, { [key]: n + 1 });
   update(ref(rtdb, "users/" + user.key), { ["evBuys/" + key]: n + 1 }).catch(() => {});
   openPack({ id: "ev_" + key, name: k.name, price: k.price, count: k.count, min: k.min, max: k.max, decay: .8, art: k.art, pool: k.pool });
@@ -3689,7 +3696,7 @@ function startShared(){
   presOff.push(onValue(ref(rtdb, "market"), sn => { mk = sn.val() || {}; aiSweep(); if (!$("viewMarket").classList.contains("hidden")) renderMarket(); }, () => {}));
   presOff.push(onValue(ref(rtdb, "config"), sn => { applyCfg(sn.val()); render(); }, () => {}));
   presOff.push(onValue(ref(rtdb, "cpacks"), sn => { cpacks = sn.val() || {}; fillPackSelects(); render(); if (isAdmin()) renderCp(); }, () => {}));
-  if (isAdmin()) presOff.push(onValue(ref(rtdb, "codes"), sn => { codes = sn.val() || {}; renderCodes(); $("qcList").innerHTML = $("rcList").innerHTML; }, () => {}));
+  if (isAdmin()) presOff.push(onValue(ref(rtdb, "codes"), sn => { codes = sn.val() || {}; Object.entries(codes).forEach(([k, c]) => { if (c && c.max && (c.used || 0) >= c.max) remove(ref(rtdb, "codes/" + k)).catch(() => {}); }); renderCodes(); $("qcList").innerHTML = $("rcList").innerHTML; }, () => {}));
   const iv = setInterval(renderEvents, 30000); presOff.push(() => clearInterval(iv));
 }
 
@@ -3797,7 +3804,7 @@ function fillPackSelects(){
 const thPick = p => THK.map(([k, l]) => `<div><label>${l}</label><input type="color" id="${p}${k}" value="${THEME_DEF[k]}"></div>`).join("");
 $("evThC").innerHTML = thPick("evT_");
 $("cfgForm").innerHTML = '<div class="evrow3">' + CFGL.map(([k, l]) => `<div><label>${l}</label><input class="cf" data-k="${k}" type="number" min="0"></div>`).join("") + '</div><b class="mkh" style="display:block;margin-top:20px">Weekly reward levels</b>'
-  + WK.map((l, i) => `<div class="evrow4" id="wl${i}"><div><label>Level ${i + 1} points</label><input class="a" type="number" min="1"></div><div><label>Coins</label><input class="b" type="number" min="0"></div><div><label>Pack 1</label><select class="gp p1"></select></div><div><label>Pack 2</label><select class="gp p2"></select></div></div>`).join("")
+  + WK.map((l, i) => `<div class="evrow4" id="wl${i}"><div><label>Level ${i + 1} points</label><input class="a" type="number" min="1"></div><div><label>UT Coins</label><input class="b" type="number" min="0"></div><div><label>Pack 1</label><select class="gp p1"></select></div><div><label>Pack 2</label><select class="gp p2"></select></div></div>`).join("")
   + `<b class="mkh" style="display:block;margin-top:20px">Default app theme</b><label><input type="checkbox" id="cfgTh" style="width:auto"> Use a custom theme</label><div class="evrow5">${thPick("cth_")}</div>
   <div class="evbt" style="margin-top:20px"><button class="cta" id="cfgSave">Save settings</button><button class="cta alt" id="cfgReset">Reset everything</button></div>`;
 fillPackSelects(); applyCfg(null);
@@ -3835,7 +3842,7 @@ function renderCodes(){
   const sel = $("rcEv"), cur = sel.value; sel.innerHTML = '<option value="">Any time</option>' + Object.entries(evs).map(([id, e]) => `<option value="${id}">${escH(e.title)}</option>`).join(""); sel.value = cur;
   const L = Object.entries(codes).sort((a, b) => (b[1].ts || 0) - (a[1].ts || 0));
   $("rcList").innerHTML = L.length ? L.map(([c, v]) => { const pk = Object.values(v.packs || []).map(p => (packById(p) || {}).short || p).join(", "), pl = Object.values(v.players || []).map(i => P(i) ? P(i).name : "").join(", ");
-    return `<div class="evli"><div><b>${escH(c)}</b><small>${[v.coins ? fmt(v.coins) + " coins" : "", pk ? pk.replace(/<br>/g, " ") + " pack(s)" : "", pl].filter(Boolean).join(" · ") || "empty"} · used ${v.used || 0}${v.max ? "/" + v.max : " (no total limit)"} · ${v.per === 0 ? "unlimited" : (v.per ?? 1) + "x"} per player${v.exp ? " · expires " + new Date(v.exp).toLocaleString() : ""}${v.ev && evs[v.ev] ? " · event: " + escH(evs[v.ev].title) : ""}</small></div><div class="evbt"><button class="cta sm alt" data-cc="${escH(c)}">Copy</button><button class="cta sm alt" data-cd="${escH(c)}">Delete</button></div></div>`; }).join("") : '<div class="empty">No codes yet.</div>';
+    return `<div class="evli"><div><b>${escH(c)}</b><small>${[v.coins ? fmt(v.coins) + " UT Coins" : "", pk ? pk.replace(/<br>/g, " ") + " pack(s)" : "", pl].filter(Boolean).join(" · ") || "empty"} · used ${v.used || 0}${v.max ? "/" + v.max : " (no total limit)"} · ${v.per === 0 ? "unlimited" : (v.per ?? 1) + "x"} per player${v.exp ? " · expires " + new Date(v.exp).toLocaleString() : ""}${v.ev && evs[v.ev] ? " · event: " + escH(evs[v.ev].title) : ""}</small></div><div class="evbt"><button class="cta sm alt" data-cc="${escH(c)}">Copy</button><button class="cta sm alt" data-cd="${escH(c)}">Delete</button></div></div>`; }).join("") : '<div class="empty">No codes yet.</div>';
 }
 $("rcList").onclick = async e => {
   const c = e.target.closest("[data-cc]"), d = e.target.closest("[data-cd]");
@@ -3869,19 +3876,20 @@ async function redeem(){
     if (per && mine >= per) return toast(per === 1 ? "You already used this code." : `You've already used this code ${per} times.`);
     if (v.exp && v.exp < Date.now()) return toast("That code has expired.");
     if (v.ev && !evActive(evs[v.ev])) return toast("That code only works while its event is live.");
-    let ok = false; await runTransaction(ref(rtdb, "codes/" + c + "/used"), u => { u = u || 0; ok = !v.max || u < v.max; return ok ? u + 1 : u; });
-    if (!ok) return toast("That code has been fully used.");
+    let ok = false, now = 0; await runTransaction(ref(rtdb, "codes/" + c + "/used"), u => { u = u || 0; ok = !v.max || u < v.max; now = ok ? u + 1 : u; return now; });
+    if (!ok) { remove(ref(rtdb, "codes/" + c)).catch(() => {}); return toast("That code has been fully used."); }
     const ps = Object.values(v.packs || []).filter(p => packById(p)), pls = Object.values(v.players || []).filter(i => P(i));
     state.coins += v.coins || 0; state.club.push(...pls); state.pend = (state.pend || []).concat(ps); state.redeemed = Object.assign({}, state.redeemed, { [c]: mine + 1 }); render();
     await update(ref(rtdb, "users/" + user.key), { coins: state.coins, club: state.club, pend: state.pend, ["redeemed/" + c]: mine + 1 });
-    $("rcIn").value = ""; toast("Code redeemed!" + (v.coins ? " +" + fmt(v.coins) + " coins" : "") + (pls.length ? ". " + pls.map(i => P(i).name).join(", ") + " joined your club" : "")); if (ps.length) setTimeout(openPend, 500);
+    if (v.max && now >= v.max) remove(ref(rtdb, "codes/" + c)).catch(() => {}); // last use: the code deletes itself
+    $("rcIn").value = ""; toast("Code redeemed!" + (v.coins ? " +" + fmt(v.coins) + " UT Coins" : "") + (pls.length ? ". " + pls.map(i => P(i).name).join(", ") + " joined your club" : "")); if (ps.length) setTimeout(openPend, 500);
   } catch (x) { fail(x, "redeem"); } finally { rcBusy = false; }
 }
 $("rcBtn").onclick = redeem; $("rcIn").addEventListener("keydown", e => e.key === "Enter" && redeem());
 /* custom packs */
 function renderCp(){
   const L = Object.entries(cpacks);
-  $("cpList").innerHTML = L.length ? L.map(([id, c]) => `<div class="evli"><div><b>${escH(c.name)}</b><small>${fmt(c.price)} coins · ${c.count} players · ${c.pool ? c.pool.length + " featured" : c.min + "–" + c.max} · ${c.store ? "In Store" : "Hidden"}</small></div><div class="evbt"><button class="cta sm alt" data-ct="${id}">${c.store ? "Hide" : "Sell"}</button><button class="cta sm alt" data-cx="${id}">Delete</button></div></div>`).join("") : '<div class="empty">No custom packs yet.</div>';
+  $("cpList").innerHTML = L.length ? L.map(([id, c]) => `<div class="evli"><div><b>${escH(c.name)}</b><small>${fmt(c.price)} UT Coins · ${c.count} players · ${c.pool ? c.pool.length + " featured" : c.min + "–" + c.max} · ${c.store ? "In Store" : "Hidden"}</small></div><div class="evbt"><button class="cta sm alt" data-ct="${id}">${c.store ? "Hide" : "Sell"}</button><button class="cta sm alt" data-cx="${id}">Delete</button></div></div>`).join("") : '<div class="empty">No custom packs yet.</div>';
 }
 $("cpList").onclick = e => {
   const t = e.target.closest("[data-ct]"), x = e.target.closest("[data-cx]");
@@ -3967,7 +3975,7 @@ $("mkMore").onclick = () => { mkShow += 40; renderMarket(); };
 $("mkItems").onclick = e => { const b = e.target.closest("[data-b]"), c = e.target.closest("[data-c]"); if (b) buyMk(b.dataset.b); if (c) cancelMk(c.dataset.c); };
 async function buyMk(id){
   if (mkBusy || !user) return; const l = id.startsWith("ai_") ? mkAi(P(+id.slice(3))) : mk[id];
-  if (!l) return toast("That listing is gone."); if (!l.ai && l.sk === user.key) return; if (state.coins < l.price) return toast("Not enough coins.");
+  if (!l) return toast("That listing is gone."); if (!l.ai && l.sk === user.key) return; if (state.coins < l.price) return toast("Not enough UT Coins.");
   mkBusy = true;
   try {
     if (!l.ai) {
@@ -3975,7 +3983,7 @@ async function buyMk(id){
       if (!ok || !r.committed) return toast("Someone already bought this player.");
       runTransaction(ref(rtdb, "users/" + l.sk + "/coins"), c => (c || 0) + Math.floor(l.price * (1 - CFG.fee / 100))).catch(() => {});
     }
-    state.coins -= l.price; state.club.push(l.pid); render(); await save(); toast(`Signed ${P(l.pid).name} for ${fmt(l.price)} coins`);
+    state.coins -= l.price; state.club.push(l.pid); render(); await save(); toast(`Signed ${P(l.pid).name} for ${fmt(l.price)} UT Coins`);
   } catch (x) { fail(x, "complete the trade"); } finally { mkBusy = false; renderMarket(); }
 }
 async function cancelMk(id){
@@ -4004,7 +4012,7 @@ async function aiSweep(){
     aiSold.add(id); mkBusy = true;
     try {
       let ok = false; const r = await runTransaction(ref(rtdb, "market/" + id), cur => { ok = !!cur && cur.sk === user.key && cur.price === l.price && cur.pid === l.pid; return ok ? null : cur; });
-      if (ok && r.committed) { const g = Math.floor(l.price * (1 - CFG.fee / 100)); state.coins += g; render(); await save(); toast(`${d.who} bought ${P(l.pid).name} for ${fmt(l.price)} coins. You got ${fmt(g)}.`); }
+      if (ok && r.committed) { const g = Math.floor(l.price * (1 - CFG.fee / 100)); state.coins += g; render(); await save(); toast(`${d.who} bought ${P(l.pid).name} for ${fmt(l.price)} UT Coins. You got ${fmt(g)}.`); }
     } catch (x) {} finally { mkBusy = false; if (!$("viewMarket").classList.contains("hidden")) renderMarket(); }
   }
 }
@@ -5002,7 +5010,7 @@ function showEnd(){
       else if (placed < PLACEMENTS) rk += `<div class="rkd up">Placed in ${ni.name}!</div>`;
       else { rk += `<div class="rkd" style="color:${ni.col}">${ni.name} · ${newM} MMR</div>`; if (rankKey(ni) > rankKey(oi)) rk += `<div class="rkd up">Promoted to ${ni.name}!</div>`; else if (rankKey(ni) < rankKey(oi)) rk += `<div class="rkd dn">Demoted to ${ni.name}</div>`; }
     }
-    $("mtRew").innerHTML = (isAI ? `Practice match<small>Vs AI gives no coins or rewards</small>` : `+${r} coins<small>${notes.join(" · ") || (res === "w" ? "Win bonus" : res === "d" ? "Draw" : "Played")}</small>` + (wkNote ? `<div class="rkd ${wkChanged ? "up" : ""}" style="${wkChanged ? "" : "color:var(--m)"}">${wkNote}</div>` : "")) + rk;
+    $("mtRew").innerHTML = (isAI ? `Practice match<small>Vs AI gives no UT Coins or rewards</small>` : `+${r} UT Coins<small>${notes.join(" · ") || (res === "w" ? "Win bonus" : res === "d" ? "Draw" : "Played")}</small>` + (wkNote ? `<div class="rkd ${wkChanged ? "up" : ""}" style="${wkChanged ? "" : "color:var(--m)"}">${wkNote}</div>` : "")) + rk;
   }
   { const mo = M.motm, mp = mo && P(mo.pid);
     $("mtMotm").innerHTML = mp ? `<div class="motm"><small>Player of the match</small><div class="mmw"><b class="mmo">${mp.ovr}</b><div><strong>${mEsc(mp.name)}</strong><em>${mEsc(mo.idx === M.mi ? M.mine.name : other(M, M.mine).name)} &middot; ${mp.pos}</em></div><i>${mo.rating.toFixed(1)}</i></div></div>` : ""; }
@@ -5526,7 +5534,7 @@ function objVal(o){
   return (state.obj || {})[o.k] || 0;
 }
 const packNm = id => { const k = packById(id); return k ? String(k.short).replace("<br>", " ") + " pack" : ""; };
-const rewLine = (coins, packs) => [coins ? fmt(coins) + " coins" : "", ...Object.values(packs || {}).map(packNm)].filter(Boolean).join(" + ") || "None";
+const rewLine = (coins, packs) => [coins ? fmt(coins) + " UT Coins" : "", ...Object.values(packs || {}).map(packNm)].filter(Boolean).join(" + ") || "None";
 function renderObj(){
   const el = $("objList"); if (!el || !user || !loaded || $("viewObj").classList.contains("hidden")) return;
   const oc = state.oc || {}, ob = state.obj || {}; let ready = 0;
@@ -5726,13 +5734,13 @@ document.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => b.datase
 /* ---------- Account reset + free Ronaldo 100 ---------- */
 const RONALDO = () => PLAYERS.find(p => p.name === "Cristiano Ronaldo" && p.ovr === 100);
 const RS_WAIT = 7 * 864e5, RS_COINS = 5000;
-function rsOffer(){ if (user && loaded && !state.rg && !CAR && !OFFLINE) { $("rsText").textContent = "Reset your account and get Cristiano Ronaldo (100) for free. All your coins, players, squad, objectives, rewards and stats are wiped, like a brand new account. You start with " + fmt(RS_COINS) + " coins and Ronaldo joins your club. This offer shows every time you open the game until you take it."; $("rsModal").classList.remove("hidden"); } }
+function rsOffer(){ if (user && loaded && !state.rg && !CAR && !OFFLINE) { $("rsText").textContent = "Reset your account and get Cristiano Ronaldo (100) for free. All your coins, players, squad, objectives, rewards and stats are wiped, like a brand new account. You start with " + fmt(RS_COINS) + " UT Coins and Ronaldo joins your club. This offer shows every time you open the game until you take it."; $("rsModal").classList.remove("hidden"); } }
 async function doReset(){
   if (!user || !loaded || busy) return;
   if (CAR || OFFLINE) return toast("Resetting only works online on your home Wi-Fi.");
   const first = !state.rg;
   if (!first && Date.now() - (state.rt || 0) < RS_WAIT) return toast("You can reset again in " + Math.ceil((RS_WAIT - (Date.now() - state.rt)) / 864e5) + " day(s).");
-  if (!confirm("Really reset your account? EVERYTHING is wiped: coins, all players, squad, objectives, rewards and stats. You start again with " + fmt(RS_COINS) + " coins." + (first ? " Cristiano Ronaldo (100) will be added to your club." : ""))) return;
+  if (!confirm("Really reset your account? EVERYTHING is wiped: coins, all players, squad, objectives, rewards and stats. You start again with " + fmt(RS_COINS) + " UT Coins." + (first ? " Cristiano Ronaldo (100) will be added to your club." : ""))) return;
   const r = RONALDO(), club = first && r ? [r.id] : [], now = Date.now();
   const upd = { coins: RS_COINS, club, starter: false, squad: null, mmr: 500, placed: 0, rform: "", stats: { w: 0, d: 0, l: 0 }, streak: 0, aiBeat: {}, lastDaily: "", dStreak: 0, wk: null, pend: [], evBuys: null, evClaim: null, redeemed: null, obj: null, oc: null, mo: null, sl: null, rg: true, rt: now, updatedAt: now };
   try { await update(ref(rtdb, "users/" + user.key), upd); sqInit = false; $("rsModal").classList.add("hidden"); toast(first ? "Account reset. Cristiano Ronaldo (100) joined your club!" : "Account reset."); }
